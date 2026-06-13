@@ -319,7 +319,7 @@ export default function TrucksPage() {
                           }`}
                         >
                           <div className={`${activeEcosystem.id === eco.id ? 'text-red-500' : 'text-gray-500'}`}>
-                            {React.cloneElement(eco.icon as React.ReactElement, { className: "w-5 h-5" })}
+                            {React.cloneElement(eco.icon as React.ReactElement<any>, { className: "w-5 h-5" })}
                           </div>
                           <span className={`text-xs font-bold uppercase tracking-widest ${activeEcosystem.id === eco.id ? 'text-white' : 'text-gray-400'}`}>
                             {eco.title}
@@ -331,7 +331,7 @@ export default function TrucksPage() {
                     {/* Details Panel */}
                     <div className="flex-1 bg-[#050505] border border-white/10 rounded-3xl p-8 shadow-xl flex flex-col mb-8 relative overflow-hidden group">
                       <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 group-hover:scale-110 transition-all duration-700 pointer-events-none">
-                        {React.cloneElement(activeEcosystem.icon as React.ReactElement, { className: "w-48 h-48" })}
+                        {React.cloneElement(activeEcosystem.icon as React.ReactElement<any>, { className: "w-48 h-48" })}
                       </div>
 
                       <div className="relative z-10">
@@ -738,21 +738,21 @@ export default function TrucksPage() {
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button asChild size="lg" className="bg-[#cc0000] hover:bg-[#aa0000] text-white font-bold h-14 px-8 text-sm uppercase rounded shadow-[0_0_20px_rgba(204,0,0,0.3)] transition-all">
-                    <Link href="/contact">
+                  <Link href="/contact" className="w-full sm:w-auto">
+                    <Button size="lg" className="w-full bg-[#cc0000] hover:bg-[#aa0000] text-white font-bold h-14 px-8 text-sm uppercase rounded shadow-[0_0_20px_rgba(204,0,0,0.3)] transition-all">
                       REQUEST A QUOTE
-                    </Link>
-                  </Button>
+                    </Button>
+                  </Link>
                   
                   {/* Whatsapp button with the distinct color bar from the design */}
-                  <Button asChild size="lg" variant="outline" className="relative overflow-hidden bg-black/40 border-white/20 hover:bg-white/10 text-white font-bold h-14 px-8 text-sm uppercase rounded backdrop-blur-sm group transition-all">
-                    <Link href="https://wa.me/5978520700" target="_blank">
+                  <Link href="https://wa.me/5978520700" target="_blank" className="w-full sm:w-auto">
+                    <Button size="lg" variant="outline" className="w-full relative overflow-hidden bg-black/40 border-white/20 hover:bg-white/10 text-white font-bold h-14 px-8 text-sm uppercase rounded backdrop-blur-sm group transition-all">
                       <span className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-green-400 to-green-600 shadow-[0_0_10px_rgba(34,197,94,0.5)]"></span>
                       <span className="absolute left-[3px] top-0 bottom-0 w-[2px] bg-red-600"></span>
                       <MessageCircle className="w-5 h-5 mr-3 text-white hidden group-hover:block transition-all" />
                       SPEAK WITH A SPECIALIST
-                    </Link>
-                  </Button>
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>

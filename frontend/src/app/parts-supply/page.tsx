@@ -573,20 +573,20 @@ export default function PartsSupplyPage() {
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button asChild size="lg" className="bg-[#cc0000] hover:bg-[#aa0000] text-white font-bold h-14 px-8 text-sm uppercase rounded shadow-[0_0_20px_rgba(204,0,0,0.3)] transition-all">
-                    <Link href="/contact">
+                  <Link href="/contact" className="w-full sm:w-auto">
+                    <Button size="lg" className="w-full bg-[#cc0000] hover:bg-[#aa0000] text-white font-bold h-14 px-8 text-sm uppercase rounded shadow-[0_0_20px_rgba(204,0,0,0.3)] transition-all">
                       REQUEST PARTS QUOTE
-                    </Link>
-                  </Button>
+                    </Button>
+                  </Link>
                   
-                  <Button asChild size="lg" variant="outline" className="relative overflow-hidden bg-black/40 border-white/20 hover:bg-white/10 text-white font-bold h-14 px-8 text-sm uppercase rounded backdrop-blur-sm group transition-all">
-                    <Link href="https://wa.me/5978520700" target="_blank">
+                  <Link href="https://wa.me/5978520700" target="_blank" className="w-full sm:w-auto">
+                    <Button size="lg" variant="outline" className="w-full relative overflow-hidden bg-black/40 border-white/20 hover:bg-white/10 text-white font-bold h-14 px-8 text-sm uppercase rounded backdrop-blur-sm group transition-all">
                       <span className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-green-400 to-green-600 shadow-[0_0_10px_rgba(34,197,94,0.5)]"></span>
                       <span className="absolute left-[3px] top-0 bottom-0 w-[2px] bg-red-600"></span>
                       <MessageCircle className="w-5 h-5 mr-3 text-white hidden group-hover:block transition-all" />
                       CONTACT PARTS TEAM
-                    </Link>
-                  </Button>
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>
