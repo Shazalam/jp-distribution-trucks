@@ -507,7 +507,7 @@ export default function CustomBuildsPage() {
               <div>
                 <Button 
                   onClick={() => {
-                    setQuoteRequirements(`Custom Build Configuration:\n${Object.entries(selectedOptions).map(([key, val]) => `- ${key}: ${CONFIG_OPTIONS_DATA[key]?.[val - 1]?.name || "Level " + val}`).join('\n')}\n\nPlease provide more details about your intended use and any additional requirements here:`);
+                    setQuoteRequirements(`Custom Build Configuration:\n${Object.entries(selectedOptions).map(([key, val]) => `- ${key}: ${CONFIG_OPTIONS_DATA[key]?.[val - 1]?.name || "Level " + val}`).join('\n')}\n`);
                     setIsQuoteModalOpen(true);
                   }}
                   className="w-full bg-red-600 text-white hover:bg-red-700 font-bold tracking-widest uppercase py-7 rounded-sm text-sm transition-all shadow-[0_0_20px_rgba(217,4,41,0.3)]"
@@ -654,7 +654,7 @@ export default function CustomBuildsPage() {
                   </Link>
                   <Button 
                     onClick={() => {
-                      setQuoteRequirements(`Interested in Custom Platform: ${selectedBuild?.title || 'Custom Build'}\n\nPlease provide more details about your intended use and any additional requirements here:`);
+                      setQuoteRequirements(`Interested in Custom Platform: ${selectedBuild?.title || 'Custom Build'}\n`);
                       setIsQuoteModalOpen(true);
                       setSelectedBuild(null); // Optional: close the build modal when opening quote
                     }}
@@ -673,7 +673,7 @@ export default function CustomBuildsPage() {
         isOpen={isQuoteModalOpen} 
         onClose={() => setIsQuoteModalOpen(false)} 
         initialInquiryType="build"
-        initialRequirements={quoteRequirements || `Custom Build Inquiry\n\nPlease provide more details here:`}
+        initialRequirements={quoteRequirements || `Custom Build Inquiry\n`}
       />
     </div>
   );
