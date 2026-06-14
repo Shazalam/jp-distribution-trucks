@@ -652,7 +652,7 @@ export default function CustomBuildsPage() {
                   </Link>
                   <Button 
                     onClick={() => {
-                      setQuoteRequirements(`Interested in Custom Platform: ${activeCategory?.title || 'Custom Build'}\n\nPlease provide more details about your intended use and any additional requirements here:`);
+                      setQuoteRequirements(`Interested in Custom Platform: ${activeCategory || 'Custom Build'}\n\nPlease provide more details about your intended use and any additional requirements here:`);
                       setIsQuoteModalOpen(true);
                       setActiveCategory(null); // Optional: close the category modal when opening quote
                     }}
