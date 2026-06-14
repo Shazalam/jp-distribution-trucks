@@ -333,8 +333,10 @@ export default function CustomBuildsPage() {
                       <span>Protection</span> <span className="text-white font-bold">Full Armor Spec</span>
                     </div>
                   </div>
-                  <Button className="w-full bg-white/5 hover:bg-white hover:text-black border border-white/10 text-white rounded-sm font-bold tracking-widest uppercase transition-colors h-12">
-                    View Gallery
+                  <Button 
+                    onClick={() => setSelectedBuild({ title: series.name, desc: series.desc, img: series.img })}
+                    className="w-full bg-white/5 hover:bg-white hover:text-black border border-white/10 text-white rounded-sm font-bold tracking-widest uppercase transition-colors h-12">
+                    Details
                   </Button>
                 </div>
               </div>
