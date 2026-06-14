@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* HERO & PROMISE FULL-SCREEN SECTION */}
-      <section className="relative h-screen min-h-[700px] flex flex-col justify-between overflow-hidden bg-black pt-[30px]">
+      <section className="relative h-screen min-h-[700px] flex flex-col justify-between overflow-x-clip bg-black pt-[30px]">
         {/* Background Image & Overlays */}
         <div className="absolute inset-0 z-0 bg-black">
           <video 
@@ -47,14 +47,14 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 w-full">
             
             {/* Left Content */}
-            <div className="max-w-[800px] flex flex-col justify-start">
+            <div className="max-w-[800px] flex flex-col justify-start overflow-visible">
               <h3 className="font-bold tracking-widest text-xs md:text-sm mb-4 uppercase drop-shadow-md bg-gradient-to-r from-red-500 via-orange-400 to-yellow-500 bg-clip-text text-transparent inline-block">
                 THAILAND TO SURINAME & BEYOND
               </h3>
               
               <h1 className="text-[2.2rem] sm:text-5xl md:text-6xl lg:text-5xl xl:text-[5.5rem] font-black leading-[0.95] mb-8 uppercase tracking-tighter drop-shadow-2xl overflow-visible">
-                <span className="animate-shine-white text-white block mb-2 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">YOUR JOURNEY.</span>
-                <span className="animate-shine-red text-red-600 block drop-shadow-[0_0_40px_rgba(217,4,41,0.4)]">OUR COMMITMENT.</span>
+                <span className="animate-shine-white text-white block mb-2 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)] whitespace-nowrap">YOUR JOURNEY.</span>
+                <span className="animate-shine-red text-red-600 block drop-shadow-[0_0_40px_rgba(217,4,41,0.4)] whitespace-nowrap">OUR COMMITMENT.</span>
               </h1>
               
               <div className="text-base sm:text-xl md:text-2xl text-gray-300 mb-12 max-w-[700px] leading-relaxed font-medium drop-shadow-md">
