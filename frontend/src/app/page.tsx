@@ -52,7 +52,7 @@ export default function Home() {
                 THAILAND TO SURINAME & BEYOND
               </h3>
               
-              <h1 className="text-[2.2rem] sm:text-5xl md:text-6xl lg:text-5xl xl:text-[5.5rem] font-black leading-[0.95] mb-8 uppercase tracking-tighter drop-shadow-2xl overflow-visible">
+              <h1 className="text-[2.2rem] sm:text-5xl md:text-6xl lg:text-5xl xl:text-[4.5rem] font-black leading-[0.95] mb-8 uppercase tracking-tighter drop-shadow-2xl overflow-visible">
                 <span className="animate-shine-white text-white block mb-2 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)] whitespace-nowrap">YOUR JOURNEY.</span>
                 <span className="animate-shine-red text-red-600 block drop-shadow-[0_0_40px_rgba(217,4,41,0.4)] whitespace-nowrap">OUR COMMITMENT.</span>
               </h1>
