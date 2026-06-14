@@ -646,7 +646,13 @@ export default function CustomBuildsPage() {
                       <Phone className="w-4 h-4 mr-2" /> Contact Us
                     </Button>
                   </Link>
-                  <Button className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white font-bold tracking-widest uppercase text-xs h-12 px-6 rounded-sm shadow-[0_0_15px_rgba(217,4,41,0.4)] transition-all">
+                  <Button 
+                    onClick={() => {
+                      setIsQuoteModalOpen(true);
+                      setActiveCategory(null); // Optional: close the category modal when opening quote
+                    }}
+                    className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white font-bold tracking-widest uppercase text-xs h-12 px-6 rounded-sm shadow-[0_0_15px_rgba(217,4,41,0.4)] transition-all"
+                  >
                     Request a Quote
                   </Button>
                 </div>
