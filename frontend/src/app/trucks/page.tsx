@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
@@ -9,64 +10,70 @@ import {
   Search, ClipboardCheck, FileText, Ship
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { WhatWeOfferCarousel } from "@/components/ui/what-we-offer-carousel";
+import { CtaQuoteButton } from "@/components/ui/cta-quote-button";
+import dynamic from "next/dynamic";
+
+const WhatWeOfferCarousel = dynamic(() => import("@/components/ui/what-we-offer-carousel").then(mod => mod.WhatWeOfferCarousel), {
+  ssr: true,
+});
 import { motion, AnimatePresence } from "framer-motion";
+import { submitLead } from "@/lib/submitLead";
 
 // Dummy Data for Ecosystems
 const ECOSYSTEMS = [
   { 
     id: 1, title: "Adventure & Overland", 
     desc: "Engineered for remote exploration and self-sustained travel across extreme terrain.", 
-    icon: <Globe className="w-6 h-6" />, img: "/cinematic_hilux_hero.png",
+    icon: <Globe className="w-6 h-6" />, img: "/images/home/hero/cinematic-hilux-hero.png",
     features: ["Turnkey custom overland builds", "Integrated canopy & tent systems", "Long-range fuel tank options"],
     specs: { Payload: "950 kg", Clearance: "11.5 inches", Drivetrain: "4x4 w/ Lockers" }
   },
   { 
     id: 2, title: "Commercial & Business", 
     desc: "Reliable, high-payload utility vehicles designed to maximize operational efficiency.", 
-    icon: <Package className="w-6 h-6" />, img: "/truck2.png",
+    icon: <Package className="w-6 h-6" />, img: "/images/trucks/cards/truck-2.png",
     features: ["Reinforced flatbed installations", "High-capacity load suspension", "Cost-effective fleet pricing"],
     specs: { Payload: "1,200 kg", CargoSpace: "Class-Leading", Reliability: "99.9% Uptime" }
   },
   { 
     id: 3, title: "Fleet Operations", 
     desc: "Standardized, durable trucks optimized for large-scale enterprise deployments.", 
-    icon: <Truck className="w-6 h-6" />, img: "/truck3.png",
+    icon: <Truck className="w-6 h-6" />, img: "/images/trucks/cards/truck-3.png",
     features: ["Standardized maintenance parts", "Telematics & GPS pre-wiring", "Dedicated fleet account manager"],
     specs: { Volume: "10-100+ Units", Delivery: "Global Logistics", Support: "24/7 B2B Portal" }
   },
   { 
     id: 4, title: "Construction & Utility", 
     desc: "Heavy-duty chassis builds ready for demanding work sites and heavy hauling.", 
-    icon: <Wrench className="w-6 h-6" />, img: "/truck4.png",
+    icon: <Wrench className="w-6 h-6" />, img: "/images/trucks/cards/truck-4.png",
     features: ["Heavy-duty leaf spring upgrades", "Custom toolboxes & storage", "Site-compliant lighting & safety"],
     specs: { Suspension: "Heavy Duty", Towing: "3,500 kg", Protection: "Steel Bullbars" }
   },
   { 
     id: 5, title: "Agriculture", 
     desc: "Rugged rural mobility solutions built to withstand harsh farming environments.", 
-    icon: <Target className="w-6 h-6" />, img: "/build1.png",
+    icon: <Target className="w-6 h-6" />, img: "/images/custom-builds/cards/build-1.png",
     features: ["Corrosion-resistant undercoating", "High-torque diesel powertrains", "All-terrain tire packages"],
     specs: { Engine: "High Torque", Durability: "Extreme", Tires: "All-Terrain" }
   },
   { 
     id: 6, title: "Mining & Industrial", 
     desc: "Specialized safety-compliant vehicles engineered for subterranean and surface mining.", 
-    icon: <Settings className="w-6 h-6" />, img: "/build2.png",
+    icon: <Settings className="w-6 h-6" />, img: "/images/custom-builds/cards/build-2.png",
     features: ["ROPS/FOPS certified roll cages", "Mine-spec electrical & lighting", "Battery isolators & fire suppression"],
     specs: { Safety: "Mine-Spec", RollCage: "Certified", Visibility: "360° LED" }
   },
   { 
     id: 7, title: "Government & Security", 
     desc: "Armored and patrol-ready platforms built for enforcement and secure transport.", 
-    icon: <ShieldCheck className="w-6 h-6" />, img: "/build3.png",
+    icon: <ShieldCheck className="w-6 h-6" />, img: "/images/custom-builds/cards/build-3.png",
     features: ["Discrete B6/B7 armor plating", "Run-flat tire systems", "Upgraded heavy-duty brakes"],
     specs: { Armor: "B6 / B7 Options", Brakes: "Heavy Duty", Security: "Maximized" }
   },
   { 
     id: 8, title: "Emergency & Rescue", 
     desc: "Rapid response vehicles equipped for medical, fire, and disaster recovery missions.", 
-    icon: <Activity className="w-6 h-6" />, img: "/build4.png",
+    icon: <Activity className="w-6 h-6" />, img: "/images/custom-builds/cards/build-4.png",
     features: ["Emergency light & siren systems", "Custom medical/rescue canopies", "Dual battery & high-output alternators"],
     specs: { Electrical: "Dual Battery", Response: "Rapid", Storage: "Custom Medical" }
   },
@@ -74,14 +81,22 @@ const ECOSYSTEMS = [
 
 // Dummy Data for Featured Collections
 const FEATURED_TRUCKS = [
-  { name: "Hilux Revo Adventure", price: "$42,800", engine: "2.8L Diesel", trans: "6-Speed Auto", drive: "4x4", badge: "ADVENTURE", img: "/truck1.png" },
-  { name: "Hilux Travo Expedition", price: "$48,500", engine: "2.8L Diesel", trans: "6-Speed Manual", drive: "4x4", badge: "OVERLAND", img: "/truck2.png" },
-  { name: "Hilux Vigo Overland", price: "$36,900", engine: "2.5L Diesel", trans: "5-Speed Manual", drive: "4x4", badge: "CLASSIC", img: "/truck3.png" },
-  { name: "Hilux Fleet Edition", price: "$29,900", engine: "2.4L Diesel", trans: "6-Speed Manual", drive: "4x2", badge: "COMMERCIAL", img: "/truck4.png" },
-  { name: "Hilux Utility Pro", price: "$32,500", engine: "2.4L Diesel", trans: "6-Speed Auto", drive: "4x2", badge: "UTILITY", img: "/build1.png" },
-  { name: "Hilux Black Edition", price: "$45,000", engine: "2.8L Diesel", trans: "6-Speed Auto", drive: "4x4", badge: "PREMIUM", img: "/black-edition.png" },
-  { name: "Hilux Desert Runner", price: "$52,000", engine: "2.8L Diesel", trans: "6-Speed Auto", drive: "4x4", badge: "EXTREME", img: "/desert-runner.png" },
-  { name: "Hilux Nomad Camper", price: "$58,500", engine: "2.8L Diesel", trans: "6-Speed Auto", drive: "4x4", badge: "CAMPER", img: "/nomad-edition.png" },
+  { name: "Hilux Revo Adventure", price: "$42,800", engine: "2.8L Diesel", trans: "6-Speed Auto", drive: "4x4", badge: "ADVENTURE", img: "/images/trucks/cards/truck-1.png" },
+  { name: "Hilux Travo Expedition", price: "$48,500", engine: "2.8L Diesel", trans: "6-Speed Manual", drive: "4x4", badge: "OVERLAND", img: "/images/trucks/cards/truck-2.png" },
+  { name: "Hilux Vigo Overland", price: "$36,900", engine: "2.5L Diesel", trans: "5-Speed Manual", drive: "4x4", badge: "CLASSIC", img: "/images/trucks/cards/truck-3.png" },
+  { name: "Hilux Fleet Edition", price: "$29,900", engine: "2.4L Diesel", trans: "6-Speed Manual", drive: "4x2", badge: "COMMERCIAL", img: "/images/trucks/cards/truck-4.png" },
+  { name: "Hilux Utility Pro", price: "$32,500", engine: "2.4L Diesel", trans: "6-Speed Auto", drive: "4x2", badge: "UTILITY", img: "/images/custom-builds/cards/build-1.png" },
+  { name: "Hilux Black Edition", price: "$45,000", engine: "2.8L Diesel", trans: "6-Speed Auto", drive: "4x4", badge: "PREMIUM", img: "/images/trucks/cards/black-edition.png" },
+  { name: "Hilux Desert Runner", price: "$52,000", engine: "2.8L Diesel", trans: "6-Speed Auto", drive: "4x4", badge: "EXTREME", img: "/images/custom-builds/cards/desert-runner.png" },
+  { name: "Hilux Nomad Camper", price: "$58,500", engine: "2.8L Diesel", trans: "6-Speed Auto", drive: "4x4", badge: "CAMPER", img: "/images/trucks/cards/nomad-edition.png" },
+];
+
+const COMPARISON_DATA = [
+  { id: "revo", name: "Revo Standard", engine: "2.4L Turbo Diesel", drive: "4x2 / 4x4 Optional", payload: "1,000 kg", suspension: "Standard Leaf", price: "$29,900" },
+  { id: "vigo", name: "Vigo Commercial", engine: "2.5L D-4D Diesel", drive: "4x4 Standard", payload: "1,150 kg", suspension: "Heavy Duty Leaf", price: "$34,500" },
+  { id: "adventure", name: "Adventure Build", engine: "2.8L GD-6 Turbo Diesel", drive: "4x4 w/ Locking Diffs", payload: "950 kg (Upgraded GVM)", suspension: "2\" Lift Fox Racing Shocks", price: "$52,800" },
+  { id: "expedition", name: "Travo Expedition", engine: "2.8L Turbo Diesel", drive: "4x4 w/ Crawl Control", payload: "1,050 kg", suspension: "Ironman 4x4 Nitro Gas", price: "$48,500" },
+  { id: "fleet", name: "Fleet Edition", engine: "2.4L Diesel", drive: "4x2 Standard", payload: "1,200 kg", suspension: "Heavy Duty Leaf", price: "$28,000" }
 ];
 
 export default function TrucksPage() {
@@ -89,7 +104,74 @@ export default function TrucksPage() {
   const [activeEcosystem, setActiveEcosystem] = useState<any>(ECOSYSTEMS[0]);
   const [isRequesting, setIsRequesting] = useState(false);
   const [activeTruck, setActiveTruck] = useState<any>(null);
+
+  const [col1Id, setCol1Id] = useState("revo");
+  const [col2Id, setCol2Id] = useState("vigo");
+  const [col3Id, setCol3Id] = useState("adventure");
+
+  const col1 = COMPARISON_DATA.find(t => t.id === col1Id) || COMPARISON_DATA[0];
+  const col2 = COMPARISON_DATA.find(t => t.id === col2Id) || COMPARISON_DATA[1];
+  const col3 = COMPARISON_DATA.find(t => t.id === col3Id) || COMPARISON_DATA[2];
   const sliderRef = useRef<HTMLDivElement>(null);
+  const tabsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = tabsRef.current;
+    if (!el) return;
+    let frameId: number;
+    let direction = 1;
+    const speed = 0.5;
+    
+    const scroll = () => {
+      if (!el.matches(':hover')) {
+        el.scrollLeft += speed * direction;
+        // Check boundaries
+        if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 1) {
+          direction = -1;
+        } else if (el.scrollLeft <= 0) {
+          direction = 1;
+        }
+      }
+      frameId = requestAnimationFrame(scroll);
+    };
+    frameId = requestAnimationFrame(scroll);
+    return () => cancelAnimationFrame(frameId);
+  }, []);
+
+  // Form State
+  const [formData, setFormData] = useState({ name: "", company: "", email: "", phone: "", requirements: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const handleSubmit = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!formData.name || !formData.email || !formData.phone) return alert("Please fill required fields (Name, Email, Phone)");
+    setIsSubmitting(true);
+    try {
+      await submitLead({
+        formType: "Custom Build Request",
+        sourcePage: "Trucks",
+        sourceSection: "Transform Your Platform",
+        selectedBuild: activeEcosystem.title,
+        clickedButton: "Submit Request",
+        customerName: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        companyName: formData.company,
+        message: formData.requirements
+      });
+      setSubmitSuccess(true);
+      setFormData({ name: "", company: "", email: "", phone: "", requirements: "" });
+      setTimeout(() => {
+        setSubmitSuccess(false);
+        setIsRequesting(false);
+      }, 3000);
+    } catch (error: any) {
+      alert("Error: " + error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const handleSliderMove = (event: React.MouseEvent | React.TouchEvent) => {
     if (!sliderRef.current) return;
@@ -100,16 +182,15 @@ export default function TrucksPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white selection:bg-red-600 selection:text-white">
+    <div className="min-h-[80vh] bg-[#050505] text-white selection:bg-red-600 selection:text-white">
       
       {/* 1. HERO SECTION */}
       <section className="relative pt-24 pb-12 w-full flex flex-col items-center justify-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
-          <img 
-            src="/cinematic_hilux_hero.png" 
+          <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" priority src="/images/home/hero/cinematic-hilux-hero.png" 
             alt="Toyota Hilux Extreme" 
-            className="w-full h-full object-cover opacity-50 scale-105 animate-[slowZoom_20s_ease-in-out_infinite_alternate]"
+            className="object-cover opacity-50 scale-105 animate-[slowZoom_20s_ease-in-out_infinite_alternate]"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-black/40 to-[#050505]"></div>
         </div>
@@ -127,7 +208,7 @@ export default function TrucksPage() {
       </section>
 
       {/* 2. MOBILITY ECOSYSTEMS SECTION */}
-      <section className="py-32 relative bg-[#050505]">
+      <section className="py-14 md:py-20 relative bg-[#050505]">
         <div className="max-w-[1800px] mx-auto px-6 lg:px-16">
           <div className="mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8">
             <div className="max-w-3xl">
@@ -157,7 +238,7 @@ export default function TrucksPage() {
                 }}
               >
                 {/* Background Image */}
-                <img src={eco.img} alt={eco.title} className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 group-hover:scale-110 transition-all duration-700" />
+                <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={eco.img} alt={eco.title} className="object-cover opacity-40 group-hover:opacity-60 group-hover:scale-110 transition-all duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
                 
                 {/* Content */}
@@ -190,53 +271,64 @@ export default function TrucksPage() {
         
         <div className="max-w-[1800px] mx-auto px-6 lg:px-16 relative z-10">
           <div className="text-center mb-16">
-            <h4 className="text-red-600 font-bold text-xs md:text-sm mb-3 uppercase tracking-widest">Interactive Build Studio</h4>
-            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight text-white drop-shadow-md">
+           <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight text-white drop-shadow-md">
               Transform Your <span className="text-red-600">Platform</span>
             </h2>
           </div>
 
           <div className="flex flex-col xl:flex-row gap-12 lg:gap-16">
             
-            {/* LEFT SIDE - LIVE VEHICLE PREVIEW (45%) */}
-            <div className="xl:w-[45%] relative h-[400px] md:h-[500px] lg:h-[600px] rounded-3xl overflow-hidden border border-white/10 bg-[#050505] shadow-[0_0_50px_rgba(0,0,0,0.5)] group">
+            {/* LEFT SIDE - INTERACTIVE SLIDER PREVIEW (45%) */}
+            <div className="xl:w-[45%] relative h-[400px] md:h-[500px] lg:h-[600px] rounded-3xl overflow-hidden border border-white/10 bg-[#050505] shadow-[0_0_50px_rgba(0,0,0,0.5)] select-none group"
+                 ref={sliderRef}
+                 onMouseMove={handleSliderMove}
+                 onTouchMove={handleSliderMove}>
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeEcosystem.id}
-                  initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
-                  animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
+                  initial={{ opacity: 0, filter: "blur(10px)" }}
+                  animate={{ opacity: 1, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, filter: "blur(10px)" }}
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                   className="absolute inset-0 w-full h-full"
                 >
-                  <img src={activeEcosystem.img} alt={activeEcosystem.title} className="w-full h-full object-cover opacity-80 mix-blend-lighten" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505]/50 pointer-events-none"></div>
-                  
-                  {/* NFS-Style HUD Scanning / Parts Activation Effects */}
-                  {activeEcosystem.features?.slice(0, 3).map((feature: string, idx: number) => (
-                    <motion.div 
-                      key={idx}
-                      initial={{ opacity: 0, x: -20, scale: 0.8 }}
-                      animate={{ opacity: 1, x: 0, scale: 1 }}
-                      transition={{ delay: 0.5 + (idx * 0.3), duration: 0.5 }}
-                      className={`absolute left-8 lg:left-12 flex items-center gap-3 backdrop-blur-md bg-black/40 border border-white/10 pr-4 rounded-full shadow-lg ${
-                        idx === 0 ? 'top-[20%]' : idx === 1 ? 'top-[45%]' : 'top-[70%]'
-                      }`}
-                    >
-                      <div className="w-8 h-8 rounded-full bg-red-600/20 border border-red-500/50 flex items-center justify-center">
-                        <CheckCircle2 className="w-4 h-4 text-red-500" />
-                      </div>
-                      <span className="text-[10px] text-white font-bold tracking-widest uppercase">{feature}</span>
-                    </motion.div>
-                  ))}
+                  {/* After Image (Custom Build) */}
+                  <div 
+                    className="absolute inset-0 overflow-hidden"
+                    style={{ clipPath: `inset(0 0 0 ${sliderPosition}%)` }}
+                  >
+                    <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={activeEcosystem.img} alt={activeEcosystem.title} className="object-cover opacity-90" draggable="false" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505]/50 pointer-events-none"></div>
+                    <div className="absolute bottom-6 right-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded text-white text-xs font-bold uppercase tracking-widest border border-white/20 z-20">
+                      CUSTOM BUILD
+                    </div>
+                  </div>
 
-                  {/* Scanning Line Effect */}
-                  <motion.div
-                    initial={{ top: "0%" }}
-                    animate={{ top: "100%" }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                    className="absolute left-0 w-full h-1 bg-red-500/20 shadow-[0_0_20px_rgba(220,38,38,0.4)] pointer-events-none"
-                  ></motion.div>
+                  {/* Before Image (Base Model) */}
+                  <div 
+                    className="absolute inset-0 border-r-2 border-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] overflow-hidden"
+                    style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
+                  >
+                    <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/trucks/cards/truck-4.png" alt="Base Model Before" className="object-cover" draggable="false" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505]/50 pointer-events-none"></div>
+                    <div className="absolute bottom-6 left-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded text-white text-xs font-bold uppercase tracking-widest border border-white/20 z-20">
+                      BASE MODEL
+                    </div>
+                  </div>
+
+                  {/* Slider Handle */}
+                  <div 
+                    className="absolute top-0 bottom-0 flex items-center justify-center z-30"
+                    style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
+                  >
+                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(0,0,0,0.5)] cursor-ew-resize">
+                      <div className="flex gap-1">
+                        <ChevronLeft className="w-4 h-4 text-black" />
+                        <ChevronRight className="w-4 h-4 text-black -ml-2" />
+                      </div>
+                    </div>
+                  </div>
+
                 </motion.div>
               </AnimatePresence>
             </div>
@@ -264,37 +356,45 @@ export default function TrucksPage() {
                       </div>
                     </div>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                      <div className="flex flex-col gap-2">
-                        <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Full Name</label>
-                        <input type="text" className="bg-[#111] border border-white/10 rounded-lg h-12 px-4 text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="John Doe" />
+                    <form onSubmit={handleSubmit}>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div className="flex flex-col gap-2">
+                          <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Full Name *</label>
+                          <input type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="bg-[#111] border border-white/10 rounded-lg h-12 px-4 text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="John Doe" required />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Company / Organization</label>
+                          <input type="text" value={formData.company} onChange={e => setFormData({...formData, company: e.target.value})} className="bg-[#111] border border-white/10 rounded-lg h-12 px-4 text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="Overland Co." />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Email Address *</label>
+                          <input type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="bg-[#111] border border-white/10 rounded-lg h-12 px-4 text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="john@example.com" required />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Phone Number *</label>
+                          <input type="tel" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="bg-[#111] border border-white/10 rounded-lg h-12 px-4 text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="+1 (555) 000-0000" required />
+                        </div>
+                        <div className="flex flex-col gap-2 md:col-span-2">
+                          <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Specific Requirements</label>
+                          <textarea value={formData.requirements} onChange={e => setFormData({...formData, requirements: e.target.value})} className="bg-[#111] border border-white/10 rounded-lg h-24 p-4 text-white focus:outline-none focus:border-red-500 transition-colors resize-none" placeholder="Tell us about your build requirements..." />
+                        </div>
                       </div>
-                      <div className="flex flex-col gap-2">
-                        <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Company / Organization</label>
-                        <input type="text" className="bg-[#111] border border-white/10 rounded-lg h-12 px-4 text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="Overland Co." />
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Email Address</label>
-                        <input type="email" className="bg-[#111] border border-white/10 rounded-lg h-12 px-4 text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="john@example.com" />
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Phone Number</label>
-                        <input type="tel" className="bg-[#111] border border-white/10 rounded-lg h-12 px-4 text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="+1 (555) 000-0000" />
-                      </div>
-                      <div className="flex flex-col gap-2 md:col-span-2">
-                        <label className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Specific Requirements</label>
-                        <textarea className="bg-[#111] border border-white/10 rounded-lg h-24 p-4 text-white focus:outline-none focus:border-red-500 transition-colors resize-none" placeholder="Tell us about your build requirements..." />
-                      </div>
-                    </div>
 
-                    <div className="flex gap-4">
-                      <Button onClick={() => setIsRequesting(false)} variant="outline" className="h-14 px-8 border-white/20 hover:bg-white/10 text-white uppercase tracking-widest text-xs font-bold rounded-lg transition-colors">
-                        Back to Studio
-                      </Button>
-                      <Button className="flex-1 h-14 bg-red-600 hover:bg-red-700 text-white uppercase tracking-widest text-sm font-bold shadow-[0_0_20px_rgba(220,38,38,0.4)] rounded-lg transition-colors">
-                        Submit Request
-                      </Button>
-                    </div>
+                      {submitSuccess ? (
+                        <div className="bg-green-500/10 border border-green-500/30 text-green-500 p-4 rounded-lg flex items-center justify-center gap-3 font-bold uppercase tracking-widest text-sm">
+                          <CheckCircle2 className="w-5 h-5" /> Request Submitted Successfully
+                        </div>
+                      ) : (
+                        <div className="flex gap-4">
+                          <Button type="button" onClick={() => setIsRequesting(false)} variant="outline" className="h-14 px-8 border-white/20 hover:bg-white/10 text-white uppercase tracking-widest text-xs font-bold rounded-lg transition-colors">
+                            Back to Studio
+                          </Button>
+                          <Button type="submit" disabled={isSubmitting} className="flex-1 h-14 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white uppercase tracking-widest text-sm font-bold shadow-[0_0_20px_rgba(220,38,38,0.4)] rounded-lg transition-colors">
+                            {isSubmitting ? "Submitting..." : "Submit Request"}
+                          </Button>
+                        </div>
+                      )}
+                    </form>
                   </motion.div>
                 ) : (
                   /* CONFIGURATOR INTERFACE */
@@ -307,20 +407,17 @@ export default function TrucksPage() {
                     className="flex flex-col h-full"
                   >
                     {/* Package Selector Tabs */}
-                    <div className="flex overflow-x-auto gap-4 pb-4 mb-8 hide-scrollbar" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                    <div ref={tabsRef} className="flex overflow-x-auto gap-4 pb-4 mb-8 hide-scrollbar cursor-grab active:cursor-grabbing" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                       {ECOSYSTEMS.map((eco) => (
                         <button
                           key={eco.id}
                           onClick={() => setActiveEcosystem(eco)}
-                          className={`shrink-0 flex items-center gap-3 px-5 py-3 rounded-xl border transition-all duration-300 ${
+                          className={`shrink-0 flex items-center justify-center px-6 py-3 rounded-xl border transition-all duration-300 ${
                             activeEcosystem.id === eco.id 
                             ? 'bg-red-600/10 border-red-500/50 shadow-[0_0_15px_rgba(220,38,38,0.2)]' 
                             : 'bg-[#111] border-white/5 hover:bg-white/5 hover:border-white/20'
                           }`}
                         >
-                          <div className={`${activeEcosystem.id === eco.id ? 'text-red-500' : 'text-gray-500'}`}>
-                            {React.cloneElement(eco.icon as React.ReactElement<any>, { className: "w-5 h-5" })}
-                          </div>
                           <span className={`text-xs font-bold uppercase tracking-widest ${activeEcosystem.id === eco.id ? 'text-white' : 'text-gray-400'}`}>
                             {eco.title}
                           </span>
@@ -335,12 +432,17 @@ export default function TrucksPage() {
                       </div>
 
                       <div className="relative z-10">
-                        <div className="inline-block px-3 py-1 mb-4 rounded-md bg-red-600/20 border border-red-500/30 text-[10px] font-bold text-red-500 tracking-widest uppercase">
-                          Selected Package
+                        <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-4">
+                          <h3 className="text-3xl lg:text-4xl font-black uppercase tracking-tight text-white">
+                            {activeEcosystem.title}
+                          </h3>
+                          <Button 
+                            onClick={() => setIsRequesting(true)}
+                            className="w-full xl:w-auto h-12 px-8 bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-widest rounded-xl shadow-[0_0_15px_rgba(220,38,38,0.4)] hover:shadow-[0_0_25px_rgba(220,38,38,0.6)] transition-all group"
+                          >
+                            Request Build <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                          </Button>
                         </div>
-                        <h3 className="text-3xl lg:text-4xl font-black uppercase tracking-tight text-white mb-4">
-                          {activeEcosystem.title}
-                        </h3>
                         <p className="text-gray-400 text-sm md:text-base leading-relaxed mb-8 max-w-xl">
                           {activeEcosystem.desc}
                         </p>
@@ -372,28 +474,6 @@ export default function TrucksPage() {
                       </div>
                     </div>
 
-                    {/* Build Summary / Sticky Action Bar */}
-                    <div className="bg-[#111] border border-white/10 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
-                      <div className="flex items-center gap-6 w-full md:w-auto">
-                        <div className="hidden md:flex w-14 h-14 bg-red-600/10 rounded-xl border border-red-500/20 items-center justify-center text-red-500">
-                          <Target className="w-6 h-6" />
-                        </div>
-                        <div>
-                          <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Status</div>
-                          <div className="text-sm font-bold text-emerald-400 uppercase tracking-widest flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Ready To Build
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <Button 
-                        onClick={() => setIsRequesting(true)}
-                        className="w-full md:w-auto h-14 px-10 bg-red-600 hover:bg-red-700 text-white font-bold text-sm uppercase tracking-widest rounded-xl shadow-[0_0_20px_rgba(220,38,38,0.4)] hover:shadow-[0_0_30px_rgba(220,38,38,0.6)] transition-all group"
-                      >
-                        Request Build <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-2 transition-transform" />
-                      </Button>
-                    </div>
-
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -404,7 +484,7 @@ export default function TrucksPage() {
       </section>
 
       {/* 3. FEATURED TRUCK COLLECTIONS */}
-      <section className="py-32 bg-[#0a0c10] border-y border-white/5 relative overflow-hidden">
+      <section className="py-14 md:py-20 bg-[#0a0c10] border-y border-white/5 relative overflow-hidden">
         {/* Subtle background glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-red-900/10 blur-[120px] rounded-full pointer-events-none"></div>
 
@@ -426,7 +506,7 @@ export default function TrucksPage() {
                 onClick={() => setActiveTruck(truck)}
               >
                 <div className="relative h-[250px] md:h-[300px] rounded-2xl overflow-hidden mb-6 border border-white/10 bg-[#111]">
-                  <img src={truck.img} alt={truck.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100" />
+                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={truck.img} alt={truck.name} className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100" />
                   <div className="absolute top-4 left-4">
                     <span className="bg-black/60 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold px-3 py-1.5 rounded-sm uppercase tracking-widest">
                       {truck.badge}
@@ -471,83 +551,10 @@ export default function TrucksPage() {
         </div>
       </section>
 
-      {/* 4. CUSTOM BUILD SHOWCASE (Before/After Slider) */}
-      <section className="py-32 bg-[#050505] relative">
-        <div className="max-w-[1800px] mx-auto px-6 lg:px-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            
-            {/* Text Content */}
-            <div>
-              <h4 className="text-red-500 font-bold tracking-widest uppercase text-sm mb-4">Engineering Excellence</h4>
-              <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight mb-8 text-white leading-tight">
-                Transform Your <br/>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-white">Platform.</span>
-              </h2>
-              <p className="text-gray-400 text-lg leading-relaxed mb-8 font-medium">
-                Our in-house fabrication and engineering teams can transform a standard Toyota Hilux chassis into a specialized machine. From heavy-duty suspension lifts and tactical bumpers to complete overland canopy systems.
-              </p>
-              
-              <ul className="space-y-4 mb-10">
-                {["Overland Suspension Systems", "Tactical Body Armor & Bull Bars", "Commercial Canopy & Storage", "Performance Engine Tuning"].map((item, i) => (
-                  <li key={i} className="flex items-center gap-3 text-white font-medium">
-                    <CheckCircle2 className="w-5 h-5 text-red-500 shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              
-              <Button size="lg" className="bg-white text-black hover:bg-gray-200 px-8 h-14 font-bold tracking-widest uppercase rounded-sm">
-                View Upgrades Studio
-              </Button>
-            </div>
 
-            {/* Before/After Interactive Slider */}
-            <div className="relative w-full aspect-[4/3] md:aspect-[16/9] rounded-2xl overflow-hidden border border-white/10 select-none bg-[#111]"
-                 ref={sliderRef}
-                 onMouseMove={handleSliderMove}
-                 onTouchMove={handleSliderMove}>
-              
-              {/* After Image (Custom Build) */}
-              <div className="absolute inset-0">
-                <img src="/desert-runner.png" alt="Custom Build After" className="w-full h-full object-cover" draggable="false" />
-                <div className="absolute bottom-6 right-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded text-white text-xs font-bold uppercase tracking-widest border border-white/20">
-                  Custom Build
-                </div>
-              </div>
-
-              {/* Before Image (Original) */}
-              <div 
-                className="absolute inset-0 border-r-2 border-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] overflow-hidden"
-                style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
-              >
-                {/* The before image must have the exact same dimensions and object-fit to align perfectly. 
-                    Using truck4.png as a placeholder for a "standard" truck */}
-                <img src="/truck4.png" alt="Original Truck Before" className="absolute top-0 left-0 w-full h-full object-cover" draggable="false" />
-                <div className="absolute bottom-6 left-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded text-white text-xs font-bold uppercase tracking-widest border border-white/20">
-                  Base Model
-                </div>
-              </div>
-
-              {/* Slider Handle */}
-              <div 
-                className="absolute top-0 bottom-0 flex items-center justify-center z-10"
-                style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
-              >
-                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(0,0,0,0.5)] cursor-ew-resize">
-                  <div className="flex gap-1">
-                    <ChevronLeft className="w-4 h-4 text-black" />
-                    <ChevronRight className="w-4 h-4 text-black -ml-2" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
 
       {/* 5. TRUCK COMPARISON TOOL */}
-      <section className="py-32 bg-[#0a0c10] border-y border-white/5">
+      <section className="py-14 md:py-20 bg-[#0a0c10] border-y border-white/5">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-16">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-black uppercase tracking-tight mb-4 text-white">
@@ -561,41 +568,65 @@ export default function TrucksPage() {
               <thead>
                 <tr className="border-b border-white/10 bg-white/5">
                   <th className="p-6 text-gray-400 font-bold uppercase tracking-widest text-xs w-1/4">Specification</th>
-                  <th className="p-6 text-white font-bold uppercase tracking-widest text-sm w-1/4">Revo Standard</th>
-                  <th className="p-6 text-white font-bold uppercase tracking-widest text-sm w-1/4">Vigo Commercial</th>
-                  <th className="p-6 text-white font-bold uppercase tracking-widest text-sm w-1/4 border-l border-red-500/30 bg-red-900/10">Adventure Build</th>
+                  <th className="p-6 text-white font-bold uppercase tracking-widest text-sm w-1/4">
+                    <select 
+                      value={col1Id} 
+                      onChange={(e) => setCol1Id(e.target.value)}
+                      className="bg-[#111] border border-white/20 text-white rounded px-2 py-1 focus:outline-none focus:border-red-500 w-full"
+                    >
+                      {COMPARISON_DATA.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+                    </select>
+                  </th>
+                  <th className="p-6 text-white font-bold uppercase tracking-widest text-sm w-1/4">
+                    <select 
+                      value={col2Id} 
+                      onChange={(e) => setCol2Id(e.target.value)}
+                      className="bg-[#111] border border-white/20 text-white rounded px-2 py-1 focus:outline-none focus:border-red-500 w-full"
+                    >
+                      {COMPARISON_DATA.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+                    </select>
+                  </th>
+                  <th className="p-6 text-white font-bold uppercase tracking-widest text-sm w-1/4 border-l border-red-500/30 bg-red-900/10">
+                    <select 
+                      value={col3Id} 
+                      onChange={(e) => setCol3Id(e.target.value)}
+                      className="bg-[#111] border border-red-500/50 text-white rounded px-2 py-1 focus:outline-none focus:border-red-500 w-full"
+                    >
+                      {COMPARISON_DATA.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+                    </select>
+                  </th>
                 </tr>
               </thead>
               <tbody className="text-sm font-medium text-gray-300">
                 <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
                   <td className="p-6 text-gray-500 uppercase tracking-widest text-xs">Engine</td>
-                  <td className="p-6">2.4L Turbo Diesel</td>
-                  <td className="p-6">2.5L D-4D Diesel</td>
-                  <td className="p-6 border-l border-white/5 text-white">2.8L GD-6 Turbo Diesel</td>
+                  <td className="p-6">{col1.engine}</td>
+                  <td className="p-6">{col2.engine}</td>
+                  <td className="p-6 border-l border-white/5 text-white">{col3.engine}</td>
                 </tr>
                 <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
                   <td className="p-6 text-gray-500 uppercase tracking-widest text-xs">Drivetrain</td>
-                  <td className="p-6">4x2 / 4x4 Optional</td>
-                  <td className="p-6">4x4 Standard</td>
-                  <td className="p-6 border-l border-white/5 text-white">4x4 w/ Locking Diffs</td>
+                  <td className="p-6">{col1.drive}</td>
+                  <td className="p-6">{col2.drive}</td>
+                  <td className="p-6 border-l border-white/5 text-white">{col3.drive}</td>
                 </tr>
                 <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
                   <td className="p-6 text-gray-500 uppercase tracking-widest text-xs">Payload Capacity</td>
-                  <td className="p-6">1,000 kg</td>
-                  <td className="p-6">1,150 kg</td>
-                  <td className="p-6 border-l border-white/5 text-white">950 kg (Upgraded GVM)</td>
+                  <td className="p-6">{col1.payload}</td>
+                  <td className="p-6">{col2.payload}</td>
+                  <td className="p-6 border-l border-white/5 text-white">{col3.payload}</td>
                 </tr>
                 <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
                   <td className="p-6 text-gray-500 uppercase tracking-widest text-xs">Suspension</td>
-                  <td className="p-6">Standard Leaf</td>
-                  <td className="p-6">Heavy Duty Leaf</td>
-                  <td className="p-6 border-l border-white/5 text-white">2&quot; Lift Fox Racing Shocks</td>
+                  <td className="p-6">{col1.suspension}</td>
+                  <td className="p-6">{col2.suspension}</td>
+                  <td className="p-6 border-l border-white/5 text-white">{col3.suspension}</td>
                 </tr>
                 <tr className="hover:bg-white/5 transition-colors">
                   <td className="p-6 text-gray-500 uppercase tracking-widest text-xs">Starting Price</td>
-                  <td className="p-6 font-bold">$29,900</td>
-                  <td className="p-6 font-bold">$34,500</td>
-                  <td className="p-6 border-l border-white/5 font-bold text-red-500">$52,800</td>
+                  <td className="p-6 font-bold">{col1.price}</td>
+                  <td className="p-6 font-bold">{col2.price}</td>
+                  <td className="p-6 border-l border-white/5 font-bold text-red-500">{col3.price}</td>
                 </tr>
               </tbody>
             </table>
@@ -604,7 +635,7 @@ export default function TrucksPage() {
       </section>
 
       {/* 6. IMPORT PROCESS TIMELINE & TRUST */}
-      <section className="py-32 bg-[#050505] relative overflow-hidden">
+      <section className="py-14 md:py-20 bg-[#050505] relative overflow-hidden">
         <div className="max-w-[1800px] mx-auto px-6 lg:px-16">
           <div className="text-center mb-16">
             <h4 className="text-red-600 font-bold text-xs md:text-sm mb-3 uppercase tracking-widest">THAILAND TO SURINAME</h4>
@@ -614,7 +645,7 @@ export default function TrucksPage() {
           </div>
 
           {/* Horizontal Timeline */}
-          <div className="relative w-full overflow-x-auto mb-32 pb-8 pt-4 hide-scrollbar [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          <div className="relative w-full overflow-x-auto mb-16 pb-8 pt-4 hide-scrollbar [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {/* The Connecting Line */}
             <div className="absolute top-[56px] left-[7%] w-[86%] h-[2px] bg-red-600/10 z-0 hidden lg:block overflow-hidden rounded-full">
               <div 
@@ -712,16 +743,15 @@ export default function TrucksPage() {
       </section>
 
       {/* 7. REDESIGNED CTA SECTION */}
-      <section className="relative bg-[#050505] pb-20">
+      <section className="relative bg-[#050505]">
         <div className="w-[96%] max-w-[1800px] mx-auto rounded-3xl overflow-hidden border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] bg-[#0a0c10]">
           
           {/* Top Image Banner */}
           <div className="relative w-full h-[250px] md:h-[300px] lg:h-[350px]">
             <div className="absolute inset-0 z-0">
-               <img 
-                src="/unique_hilux_cta.png" 
+               <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/shared/backgrounds/unique-hilux-cta.png" 
                 alt="Unique Off-Road Toyota Hilux" 
-                className="w-full h-full object-cover object-[70%_center] opacity-60"
+                className="object-cover object-[70%_center] opacity-60"
               />
               {/* Gradients to fade left text area and bottom for the info bar */}
               <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent"></div>
@@ -738,11 +768,7 @@ export default function TrucksPage() {
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href="/contact" className="w-full sm:w-auto">
-                    <Button size="lg" className="w-full bg-[#cc0000] hover:bg-[#aa0000] text-white font-bold h-14 px-8 text-sm uppercase rounded shadow-[0_0_20px_rgba(204,0,0,0.3)] transition-all">
-                      REQUEST A QUOTE
-                    </Button>
-                  </Link>
+                  <CtaQuoteButton text="REQUEST A QUOTE" initialInquiryType="truck" />
                   
                   {/* Whatsapp button with the distinct color bar from the design */}
                   <Link href="https://wa.me/5978520700" target="_blank" className="w-full sm:w-auto">
@@ -750,7 +776,7 @@ export default function TrucksPage() {
                       <span className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-green-400 to-green-600 shadow-[0_0_10px_rgba(34,197,94,0.5)]"></span>
                       <span className="absolute left-[3px] top-0 bottom-0 w-[2px] bg-red-600"></span>
                       <MessageCircle className="w-5 h-5 mr-3 text-white hidden group-hover:block transition-all" />
-                      SPEAK WITH A SPECIALIST
+                      WHATSAPP SUPPORT
                     </Button>
                   </Link>
                 </div>
@@ -785,7 +811,7 @@ export default function TrucksPage() {
 
             {/* Image Side */}
             <div className="w-full md:w-1/2 h-[300px] md:h-auto relative">
-              <img src={activeTruck.img} alt={activeTruck.name} className="w-full h-full object-cover" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={activeTruck.img} alt={activeTruck.name} className="object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a0c10] md:bg-gradient-to-r md:from-transparent md:to-[#0a0c10]"></div>
               <div className="absolute top-6 left-6 flex gap-2">
                 <span className="bg-red-600 text-white text-[10px] font-bold px-3 py-1.5 rounded-sm uppercase tracking-widest shadow-lg">
@@ -846,3 +872,4 @@ export default function TrucksPage() {
     </div>
   );
 }
+

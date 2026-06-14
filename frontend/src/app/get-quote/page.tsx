@@ -3,25 +3,50 @@
 import { useState } from "react";
 import { Send, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { submitLead } from "@/lib/submitLead";
 
 export default function GetQuotePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
+    
+    const formData = new FormData(e.currentTarget);
+    const inquiryType = formData.get("inquiryType") as string;
+    const name = formData.get("name") as string;
+    const company = formData.get("company") as string;
+    const email = formData.get("email") as string;
+    const phone = formData.get("phone") as string;
+    const destination = formData.get("destination") as string;
+    const requirements = formData.get("requirements") as string;
+
+    try {
+      await submitLead({
+        formType: "General Quote Request",
+        sourcePage: "Get Quote Page",
+        sourceSection: "Main Form",
+        clickedButton: "Send Request",
+        customerName: name,
+        email: email,
+        phone: phone,
+        companyName: company,
+        message: `Inquiry Type: ${inquiryType}\nDestination: ${destination}\n\nRequirements: ${requirements}`
+      });
       setSubmitted(true);
-    }, 1500);
+    } catch (error) {
+      console.error("Failed to submit quote:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div className="flex flex-col min-h-screen bg-[#050505]">
       {/* HEADER */}
-      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 border-b border-white/10 bg-gradient-to-b from-[#111111] to-[#050505]">
+      <section className="py-14 md:py-20 px-4 sm:px-6 lg:px-8 border-b border-white/10 bg-gradient-to-b from-[#111111] to-[#050505]">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-6 uppercase">
             Get A <span className="text-red-600">Quote</span>
@@ -94,29 +119,29 @@ export default function GetQuotePage() {
                   {/* Personal Info */}
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-gray-300">Full Name *</label>
-                    <input required type="text" className="w-full bg-[#050505] border border-white/10 rounded-md p-3 text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="John Doe" />
+                    <input name="name" required type="text" className="w-full bg-[#050505] border border-white/10 rounded-md p-3 text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="John Doe" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-gray-300">Company Name (Optional)</label>
-                    <input type="text" className="w-full bg-[#050505] border border-white/10 rounded-md p-3 text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="JP Trading LLC" />
+                    <input name="company" type="text" className="w-full bg-[#050505] border border-white/10 rounded-md p-3 text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="JP Trading LLC" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-gray-300">Email Address *</label>
-                    <input required type="email" className="w-full bg-[#050505] border border-white/10 rounded-md p-3 text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="john@example.com" />
+                    <input name="email" required type="email" className="w-full bg-[#050505] border border-white/10 rounded-md p-3 text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="john@example.com" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-gray-300">WhatsApp / Phone Number *</label>
-                    <input required type="tel" className="w-full bg-[#050505] border border-white/10 rounded-md p-3 text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="+597 8000000" />
+                    <input name="phone" required type="tel" className="w-full bg-[#050505] border border-white/10 rounded-md p-3 text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="+597 8000000" />
                   </div>
                   <div className="space-y-2 md:col-span-2">
                     <label className="text-sm font-bold text-gray-300">Destination Country / Port *</label>
-                    <input required type="text" className="w-full bg-[#050505] border border-white/10 rounded-md p-3 text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="Paramaribo, Suriname" />
+                    <input name="destination" required type="text" className="w-full bg-[#050505] border border-white/10 rounded-md p-3 text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="Paramaribo, Suriname" />
                   </div>
                 </div>
 
                 <div className="space-y-2 pt-2">
                   <label className="text-sm font-bold text-gray-300">Detailed Requirements *</label>
-                  <textarea required rows={5} className="w-full bg-[#050505] border border-white/10 rounded-md p-3 text-white focus:outline-none focus:border-red-500 transition-colors resize-none" placeholder="Please describe exactly what you are looking for (e.g., Toyota Hilux Revo 2021, White, Automatic, Full Lift Kit...)"></textarea>
+                  <textarea name="requirements" required rows={5} className="w-full bg-[#050505] border border-white/10 rounded-md p-3 text-white focus:outline-none focus:border-red-500 transition-colors resize-none" placeholder="Please describe exactly what you are looking for (e.g., Toyota Hilux Revo 2021, White, Automatic, Full Lift Kit...)"></textarea>
                 </div>
 
                 <div className="pt-4">

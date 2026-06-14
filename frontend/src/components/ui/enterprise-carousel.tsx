@@ -3,86 +3,96 @@
 import { useRef, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+import Link from "next/link";
+
 const CARDS = [
   {
     id: 1,
-    image: "/truck1.png",
+    image: "/images/trucks/cards/truck-1.png",
     badge: "ADVENTURE",
     badgeColor: "bg-emerald-600",
     title: "HILUX REVO ADVENTURE",
     subtitle: "2.8L Diesel • 4x4 • Automatic",
     price: "$42,800",
-    priceLabel: "STARTING FROM"
+    priceLabel: "STARTING FROM",
+    href: "/custom-builds?category=Adventure Builds"
   },
   {
     id: 2,
-    image: "/truck2.png",
+    image: "/images/trucks/cards/truck-2.png",
     badge: "EXPEDITION",
     badgeColor: "bg-teal-700",
     title: "HILUX TRAVO EXPEDITION",
     subtitle: "2.8L Diesel • 4x4 • Manual",
     price: "$48,500",
-    priceLabel: "STARTING FROM"
+    priceLabel: "STARTING FROM",
+    href: "/custom-builds?category=Expedition Builds"
   },
   {
     id: 3,
-    image: "/truck3.png",
+    image: "/images/trucks/cards/truck-3.png",
     badge: "OVERLAND",
     badgeColor: "bg-red-700",
     title: "HILUX VIGO OVERLAND",
     subtitle: "2.5L Diesel • 4x4 • Manual",
     price: "$36,900",
-    priceLabel: "STARTING FROM"
+    priceLabel: "STARTING FROM",
+    href: "/custom-builds?category=Overland Builds"
   },
   {
     id: 4,
-    image: "/truck4.png",
+    image: "/images/trucks/cards/truck-4.png",
     badge: "CLASSIC",
     badgeColor: "bg-emerald-800",
     title: "HILUX TIGER CLASSIC",
     subtitle: "2.4L Diesel • 4x2 • Manual",
     price: "$24,800",
-    priceLabel: "STARTING FROM"
+    priceLabel: "STARTING FROM",
+    href: "/custom-builds?category=Classic Builds"
   },
   {
     id: 5,
-    image: "/black-edition.png",
+    image: "/images/trucks/cards/black-edition.png",
     badge: "LUXURY",
     badgeColor: "bg-blue-600",
     title: "HILUX BLACK EDITION",
     subtitle: "Premium roadside coverage for luxury transportation.",
     price: "ENTERPRISE",
-    priceLabel: "CUSTOM PLAN"
+    priceLabel: "CUSTOM PLAN",
+    href: "/custom-builds?category=Security %26 Patrol Builds"
   },
   {
     id: 6,
-    image: "/desert-runner.png",
+    image: "/images/custom-builds/cards/desert-runner.png",
     badge: "EXTREME",
     badgeColor: "bg-amber-600",
     title: "HILUX DESERT RUNNER",
     subtitle: "Built for remote recovery & off-road operations.",
     price: "FLEET",
-    priceLabel: "CUSTOM PLAN"
+    priceLabel: "CUSTOM PLAN",
+    href: "/custom-builds?category=Extreme Builds"
   },
   {
     id: 7,
-    image: "/fleet-edition.png",
+    image: "/images/trucks/cards/fleet-edition.png",
     badge: "COMMERCIAL",
     badgeColor: "bg-emerald-600",
     title: "HILUX FLEET EDITION",
     subtitle: "Enterprise fleet continuity & dispatch coordination.",
     price: "COMMERCIAL",
-    priceLabel: "CUSTOM PLAN"
+    priceLabel: "CUSTOM PLAN",
+    href: "/custom-builds?category=Fleet Customization"
   },
   {
     id: 8,
-    image: "/nomad-edition.png",
+    image: "/images/trucks/cards/nomad-edition.png",
     badge: "CAMPER",
     badgeColor: "bg-purple-600",
     title: "HILUX NOMAD EDITION",
     subtitle: "Roadside continuity for RV operators & campers.",
     price: "NOMAD",
-    priceLabel: "CUSTOM PLAN"
+    priceLabel: "CUSTOM PLAN",
+    href: "/custom-builds?category=Overland Builds"
   }
 ];
 
@@ -159,7 +169,8 @@ export function EnterpriseCarousel() {
           <div key={setIdx} className="flex gap-6 shrink-0 pr-6">
             
             {CARDS.map((card) => (
-              <div 
+              <Link 
+                href={card.href}
                 key={card.id} 
                 className="w-[300px] h-[400px] md:w-[360px] md:h-[480px] rounded-xl overflow-hidden group/card border border-white/10 hover:border-red-500/50 transition-all duration-500 relative flex flex-col cursor-pointer shrink-0"
               >
@@ -199,7 +210,7 @@ export function EnterpriseCarousel() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
 
           </div>
@@ -208,3 +219,4 @@ export function EnterpriseCarousel() {
     </div>
   );
 }
+

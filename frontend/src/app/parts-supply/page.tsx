@@ -1,6 +1,7 @@
 "use client";
+import Image from "next/image";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   ArrowRight, Settings, Wrench, Package, ShieldCheck, Search, 
@@ -9,22 +10,24 @@ import {
   Award, HeadphonesIcon, MessageCircle
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { CtaQuoteButton } from "@/components/ui/cta-quote-button";
+import { submitLead } from "@/lib/submitLead";
 
 // --- DUMMY DATA ---
 
 const ECOSYSTEMS = [
-  { title: "OEM Genuine Parts", desc: "Factory original components.", img: "/parts-engine.png", count: "1,200+" },
-  { title: "Performance Upgrades", desc: "Engine and powertrain tuning.", img: "/wholesale_parts.png", count: "450+" },
-  { title: "Overland Equipment", desc: "Camping and survival gear.", img: "/parts-overland.png", count: "320+" },
-  { title: "Fleet Maintenance", desc: "Bulk service components.", img: "/truck3.png", count: "890+" },
-  { title: "Commercial Components", desc: "Heavy-duty chassis parts.", img: "/truck4.png", count: "540+" },
-  { title: "Recovery Equipment", desc: "Winches, straps, and boards.", img: "/build2.png", count: "150+" },
-  { title: "Lighting Systems", desc: "LED bars and tactical lights.", img: "/parts-electrical.png", count: "210+" },
-  { title: "Suspension & Lift Kits", desc: "Fox, King, and heavy-duty leafs.", img: "/parts-suspension.png", count: "380+" },
-  { title: "Electrical Components", desc: "Wiring, ECUs, and dual-batteries.", img: "/parts-electrical.png", count: "650+" },
-  { title: "Body & Exterior Parts", desc: "Bumpers, armor, and panels.", img: "/parts-body.png", count: "720+" },
-  { title: "Interior Components", desc: "Seats, trim, and electronics.", img: "/truck2.png", count: "410+" },
-  { title: "Rare Thailand Imports", desc: "Exclusive JDM/THDM parts.", img: "/cinematic_hilux_hero.png", count: "180+" },
+  { title: "OEM Genuine Parts", desc: "Factory original components.", img: "/images/parts-supply/categories/parts-engine.png", count: "1,200+" },
+  { title: "Performance Upgrades", desc: "Engine and powertrain tuning.", img: "/images/wholesale-retail/cards/wholesale-parts.png", count: "450+" },
+  { title: "Overland Equipment", desc: "Camping and survival gear.", img: "/images/parts-supply/categories/parts-overland.png", count: "320+" },
+  { title: "Fleet Maintenance", desc: "Bulk service components.", img: "/images/trucks/cards/truck-3.png", count: "890+" },
+  { title: "Commercial Components", desc: "Heavy-duty chassis parts.", img: "/images/trucks/cards/truck-4.png", count: "540+" },
+  { title: "Recovery Equipment", desc: "Winches, straps, and boards.", img: "/images/custom-builds/cards/build-2.png", count: "150+" },
+  { title: "Lighting Systems", desc: "LED bars and tactical lights.", img: "/images/parts-supply/categories/parts-electrical.png", count: "210+" },
+  { title: "Suspension & Lift Kits", desc: "Fox, King, and heavy-duty leafs.", img: "/images/parts-supply/categories/parts-suspension.png", count: "380+" },
+  { title: "Electrical Components", desc: "Wiring, ECUs, and dual-batteries.", img: "/images/parts-supply/categories/parts-electrical.png", count: "650+" },
+  { title: "Body & Exterior Parts", desc: "Bumpers, armor, and panels.", img: "/images/parts-supply/categories/parts-body.png", count: "720+" },
+  { title: "Interior Components", desc: "Seats, trim, and electronics.", img: "/images/trucks/cards/truck-2.png", count: "410+" },
+  { title: "Rare Thailand Imports", desc: "Exclusive JDM/THDM parts.", img: "/images/home/hero/cinematic-hilux-hero.png", count: "180+" },
 ];
 
 const SIDEBAR_CATEGORIES = [
@@ -55,33 +58,37 @@ const SIDEBAR_CATEGORIES = [
   {
     name: "Recovery Equipment",
     subcategories: ["Winches", "Recovery Straps", "Traction Boards", "Hi-Lift Jacks"]
+  },
+  {
+    name: "Body & Exterior Parts",
+    subcategories: ["Bumpers", "Armor", "Panels"]
   }
 ];
 
 const DUMMY_PARTS = [
-  { name: "Toyota Hilux LED Fog Lamps", category: "Lighting Systems", subcategory: "Fog Lamps", price: "$145.00", img: "/parts-electrical.png", popular: true },
-  { name: "TRD Pro Style Grille DRL", category: "Lighting Systems", subcategory: "DRLs", price: "$120.00", img: "/parts-electrical.png", popular: true },
-  { name: "Fox 2.0 Performance Series IFP", category: "Suspension & Lift Kits", subcategory: "Shocks & Struts", price: "$495.00", img: "/parts-suspension.png", popular: true },
-  { name: "Old Man Emu 2-Inch Lift Kit", category: "Suspension & Lift Kits", subcategory: "Lift Kits", price: "$1,850.00", img: "/parts-suspension.png", popular: false },
-  { name: "Genuine OEM Oil Filter 90915-YZZD1", category: "OEM Genuine Parts", subcategory: "Filters", price: "$12.00", img: "/parts-engine.png", popular: true },
-  { name: "TRD Cat-Back Exhaust System", category: "Performance Upgrades", subcategory: "Exhaust Systems", price: "$850.00", img: "/wholesale_parts.png", popular: true },
-  { name: "ARB Touring Awning", category: "Overland Equipment", subcategory: "Awnings", price: "$350.00", img: "/parts-overland.png", popular: false },
-  { name: "Warn VR EVO 10-S Winch", category: "Recovery Equipment", subcategory: "Winches", price: "$980.00", img: "/build2.png", popular: true },
-  { name: "Projecta Dual Battery System", category: "Electrical Components", subcategory: "Wiring", price: "$299.00", img: "/parts-electrical.png", popular: true },
-  { name: "Ironman 4x4 Commercial Bull Bar", category: "Body & Exterior Parts", subcategory: "Bumpers", price: "$1,200.00", img: "/parts-body.png", popular: true },
-  { name: "Rigid Industries 40\" Light Bar", category: "Lighting Systems", subcategory: "Light Bars", price: "$850.00", img: "/parts-electrical.png", popular: false },
-  { name: "Genuine Toyota Brake Pads", category: "Fleet Maintenance", subcategory: "Brake Pads", price: "$85.00", img: "/truck3.png", popular: true },
+  { name: "Toyota Hilux LED Fog Lamps", category: "Lighting Systems", subcategory: "Fog Lamps", price: "$145.00", img: "/images/parts-supply/categories/parts-electrical.png", popular: true },
+  { name: "TRD Pro Style Grille DRL", category: "Lighting Systems", subcategory: "DRLs", price: "$120.00", img: "/images/parts-supply/categories/parts-electrical.png", popular: true },
+  { name: "Fox 2.0 Performance Series IFP", category: "Suspension & Lift Kits", subcategory: "Shocks & Struts", price: "$495.00", img: "/images/parts-supply/categories/parts-suspension.png", popular: true },
+  { name: "Old Man Emu 2-Inch Lift Kit", category: "Suspension & Lift Kits", subcategory: "Lift Kits", price: "$1,850.00", img: "/images/parts-supply/categories/parts-suspension.png", popular: false },
+  { name: "Genuine OEM Oil Filter 90915-YZZD1", category: "OEM Genuine Parts", subcategory: "Filters", price: "$12.00", img: "/images/parts-supply/categories/parts-engine.png", popular: true },
+  { name: "TRD Cat-Back Exhaust System", category: "Performance Upgrades", subcategory: "Exhaust Systems", price: "$850.00", img: "/images/wholesale-retail/cards/wholesale-parts.png", popular: true },
+  { name: "ARB Touring Awning", category: "Overland Equipment", subcategory: "Awnings", price: "$350.00", img: "/images/parts-supply/categories/parts-overland.png", popular: false },
+  { name: "Warn VR EVO 10-S Winch", category: "Recovery Equipment", subcategory: "Winches", price: "$980.00", img: "/images/custom-builds/cards/build-2.png", popular: true },
+  { name: "Projecta Dual Battery System", category: "Electrical Components", subcategory: "Wiring", price: "$299.00", img: "/images/parts-supply/categories/parts-electrical.png", popular: true },
+  { name: "Ironman 4x4 Commercial Bull Bar", category: "Body & Exterior Parts", subcategory: "Bumpers", price: "$1,200.00", img: "/images/parts-supply/categories/parts-body.png", popular: true },
+  { name: "Rigid Industries 40\" Light Bar", category: "Lighting Systems", subcategory: "Light Bars", price: "$850.00", img: "/images/parts-supply/categories/parts-electrical.png", popular: false },
+  { name: "Genuine Toyota Brake Pads", category: "Fleet Maintenance", subcategory: "Brake Pads", price: "$85.00", img: "/images/trucks/cards/truck-3.png", popular: true },
 ];
 
 const COLLECTIONS = [
-  { name: "Engine & Powertrain", desc: "Complete engines, turbos, and cooling.", img: "/parts-engine.png" },
-  { name: "Transmission Systems", desc: "Manual, auto, and heavy-duty clutches.", img: "/parts-performance.png" },
-  { name: "Suspension Packages", desc: "Lift kits and load-bearing upgrades.", img: "/parts-suspension.png" },
-  { name: "Off-Road Accessories", desc: "Bull bars, snorkels, and armor.", img: "/parts-body.png" },
-  { name: "Roof Rack Systems", desc: "Cargo and tent mounting solutions.", img: "/parts-overland.png" },
-  { name: "Camping Equipment", desc: "Awnings, tents, and storage.", img: "/desert-runner.png" },
-  { name: "Commercial Accessories", desc: "Canopies and toolboxes.", img: "/truck4.png" },
-  { name: "Performance Packages", desc: "ECU remaps and exhaust systems.", img: "/wholesale_parts.png" },
+  { name: "Engine & Powertrain", desc: "Complete engines, turbos, and cooling.", img: "/images/parts-supply/categories/parts-engine.png" },
+  { name: "Transmission Systems", desc: "Manual, auto, and heavy-duty clutches.", img: "/images/parts-supply/categories/parts-performance.png" },
+  { name: "Suspension Packages", desc: "Lift kits and load-bearing upgrades.", img: "/images/parts-supply/categories/parts-suspension.png" },
+  { name: "Off-Road Accessories", desc: "Bull bars, snorkels, and armor.", img: "/images/parts-supply/categories/parts-body.png" },
+  { name: "Roof Rack Systems", desc: "Cargo and tent mounting solutions.", img: "/images/parts-supply/categories/parts-overland.png" },
+  { name: "Camping Equipment", desc: "Awnings, tents, and storage.", img: "/images/custom-builds/cards/desert-runner.png" },
+  { name: "Commercial Accessories", desc: "Canopies and toolboxes.", img: "/images/trucks/cards/truck-4.png" },
+  { name: "Performance Packages", desc: "ECU remaps and exhaust systems.", img: "/images/wholesale-retail/cards/wholesale-parts.png" },
 ];
 
 const QA_CARDS = [
@@ -108,8 +115,14 @@ const WHOLESALE_BENEFITS = [
 ];
 
 const PROCESS_STEPS = [
-  "Search Parts", "Request Quote", "Supplier Verification", "Thailand Sourcing", 
-  "Inspection", "Packaging", "Shipping", "Delivery"
+  { title: "Search Parts", icon: <Search />, desc: "Find genuine and aftermarket parts in our extensive catalog." },
+  { title: "Request Quote", icon: <FileText />, desc: "Get competitive pricing and shipping estimates instantly." },
+  { title: "Supplier Verification", icon: <ShieldCheck />, desc: "We verify authenticity and quality with trusted Thai suppliers." },
+  { title: "Thailand Sourcing", icon: <MapPin />, desc: "Directly sourced from factories and wholesalers in Thailand." },
+  { title: "Inspection", icon: <CheckCircle2 />, desc: "Rigorous quality inspection before packaging." },
+  { title: "Packaging", icon: <Package />, desc: "Secure, export-grade packaging to prevent transit damage." },
+  { title: "Shipping", icon: <Anchor />, desc: "Fast and insured ocean or air freight global logistics." },
+  { title: "Delivery", icon: <Truck />, desc: "Delivered straight to your workshop or door, ready to install." }
 ];
 
 const INVENTORY_CATEGORIES = [
@@ -132,6 +145,16 @@ export default function PartsSupplyPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPart, setSelectedPart] = useState<any>(null);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const category = params.get("category");
+      if (category) {
+        setActiveCategory(category);
+      }
+    }
+  }, []);
+
   const [isQuoteFormOpen, setIsQuoteFormOpen] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', company: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -139,27 +162,33 @@ export default function PartsSupplyPage() {
 
   const handleQuoteSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.name || !formData.email || !formData.phone) return alert("Please fill required fields (Name, Email, Phone)");
     setIsSubmitting(true);
     try {
-      const response = await fetch('http://localhost:5000/api/quotes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...formData,
-          partName: selectedPart?.name,
-          partCategory: selectedPart?.category,
-        })
+      await submitLead({
+        formType: "Parts Request",
+        sourcePage: "Parts & Supply",
+        sourceSection: "Part Details",
+        selectedPart: selectedPart?.name,
+        clickedButton: "Submit Request",
+        customerName: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        companyName: formData.company,
+        message: formData.message,
+        requestDetails: {
+          partCategory: selectedPart?.category
+        }
       });
-      if (response.ok) {
-        setSubmitSuccess(true);
-        setTimeout(() => {
-          setIsQuoteFormOpen(false);
-          setSubmitSuccess(false);
-          setSelectedPart(null);
-          setFormData({ name: '', email: '', phone: '', company: '', message: '' });
-        }, 2000);
-      }
-    } catch (error) {
+      setSubmitSuccess(true);
+      setTimeout(() => {
+        setIsQuoteFormOpen(false);
+        setSubmitSuccess(false);
+        setSelectedPart(null);
+        setFormData({ name: '', email: '', phone: '', company: '', message: '' });
+      }, 3000);
+    } catch (error: any) {
+      alert("Error: " + error.message);
       console.error('Error submitting quote:', error);
     } finally {
       setIsSubmitting(false);
@@ -184,15 +213,14 @@ export default function PartsSupplyPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white selection:bg-red-600 selection:text-white pb-20">
+    <div className="min-h-[80vh] bg-[#050505] text-white selection:bg-red-600 selection:text-white pb-20">
       
       {/* 1. HERO SECTION */}
       <section className="relative pt-24 pb-8 w-full flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img 
-            src="/wholesale_parts.png" 
+          <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/wholesale-retail/cards/wholesale-parts.png" 
             alt="Premium Toyota Parts Warehouse" 
-            className="w-full h-full object-cover opacity-50 scale-105 animate-[slowZoom_20s_ease-in-out_infinite_alternate]"
+            className="object-cover opacity-50 scale-105 animate-[slowZoom_20s_ease-in-out_infinite_alternate]"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-black/40 to-[#050505]"></div>
         </div>
@@ -322,7 +350,7 @@ export default function PartsSupplyPage() {
                       }}
                     >
                       <div className="h-1/2 relative overflow-hidden bg-black shrink-0">
-                        <img src={part.img} alt={part.name} className="w-full h-full object-cover group-hover:scale-110 group-hover:opacity-100 opacity-80 transition-all duration-700" />
+                        <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={part.img} alt={part.name} className="object-cover group-hover:scale-110 group-hover:opacity-100 opacity-80 transition-all duration-700" />
                         <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent opacity-100"></div>
                         {part.popular && !activeCategory && !activeSubcategory && (
                            <div className="absolute top-4 left-4">
@@ -360,7 +388,7 @@ export default function PartsSupplyPage() {
       </section>
 
       {/* 3. FEATURED COLLECTIONS */}
-      <section className="py-32 bg-[#0a0a0a] border-y border-white/5">
+      <section className="py-14 md:py-20 bg-[#0a0a0a] border-y border-white/5">
         <div className="max-w-[1800px] mx-auto px-6 lg:px-16">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight text-white">
@@ -373,7 +401,7 @@ export default function PartsSupplyPage() {
             {COLLECTIONS.map((col, idx) => (
               <div key={idx} className="w-[300px] md:w-[350px] shrink-0 snap-center bg-[#111] rounded-2xl overflow-hidden border border-white/5 group hover:border-white/20 transition-colors">
                 <div className="h-[200px] overflow-hidden relative">
-                  <img src={col.img} alt={col.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100" />
+                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={col.img} alt={col.name} className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100" />
                 </div>
                 <div className="p-6">
                   <h3 className="text-xl font-black uppercase tracking-wide mb-3">{col.name}</h3>
@@ -395,7 +423,7 @@ export default function PartsSupplyPage() {
       </section>
 
       {/* 4. SPECIAL PARTS LOCATOR */}
-      <section className="py-32 bg-[#050505] relative overflow-hidden">
+      <section className="py-14 md:py-20 bg-[#050505] relative overflow-hidden">
         <div className="absolute top-1/2 right-0 w-[800px] h-[800px] bg-red-900/10 blur-[120px] rounded-full pointer-events-none -translate-y-1/2"></div>
         <div className="max-w-[1400px] mx-auto px-6 lg:px-16 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -511,15 +539,16 @@ export default function PartsSupplyPage() {
       </section>
 
       {/* 8. HOW IT WORKS TIMELINE */}
-      <section className="pt-32 pb-16 bg-[#050505]">
-        <div className="max-w-[1800px] mx-auto px-6 lg:px-16 overflow-x-auto hide-scrollbar pb-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-black uppercase tracking-tight text-white">
-              Logistics <span className="text-red-600">Workflow</span>
-            </h2>
-          </div>
-          <div className="flex items-start min-w-[1000px] relative">
-            <div className="absolute top-10 left-0 right-0 h-[2px] bg-red-600/10 rounded-full z-0 overflow-hidden">
+      <section className="pt-16 pb-8 lg:pb-12 bg-[#050505] relative border-t border-white/5">
+        <div className="max-w-[1800px] mx-auto px-6 lg:px-16 text-center">
+          <h4 className="text-red-600 font-bold text-xs md:text-sm mb-3 uppercase tracking-widest">GLOBAL SUPPLY CHAIN</h4>
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white mb-20 uppercase tracking-tight">
+            LOGISTICS WORKFLOW
+          </h2>
+
+          <div className="relative w-full overflow-x-auto pb-8 pt-4 hide-scrollbar [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            {/* The Connecting Line */}
+            <div className="absolute top-[56px] left-[7%] w-[86%] h-[2px] bg-red-600/10 z-0 hidden lg:block overflow-hidden rounded-full">
               <div 
                 className="absolute top-0 bottom-0 w-40 bg-gradient-to-r from-transparent via-red-500 to-transparent"
                 style={{
@@ -534,30 +563,38 @@ export default function PartsSupplyPage() {
                 }
               `}</style>
             </div>
-            {PROCESS_STEPS.map((step, idx) => (
-              <div key={idx} className="flex-1 flex flex-col items-center relative z-10">
-                <div className="w-20 h-20 shrink-0 rounded-full bg-[#050505] border-2 border-red-600 flex items-center justify-center text-white font-bold text-xl mb-4 shadow-[0_0_15px_rgba(217,4,41,0.5)] hover:scale-110 transition-transform duration-300">
-                  {idx + 1}
+            
+            <div className="flex flex-nowrap lg:grid lg:grid-cols-8 gap-6 min-w-max lg:min-w-0 relative z-10">
+              
+              {PROCESS_STEPS.map((step, idx) => (
+                <div key={idx} className="flex flex-col items-center w-[160px] lg:w-auto shrink-0 relative group">
+                  <div className="w-20 h-20 rounded-full border-2 border-red-600 bg-[#050505] flex items-center justify-center mb-6 relative z-10 group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] transition-all duration-300">
+                    <div className="text-white w-8 h-8 flex items-center justify-center [&>svg]:w-full [&>svg]:h-full">
+                      {step.icon}
+                    </div>
+                  </div>
+                  <div className="text-red-500 font-bold text-sm mb-1 tracking-wider">0{idx + 1}</div>
+                  <h4 className="text-white font-bold text-[13px] md:text-sm uppercase mb-3 text-center">{step.title}</h4>
+                  <p className="text-gray-400 text-xs text-center leading-relaxed px-2">{step.desc}</p>
                 </div>
-                <span className="text-[12px] md:text-[13px] font-bold uppercase tracking-widest text-gray-400 text-center px-2">{step}</span>
-              </div>
-            ))}
+              ))}
+
+            </div>
           </div>
         </div>
       </section>
 
 
       {/* REDESIGNED CTA SECTION */}
-      <section className="pt-16 pb-16 relative bg-[#050505] overflow-hidden">
+      <section className="relative bg-[#050505] overflow-hidden">
         <div className="w-[96%] max-w-[1800px] mx-auto rounded-3xl overflow-hidden border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] bg-[#0a0c10]">
           
           {/* Top Image Banner */}
           <div className="relative w-full h-[250px] md:h-[300px] lg:h-[350px]">
             <div className="absolute inset-0 z-0">
-               <img 
-                src="/cta-background.png" 
+               <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/shared/backgrounds/cta-background.png" 
                 alt="Toyota Hilux Ready to Source" 
-                className="w-full h-full object-cover object-[70%_center] opacity-60"
+                className="object-cover object-[70%_center] opacity-60"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent"></div>
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a0c10] via-transparent to-transparent"></div>
@@ -573,18 +610,14 @@ export default function PartsSupplyPage() {
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href="/contact" className="w-full sm:w-auto">
-                    <Button size="lg" className="w-full bg-[#cc0000] hover:bg-[#aa0000] text-white font-bold h-14 px-8 text-sm uppercase rounded shadow-[0_0_20px_rgba(204,0,0,0.3)] transition-all">
-                      REQUEST PARTS QUOTE
-                    </Button>
-                  </Link>
+                  <CtaQuoteButton text="REQUEST PARTS QUOTE" initialInquiryType="parts" />
                   
                   <Link href="https://wa.me/5978520700" target="_blank" className="w-full sm:w-auto">
                     <Button size="lg" variant="outline" className="w-full relative overflow-hidden bg-black/40 border-white/20 hover:bg-white/10 text-white font-bold h-14 px-8 text-sm uppercase rounded backdrop-blur-sm group transition-all">
                       <span className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-green-400 to-green-600 shadow-[0_0_10px_rgba(34,197,94,0.5)]"></span>
                       <span className="absolute left-[3px] top-0 bottom-0 w-[2px] bg-red-600"></span>
                       <MessageCircle className="w-5 h-5 mr-3 text-white hidden group-hover:block transition-all" />
-                      CONTACT PARTS TEAM
+                      WHATSAPP SUPPORT
                     </Button>
                   </Link>
                 </div>
@@ -592,46 +625,7 @@ export default function PartsSupplyPage() {
             </div>
           </div>
 
-          {/* Bottom Dark Features Bar */}
-          <div className="bg-[#0a0c10] border-t border-white/5 relative z-20">
-            <div className="px-6 lg:px-16 py-6 lg:py-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-4 items-center">
-                
-                <div className="flex items-center gap-3">
-                  <ShieldCheck className="w-10 h-10 text-[#ff2a2a] drop-shadow-[0_0_10px_rgba(255,42,42,0.6)] shrink-0" strokeWidth={2} />
-                  <div>
-                    <h4 className="text-white font-bold text-xs uppercase tracking-wide mb-1">SECURE PAYMENTS</h4>
-                    <p className="text-gray-300 text-[11px] leading-relaxed">Your payments are safe<br/>and protected.</p>
-                  </div>
-                </div>
 
-                <div className="flex items-center gap-3">
-                  <Truck className="w-10 h-10 text-[#ff2a2a] drop-shadow-[0_0_10px_rgba(255,42,42,0.6)] shrink-0" strokeWidth={2} />
-                  <div>
-                    <h4 className="text-white font-bold text-xs uppercase tracking-wide mb-1">SAFE SHIPPING</h4>
-                    <p className="text-gray-300 text-[11px] leading-relaxed">Global logistics with<br/>full tracking.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <Award className="w-10 h-10 text-[#ff2a2a] drop-shadow-[0_0_10px_rgba(255,42,42,0.6)] shrink-0" strokeWidth={2} />
-                  <div>
-                    <h4 className="text-white font-bold text-xs uppercase tracking-wide mb-1">QUALITY GUARANTEE</h4>
-                    <p className="text-gray-300 text-[11px] leading-relaxed">100% inspected vehicles<br/>& genuine parts.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <HeadphonesIcon className="w-10 h-10 text-[#ff2a2a] drop-shadow-[0_0_10px_rgba(255,42,42,0.6)] shrink-0" strokeWidth={2} />
-                  <div>
-                    <h4 className="text-white font-bold text-xs uppercase tracking-wide mb-1">DEDICATED SUPPORT</h4>
-                    <p className="text-gray-300 text-[11px] leading-relaxed">Our team is always<br/>ready to assist.</p>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -656,10 +650,9 @@ export default function PartsSupplyPage() {
 
               {/* Image Side (Cinematic slow pan) */}
               <div className="w-full md:w-1/2 h-64 md:h-auto relative overflow-hidden bg-black">
-                <img 
-                  src={selectedPart.img} 
+                <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={selectedPart.img} 
                   alt={selectedPart.name} 
-                  className="w-full h-full object-cover opacity-80"
+                  className="object-cover opacity-80"
                   style={{ animation: 'slowPan 20s linear infinite alternate' }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent md:bg-gradient-to-r"></div>
@@ -754,3 +747,4 @@ export default function PartsSupplyPage() {
     </div>
   );
 }
+

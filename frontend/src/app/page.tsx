@@ -1,8 +1,17 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, Settings, Globe, Truck, CheckCircle2, ChevronRight, Package, Wrench, Search, Star, HeartHandshake, ClipboardCheck, FileText, Ship, Phone, Mail, MessageCircle, HeadphonesIcon, Award, User, Shield, Mountain, Map, Briefcase, Network, Tent, Compass, Navigation } from "lucide-react";
+import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
-import { EnterpriseCarousel } from "@/components/ui/enterprise-carousel";
-import { WhatWeOfferCarousel } from "@/components/ui/what-we-offer-carousel";
+import { HeroQuoteButton } from "@/components/ui/hero-quote-button";
+import { CtaQuoteButton } from "@/components/ui/cta-quote-button";
+
+const EnterpriseCarousel = dynamic(() => import("@/components/ui/enterprise-carousel").then(mod => mod.EnterpriseCarousel), {
+  ssr: true,
+});
+const WhatWeOfferCarousel = dynamic(() => import("@/components/ui/what-we-offer-carousel").then(mod => mod.WhatWeOfferCarousel), {
+  ssr: true,
+});
 
 export default function Home() {
   return (
@@ -12,7 +21,7 @@ export default function Home() {
         {/* Background Image & Overlays */}
         <div className="absolute inset-0 z-0 bg-black">
           <video 
-            src="/custom_hero_bg_vid.mp4" 
+            src="/images/custom-builds/hero/custom-hero-bg.mp4" 
             autoPlay 
             loop 
             muted 
@@ -43,12 +52,12 @@ export default function Home() {
                 THAILAND TO SURINAME & BEYOND
               </h3>
               
-              <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-black leading-[0.95] mb-8 uppercase tracking-tighter drop-shadow-2xl">
-                <span className="animate-shine-white text-white block mb-2 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">YOUR JOURNEY.</span>
-                <span className="animate-shine-red text-red-600 block drop-shadow-[0_0_40px_rgba(217,4,41,0.4)]">OUR COMMITMENT.</span>
+              <h1 className="text-[2.2rem] sm:text-5xl md:text-6xl lg:text-5xl xl:text-[5.5rem] font-black leading-[0.95] mb-8 uppercase tracking-tighter drop-shadow-2xl">
+                <span className="animate-shine-white text-white block mb-2 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)] whitespace-nowrap">YOUR JOURNEY.</span>
+                <span className="animate-shine-red text-red-600 block drop-shadow-[0_0_40px_rgba(217,4,41,0.4)] whitespace-nowrap">OUR COMMITMENT.</span>
               </h1>
               
-              <div className="text-xl md:text-2xl text-gray-300 mb-12 max-w-[700px] leading-relaxed font-medium drop-shadow-md">
+              <div className="text-base sm:text-xl md:text-2xl text-gray-300 mb-12 max-w-[700px] leading-relaxed font-medium drop-shadow-md">
                 <p>We import, customize, and supply Toyota Hilux trucks and genuine parts from Thailand to Suriname and international markets.</p>
                 <p className="text-white font-bold tracking-wide mt-1">Built for adventure. Backed by trust. Delivered with care.</p>
               </div>
@@ -59,11 +68,9 @@ export default function Home() {
                     IMPORT A TRUCK
                   </Button>
                 </Link>
-                <Link href="/get-quote">
-                  <Button size="lg" variant="outline" className="w-full border-white/20 bg-black/30 backdrop-blur-md hover:bg-white/10 text-white font-bold h-14 px-8 text-sm transition-all duration-300 uppercase tracking-wide rounded shadow-[0_0_20px_rgba(0,0,0,0.5)]">
-                    REQUEST PARTS QUOTE
-                  </Button>
-                </Link>
+                <div>
+                  <HeroQuoteButton />
+                </div>
               </div>
 
               {/* Floating Trust Badges Box */}
@@ -107,13 +114,12 @@ export default function Home() {
         </div>
 
         {/* BOTTOM PROMISE BAR (INSIDE HERO) */}
-        <div className="relative z-20 w-[96%] max-w-[1800px] mx-auto bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl py-4 mt-auto mb-28 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+        <div className="relative z-20 w-[96%] max-w-[1800px] mx-auto bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl py-4 mt-auto mb-24 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
           <div className="px-6 lg:px-10">
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 items-center">
               
               <div className="xl:col-span-1">
-                <h4 className="text-red-600 font-bold text-xs mb-1 uppercase">OUR PROMISE</h4>
-                <h2 className="text-xl md:text-2xl font-extrabold text-white mb-2 uppercase leading-tight">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-extrabold text-white mb-2 uppercase leading-tight">
                   BUILT ON TRUST. <br className="hidden xl:block" /> DRIVEN BY QUALITY.
                 </h2>
                 <p className="text-gray-400 text-sm md:text-base mb-2 leading-relaxed max-w-xl">
@@ -127,32 +133,32 @@ export default function Home() {
               <div className="xl:col-span-2">
                 <div className="bg-black/50 border border-white/10 rounded-xl py-3 px-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-y-3 gap-x-2 text-center relative overflow-hidden">
                   <div className="flex flex-col justify-center relative">
-                    <span className="text-white font-bold text-2xl md:text-3xl">15+</span>
+                    <span className="text-white font-bold text-xl sm:text-2xl md:text-3xl">15+</span>
                     <span className="text-gray-500 text-[9px] uppercase font-bold mt-1 tracking-wider">YEARS EXPERIENCE</span>
                     <div className="absolute right-0 top-1/2 -translate-y-1/2 w-px h-8 bg-white/10 hidden md:block"></div>
                   </div>
                   <div className="flex flex-col justify-center relative">
-                    <span className="text-white font-bold text-2xl md:text-3xl">2,500+</span>
+                    <span className="text-white font-bold text-xl sm:text-2xl md:text-3xl">2,500+</span>
                     <span className="text-gray-500 text-[9px] uppercase font-bold mt-1 tracking-wider">VEHICLES IMPORTED</span>
                     <div className="absolute right-0 top-1/2 -translate-y-1/2 w-px h-8 bg-white/10 hidden lg:block"></div>
                   </div>
                   <div className="flex flex-col justify-center relative">
-                    <span className="text-white font-bold text-2xl md:text-3xl">250K+</span>
+                    <span className="text-white font-bold text-xl sm:text-2xl md:text-3xl">250K+</span>
                     <span className="text-gray-500 text-[9px] uppercase font-bold mt-1 tracking-wider">PARTS DELIVERED</span>
                     <div className="absolute right-0 top-1/2 -translate-y-1/2 w-px h-8 bg-white/10 hidden md:block"></div>
                   </div>
                   <div className="flex flex-col justify-center relative">
-                    <span className="text-white font-bold text-2xl md:text-3xl">500+</span>
+                    <span className="text-white font-bold text-xl sm:text-2xl md:text-3xl">500+</span>
                     <span className="text-gray-500 text-[9px] uppercase font-bold mt-1 tracking-wider">BUSINESS PARTNERS</span>
                     <div className="absolute right-0 top-1/2 -translate-y-1/2 w-px h-8 bg-white/10 hidden lg:block"></div>
                   </div>
                   <div className="flex flex-col justify-center relative">
-                    <span className="text-white font-bold text-2xl md:text-3xl">35+</span>
+                    <span className="text-white font-bold text-xl sm:text-2xl md:text-3xl">35+</span>
                     <span className="text-gray-500 text-[9px] uppercase font-bold mt-1 tracking-wider">COUNTRIES SERVED</span>
                     <div className="absolute right-0 top-1/2 -translate-y-1/2 w-px h-8 bg-white/10 hidden md:block"></div>
                   </div>
                   <div className="flex flex-col justify-center">
-                    <span className="text-white font-bold text-2xl md:text-3xl">98%</span>
+                    <span className="text-white font-bold text-xl sm:text-2xl md:text-3xl">98%</span>
                     <span className="text-gray-500 text-[9px] uppercase font-bold mt-1 tracking-wider">CUSTOMER SATISFACTION</span>
                   </div>
                 </div>
@@ -192,7 +198,7 @@ export default function Home() {
                 {/* Image */}
                 <div className="h-48 overflow-hidden relative shrink-0 z-10">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                  <img src="https://images.unsplash.com/photo-1559416523-140ddc3d238c?q=80&w=2069&auto=format&fit=crop" alt="Truck Imports" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://images.unsplash.com/photo-1559416523-140ddc3d238c?q=80&w=2069&auto=format&fit=crop" alt="Truck Imports" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
                 </div>
                 {/* Glassmorphism Text Below */}
                 <div className="p-6 flex flex-col flex-1 bg-white/5 backdrop-blur-md z-20">
@@ -217,7 +223,7 @@ export default function Home() {
                 </div>
                 <div className="h-48 overflow-hidden relative shrink-0 z-10">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                  <img src="/desert-runner.png" alt="Custom Builds" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/custom-builds/cards/desert-runner.png" alt="Custom Builds" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
                 </div>
                 <div className="p-6 flex flex-col flex-1 bg-white/5 backdrop-blur-md z-20">
                   <p className="text-gray-300 font-serif text-sm leading-relaxed mb-6">
@@ -241,7 +247,7 @@ export default function Home() {
                 </div>
                 <div className="h-48 overflow-hidden relative shrink-0 z-10">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                  <img src="/premium_wholesale_parts.png" alt="Parts Supply" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/wholesale-retail/hero/premium-wholesale-parts.png" alt="Parts Supply" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
                 </div>
                 <div className="p-6 flex flex-col flex-1 bg-white/5 backdrop-blur-md z-20">
                   <p className="text-gray-300 font-serif text-sm leading-relaxed mb-6">
@@ -268,7 +274,7 @@ export default function Home() {
                 </div>
                 <div className="h-48 overflow-hidden relative shrink-0 z-10">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                  <img src="/1.png" alt="Parts Locator" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/home/sections/parts-locator.png" alt="Parts Locator" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
                 </div>
                 <div className="p-6 flex flex-col flex-1 bg-white/5 backdrop-blur-md z-20">
                   <p className="text-gray-300 font-serif text-sm leading-relaxed mb-6">
@@ -292,7 +298,7 @@ export default function Home() {
                 </div>
                 <div className="h-48 overflow-hidden relative shrink-0 z-10">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                  <img src="/wholesale_parts.png" alt="Wholesale Orders" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/wholesale-retail/cards/wholesale-parts.png" alt="Wholesale Orders" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
                 </div>
                 <div className="p-6 flex flex-col flex-1 bg-white/5 backdrop-blur-md z-20">
                   <p className="text-gray-300 font-serif text-sm leading-relaxed mb-6">
@@ -316,7 +322,7 @@ export default function Home() {
                 </div>
                 <div className="h-48 overflow-hidden relative shrink-0 z-10">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                  <img src="/safe_shipping.png" alt="Export & Logistics" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/shared/icons/safe-shipping.png" alt="Export & Logistics" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
                 </div>
                 <div className="p-6 flex flex-col flex-1 bg-white/5 backdrop-blur-md z-20">
                   <p className="text-gray-300 font-serif text-sm leading-relaxed mb-6">
@@ -361,7 +367,6 @@ export default function Home() {
         <div className="max-w-[1800px] mx-auto px-6 lg:px-16 relative z-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
             <div>
-              <h4 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">CUSTOM BUILDS</h4>
               <h2 className="text-2xl md:text-3xl font-extrabold text-white uppercase tracking-tight">BUILT BEYOND BOUNDARIES</h2>
             </div>
             <Link href="/custom-builds" className="text-red-600 hover:text-red-500 font-bold text-xs uppercase flex items-center transition-colors">
@@ -373,12 +378,12 @@ export default function Home() {
             
             {/* Build 1 */}
             <div className="relative h-72 md:h-80 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors bg-[#111]">
-              <img src="/build1.png" alt="Expedition Builds" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/custom-builds/cards/build-1.png" alt="Expedition Builds" className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-transparent to-black/80"></div>
               <div className="absolute inset-0 p-6 flex flex-col">
                 <h3 className="text-white font-bold text-lg uppercase mb-2">EXPEDITION BUILDS</h3>
                 <p className="text-gray-300 text-xs leading-relaxed max-w-[200px]">Engineered for long journeys and extreme conditions.</p>
-                <Link href="/builds/expedition" className="mt-auto text-red-600 font-bold text-xs uppercase flex items-center group-hover:translate-x-2 transition-transform">
+                <Link href="/custom-builds?category=Expedition Builds" className="mt-auto text-red-600 font-bold text-xs uppercase flex items-center group-hover:translate-x-2 transition-transform">
                   EXPLORE <ArrowRight className="ml-2 h-3 w-3" />
                 </Link>
               </div>
@@ -386,12 +391,12 @@ export default function Home() {
 
             {/* Build 2 */}
             <div className="relative h-72 md:h-80 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors bg-[#111]">
-              <img src="/build2.png" alt="Adventure Builds" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/custom-builds/cards/build-2.png" alt="Adventure Builds" className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-transparent to-black/80"></div>
               <div className="absolute inset-0 p-6 flex flex-col">
                 <h3 className="text-white font-bold text-lg uppercase mb-2">ADVENTURE BUILDS</h3>
                 <p className="text-gray-300 text-xs leading-relaxed max-w-[200px]">Perfect for off-road exploration and overland trips.</p>
-                <Link href="/builds/adventure" className="mt-auto text-red-600 font-bold text-xs uppercase flex items-center group-hover:translate-x-2 transition-transform">
+                <Link href="/custom-builds?category=Adventure Builds" className="mt-auto text-red-600 font-bold text-xs uppercase flex items-center group-hover:translate-x-2 transition-transform">
                   EXPLORE <ArrowRight className="ml-2 h-3 w-3" />
                 </Link>
               </div>
@@ -399,12 +404,12 @@ export default function Home() {
 
             {/* Build 3 */}
             <div className="relative h-72 md:h-80 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors bg-[#111]">
-              <img src="/build3.png" alt="Commercial Builds" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/custom-builds/cards/build-3.png" alt="Commercial Builds" className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-transparent to-black/80"></div>
               <div className="absolute inset-0 p-6 flex flex-col">
                 <h3 className="text-white font-bold text-lg uppercase mb-2">COMMERCIAL BUILDS</h3>
                 <p className="text-gray-300 text-xs leading-relaxed max-w-[200px]">Built tough for business, fleets, and daily operations.</p>
-                <Link href="/builds/commercial" className="mt-auto text-red-600 font-bold text-xs uppercase flex items-center group-hover:translate-x-2 transition-transform">
+                <Link href="/custom-builds?category=Commercial Utility Builds" className="mt-auto text-red-600 font-bold text-xs uppercase flex items-center group-hover:translate-x-2 transition-transform">
                   EXPLORE <ArrowRight className="ml-2 h-3 w-3" />
                 </Link>
               </div>
@@ -412,12 +417,12 @@ export default function Home() {
 
             {/* Build 4 */}
             <div className="relative h-72 md:h-80 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors bg-[#111]">
-              <img src="/build4.png" alt="Extreme Builds" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/custom-builds/cards/build-4.png" alt="Extreme Builds" className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-transparent to-black/80"></div>
               <div className="absolute inset-0 p-6 flex flex-col">
                 <h3 className="text-white font-bold text-lg uppercase mb-2">EXTREME BUILDS</h3>
                 <p className="text-gray-300 text-xs leading-relaxed max-w-[200px]">Pushing limits with custom upgrades and performance.</p>
-                <Link href="/builds/extreme" className="mt-auto text-red-600 font-bold text-xs uppercase flex items-center group-hover:translate-x-2 transition-transform">
+                <Link href="/custom-builds?category=Extreme Builds" className="mt-auto text-red-600 font-bold text-xs uppercase flex items-center group-hover:translate-x-2 transition-transform">
                   EXPLORE <ArrowRight className="ml-2 h-3 w-3" />
                 </Link>
               </div>
@@ -432,7 +437,6 @@ export default function Home() {
         <div className="max-w-[1800px] mx-auto px-6 lg:px-16 relative z-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
             <div>
-              <h4 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">GENUINE PARTS & SUPPLY</h4>
               <h2 className="text-2xl md:text-3xl font-extrabold text-white uppercase tracking-tight">QUALITY PARTS. UNMATCHED RELIABILITY.</h2>
             </div>
             <Link href="/parts-supply" className="text-red-600 hover:text-red-500 font-bold text-xs uppercase flex items-center transition-colors">
@@ -443,8 +447,8 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
             
             {/* Part 1 */}
-            <Link href="/parts/engine" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
-              <img src="/parts-engine.png" alt="Engine Components" className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
+            <Link href="/parts-supply?category=OEM Genuine Parts" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/parts-supply/categories/parts-engine.png" alt="Engine Components" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-[#0d1117]/20 to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4 flex items-center gap-3">
                 <div className="w-8 h-8 rounded bg-[#111] border border-red-600 flex items-center justify-center text-red-500 shrink-0 shadow-[0_0_10px_rgba(217,4,41,0.3)]">
@@ -455,8 +459,8 @@ export default function Home() {
             </Link>
 
             {/* Part 2 */}
-            <Link href="/parts/suspension" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
-              <img src="/parts-suspension.png" alt="Suspension Systems" className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
+            <Link href="/parts-supply?category=Suspension %26 Lift Kits" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/parts-supply/categories/parts-suspension.png" alt="Suspension Systems" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-[#0d1117]/20 to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4 flex items-center gap-3">
                 <div className="w-8 h-8 rounded bg-[#111] border border-red-600 flex items-center justify-center text-red-500 shrink-0 shadow-[0_0_10px_rgba(217,4,41,0.3)]">
@@ -467,8 +471,8 @@ export default function Home() {
             </Link>
 
             {/* Part 3 */}
-            <Link href="/parts/electrical" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
-              <img src="/parts-electrical.png" alt="Electrical & Lighting" className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
+            <Link href="/parts-supply?category=Lighting Systems" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/parts-supply/categories/parts-electrical.png" alt="Electrical & Lighting" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-[#0d1117]/20 to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4 flex items-center gap-3">
                 <div className="w-8 h-8 rounded bg-[#111] border border-red-600 flex items-center justify-center text-red-500 shrink-0 shadow-[0_0_10px_rgba(217,4,41,0.3)]">
@@ -479,8 +483,8 @@ export default function Home() {
             </Link>
 
             {/* Part 4 */}
-            <Link href="/parts/overland" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
-              <img src="/parts-overland.png" alt="Overland Equipment" className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
+            <Link href="/parts-supply?category=Overland Equipment" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/parts-supply/categories/parts-overland.png" alt="Overland Equipment" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-[#0d1117]/20 to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4 flex items-center gap-3">
                 <div className="w-8 h-8 rounded bg-[#111] border border-red-600 flex items-center justify-center text-red-500 shrink-0 shadow-[0_0_10px_rgba(217,4,41,0.3)]">
@@ -491,8 +495,8 @@ export default function Home() {
             </Link>
 
             {/* Part 5 */}
-            <Link href="/parts/body" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
-              <img src="/parts-body.png" alt="Body & Exterior" className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
+            <Link href="/parts-supply?category=Body %26 Exterior Parts" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/parts-supply/categories/parts-body.png" alt="Body & Exterior" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-[#0d1117]/20 to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4 flex items-center gap-3">
                 <div className="w-8 h-8 rounded bg-[#111] border border-red-600 flex items-center justify-center text-red-500 shrink-0 shadow-[0_0_10px_rgba(217,4,41,0.3)]">
@@ -503,8 +507,8 @@ export default function Home() {
             </Link>
 
             {/* Part 6 */}
-            <Link href="/parts/performance" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
-              <img src="/parts-performance.png" alt="Performance Parts" className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
+            <Link href="/parts-supply?category=Performance Upgrades" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/parts-supply/categories/parts-performance.png" alt="Performance Parts" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-[#0d1117]/20 to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4 flex items-center gap-3">
                 <div className="w-8 h-8 rounded bg-[#111] border border-red-600 flex items-center justify-center text-red-500 shrink-0 shadow-[0_0_10px_rgba(217,4,41,0.3)]">
@@ -537,7 +541,7 @@ export default function Home() {
             {/* Card 1 */}
             <div className="bg-[#111] border border-white/5 rounded-2xl overflow-hidden flex flex-col h-full group hover:border-red-500/30 transition-colors">
               <div className="h-40 relative">
-                <img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&q=80&w=500" alt="Quality Inspection" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
+                <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&q=80&w=500" alt="Quality Inspection" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#111] to-transparent opacity-80"></div>
                 <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-black border-[3px] border-red-600 flex items-center justify-center z-10 shadow-[0_0_15px_rgba(220,38,38,0.4)] group-hover:bg-red-600 transition-colors">
                   <span className="text-white font-bold text-lg group-hover:text-black transition-colors">01</span>
@@ -555,7 +559,7 @@ export default function Home() {
             {/* Card 2 */}
             <div className="bg-[#111] border border-white/5 rounded-2xl overflow-hidden flex flex-col h-full group hover:border-red-500/30 transition-colors">
               <div className="h-40 relative">
-                <img src="https://images.unsplash.com/photo-1486006920555-c77dcf18193c?auto=format&fit=crop&q=80&w=500" alt="Genuine Parts" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
+                <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://images.unsplash.com/photo-1486006920555-c77dcf18193c?auto=format&fit=crop&q=80&w=500" alt="Genuine Parts" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#111] to-transparent opacity-80"></div>
                 <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-black border-[3px] border-red-600 flex items-center justify-center z-10 shadow-[0_0_15px_rgba(220,38,38,0.4)] group-hover:bg-red-600 transition-colors">
                   <span className="text-white font-bold text-lg group-hover:text-black transition-colors">02</span>
@@ -573,7 +577,7 @@ export default function Home() {
             {/* Card 3 */}
             <div className="bg-[#111] border border-white/5 rounded-2xl overflow-hidden flex flex-col h-full group hover:border-red-500/30 transition-colors">
               <div className="h-40 relative">
-                <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=500" alt="Transparent Pricing" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
+                <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=500" alt="Transparent Pricing" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#111] to-transparent opacity-80"></div>
                 <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-black border-[3px] border-red-600 flex items-center justify-center z-10 shadow-[0_0_15px_rgba(220,38,38,0.4)] group-hover:bg-red-600 transition-colors">
                   <span className="text-white font-bold text-lg group-hover:text-black transition-colors">03</span>
@@ -591,7 +595,7 @@ export default function Home() {
             {/* Card 4 */}
             <div className="bg-[#111] border border-white/5 rounded-2xl overflow-hidden flex flex-col h-full group hover:border-red-500/30 transition-colors">
               <div className="h-40 relative">
-                <img src="/safe_shipping.png" alt="Safe Shipping" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
+                <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/shared/icons/safe-shipping.png" alt="Safe Shipping" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#111] to-transparent opacity-80"></div>
                 <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-black border-[3px] border-red-600 flex items-center justify-center z-10 shadow-[0_0_15px_rgba(220,38,38,0.4)] group-hover:bg-red-600 transition-colors">
                   <span className="text-white font-bold text-lg group-hover:text-black transition-colors">04</span>
@@ -609,7 +613,7 @@ export default function Home() {
             {/* Card 5 */}
             <div className="bg-[#111] border border-white/5 rounded-2xl overflow-hidden flex flex-col h-full group hover:border-red-500/30 transition-colors">
               <div className="h-40 relative">
-                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=500" alt="After-Sales Support" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
+                <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=500" alt="After-Sales Support" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#111] to-transparent opacity-80"></div>
                 <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-black border-[3px] border-red-600 flex items-center justify-center z-10 shadow-[0_0_15px_rgba(220,38,38,0.4)] group-hover:bg-red-600 transition-colors">
                   <span className="text-white font-bold text-lg group-hover:text-black transition-colors">05</span>
@@ -627,7 +631,7 @@ export default function Home() {
             {/* Card 6 */}
             <div className="bg-[#111] border border-white/5 rounded-2xl overflow-hidden flex flex-col h-full group hover:border-red-500/30 transition-colors">
               <div className="h-40 relative">
-                <img src="/wholesale_parts.png" alt="Wholesale Partner" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
+                <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/wholesale-retail/cards/wholesale-parts.png" alt="Wholesale Partner" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#111] to-transparent opacity-80"></div>
                 <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-black border-[3px] border-red-600 flex items-center justify-center z-10 shadow-[0_0_15px_rgba(220,38,38,0.4)] group-hover:bg-red-600 transition-colors">
                   <span className="text-white font-bold text-lg group-hover:text-black transition-colors">06</span>
@@ -756,10 +760,9 @@ export default function Home() {
           {/* Top Image Banner */}
           <div className="relative w-full h-[250px] md:h-[300px] lg:h-[350px]">
             <div className="absolute inset-0 z-0">
-               <img 
-                src="/cta-background.png" 
+               <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/shared/backgrounds/cta-background.png" 
                 alt="Toyota Hilux Ready to Source" 
-                className="w-full h-full object-cover object-[70%_center] opacity-60"
+                className="object-cover object-[70%_center] opacity-60"
               />
               {/* Gradients to fade left text area and bottom for the info bar */}
               <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent"></div>
@@ -776,11 +779,7 @@ export default function Home() {
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href="/contact" className="w-full sm:w-auto">
-                    <Button size="lg" className="w-full bg-[#cc0000] hover:bg-[#aa0000] text-white font-bold h-14 px-8 text-sm uppercase rounded shadow-[0_0_20px_rgba(204,0,0,0.3)] transition-all">
-                      CONTACT SALES
-                    </Button>
-                  </Link>
+                  <CtaQuoteButton text="CONTACT SALES" initialInquiryType="truck" />
                   
                   {/* Whatsapp button with the distinct color bar from the design */}
                   <Link href="https://wa.me/5978520700" target="_blank" className="w-full sm:w-auto">
@@ -805,8 +804,8 @@ export default function Home() {
                 <div className="flex items-center gap-3">
                   <ShieldCheck className="w-10 h-10 text-[#ff2a2a] drop-shadow-[0_0_10px_rgba(255,42,42,0.6)] shrink-0" strokeWidth={2} />
                   <div>
-                    <h4 className="text-white font-bold text-xs uppercase tracking-wide mb-1">SECURE PAYMENTS</h4>
-                    <p className="text-gray-300 text-[11px] leading-relaxed">Your payments are safe<br/>and protected.</p>
+                    <h4 className="text-white font-bold text-sm uppercase tracking-wide mb-1">SECURE PAYMENTS</h4>
+                    <p className="text-gray-300 text-xs leading-relaxed">Your payments are safe and protected.</p>
                   </div>
                 </div>
 
@@ -814,8 +813,8 @@ export default function Home() {
                 <div className="flex items-center gap-3">
                   <Truck className="w-10 h-10 text-[#ff2a2a] drop-shadow-[0_0_10px_rgba(255,42,42,0.6)] shrink-0" strokeWidth={2} />
                   <div>
-                    <h4 className="text-white font-bold text-xs uppercase tracking-wide mb-1">SAFE SHIPPING</h4>
-                    <p className="text-gray-300 text-[11px] leading-relaxed">Global logistics with<br/>full tracking.</p>
+                    <h4 className="text-white font-bold text-sm uppercase tracking-wide mb-1">SAFE SHIPPING</h4>
+                    <p className="text-gray-300 text-xs leading-relaxed">Global logistics with full tracking.</p>
                   </div>
                 </div>
 
@@ -823,8 +822,8 @@ export default function Home() {
                 <div className="flex items-center gap-3">
                   <Award className="w-10 h-10 text-[#ff2a2a] drop-shadow-[0_0_10px_rgba(255,42,42,0.6)] shrink-0" strokeWidth={2} />
                   <div>
-                    <h4 className="text-white font-bold text-xs uppercase tracking-wide mb-1">QUALITY GUARANTEE</h4>
-                    <p className="text-gray-300 text-[11px] leading-relaxed">100% inspected vehicles<br/>& genuine parts.</p>
+                    <h4 className="text-white font-bold text-sm uppercase tracking-wide mb-1">QUALITY GUARANTEE</h4>
+                    <p className="text-gray-300 text-xs leading-relaxed">100% inspected vehicles & genuine parts.</p>
                   </div>
                 </div>
 
@@ -832,8 +831,8 @@ export default function Home() {
                 <div className="flex items-center gap-3">
                   <HeadphonesIcon className="w-10 h-10 text-[#ff2a2a] drop-shadow-[0_0_10px_rgba(255,42,42,0.6)] shrink-0" strokeWidth={2} />
                   <div>
-                    <h4 className="text-white font-bold text-xs uppercase tracking-wide mb-1">DEDICATED SUPPORT</h4>
-                    <p className="text-gray-300 text-[11px] leading-relaxed">Our team is always<br/>ready to assist.</p>
+                    <h4 className="text-white font-bold text-sm uppercase tracking-wide mb-1">DEDICATED SUPPORT</h4>
+                    <p className="text-gray-300 text-xs leading-relaxed">Our team is always ready to assist.</p>
                   </div>
                 </div>
 
@@ -845,3 +844,4 @@ export default function Home() {
     </div>
   );
 }
+

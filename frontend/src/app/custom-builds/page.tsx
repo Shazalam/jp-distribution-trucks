@@ -1,37 +1,42 @@
 "use client";
+import Image from "next/image";
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   ArrowRight, Settings, Wrench, Package, ShieldCheck, Search,
   Activity, Zap, Compass, CheckCircle2, ChevronRight, ChevronLeft, 
   SlidersHorizontal, Phone, ArrowUpRight, Plus, Mountain, Filter,
-  Briefcase, Truck, HardHat, Tractor, Pickaxe, Shield, Stethoscope
+  Briefcase, Truck, HardHat, Tractor, Pickaxe, Shield, Stethoscope, MessageCircle
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { QuoteModal } from "@/components/ui/quote-modal";
+import { CtaQuoteButton } from "@/components/ui/cta-quote-button";
 
 // --- DUMMY DATA ---
 
 const BUILD_CATEGORIES = [
-  { title: "Expedition Builds", desc: "Long-range self-sustained travel setups.", img: "/cinematic_hilux_hero.png" },
-  { title: "Overland Builds", desc: "Premium camping and exploration platforms.", img: "/desert-runner.png" },
-  { title: "Adventure Builds", desc: "Weekend warrior and trail-ready modifications.", img: "/build1.png" },
-  { title: "Commercial Utility Builds", desc: "Heavy-duty chassis configurations for work.", img: "/truck2.png" },
-  { title: "Fleet Customization", desc: "Standardized enterprise deployments.", img: "/truck3.png" },
-  { title: "Mining & Industrial Builds", desc: "Safety-compliant subterranean specs.", img: "/build2.png" },
-  { title: "Agricultural Builds", desc: "Rugged platforms for farming and rural use.", img: "/build3.png" },
-  { title: "Emergency & Rescue Vehicles", desc: "Rapid response and medical transport.", img: "/build4.png" },
-  { title: "Security & Patrol Builds", desc: "Armored enforcement platforms.", img: "/black-edition.png" },
+  { title: "Expedition Builds", desc: "Long-range self-sustained travel setups.", img: "/images/home/hero/cinematic-hilux-hero.png" },
+  { title: "Overland Builds", desc: "Premium camping and exploration platforms.", img: "/images/custom-builds/cards/desert-runner.png" },
+  { title: "Adventure Builds", desc: "Weekend warrior and trail-ready modifications.", img: "/images/custom-builds/cards/build-1.png" },
+  { title: "Commercial Utility Builds", desc: "Heavy-duty chassis configurations for work.", img: "/images/trucks/cards/truck-2.png" },
+  { title: "Fleet Customization", desc: "Standardized enterprise deployments.", img: "/images/trucks/cards/truck-3.png" },
+  { title: "Mining & Industrial Builds", desc: "Safety-compliant subterranean specs.", img: "/images/custom-builds/cards/build-2.png" },
+  { title: "Agricultural Builds", desc: "Rugged platforms for farming and rural use.", img: "/images/custom-builds/cards/build-3.png" },
+  { title: "Emergency & Rescue Vehicles", desc: "Rapid response and medical transport.", img: "/images/custom-builds/cards/build-4.png" },
+  { title: "Security & Patrol Builds", desc: "Armored enforcement platforms.", img: "/images/trucks/cards/black-edition.png" },
+  { title: "Extreme Builds", desc: "Pushing limits with custom upgrades and performance.", img: "/images/custom-builds/cards/build-4.png" },
+  { title: "Classic Builds", desc: "Restored and highly durable legacy platforms.", img: "/images/custom-builds/cards/build-3.png" },
 ];
 
 const SIGNATURE_SERIES = [
-  { name: "JP Expedition Series", desc: "The ultimate global travel platform.", img: "/cinematic_hilux_hero.png" },
-  { name: "JP Adventure Series", desc: "Engineered for extreme trails.", img: "/desert-runner.png" },
-  { name: "JP Extreme Series", desc: "Uncompromised off-road dominance.", img: "/truck1.png" },
-  { name: "JP Commercial Series", desc: "Built for the heaviest payloads.", img: "/truck4.png" },
-  { name: "JP Fleet Series", desc: "Standardized, durable, and efficient.", img: "/truck3.png" },
-  { name: "JP Rescue Series", desc: "Rapid response medical and extraction.", img: "/build2.png" },
-  { name: "JP Security Series", desc: "Tactical defense and transport.", img: "/black-edition.png" },
+  { name: "JP Expedition Series", desc: "The ultimate global travel platform.", img: "/images/home/hero/cinematic-hilux-hero.png" },
+  { name: "JP Adventure Series", desc: "Engineered for extreme trails.", img: "/images/custom-builds/cards/desert-runner.png" },
+  { name: "JP Extreme Series", desc: "Uncompromised off-road dominance.", img: "/images/trucks/cards/truck-1.png" },
+  { name: "JP Commercial Series", desc: "Built for the heaviest payloads.", img: "/images/trucks/cards/truck-4.png" },
+  { name: "JP Fleet Series", desc: "Standardized, durable, and efficient.", img: "/images/trucks/cards/truck-3.png" },
+  { name: "JP Rescue Series", desc: "Rapid response medical and extraction.", img: "/images/custom-builds/cards/build-2.png" },
+  { name: "JP Security Series", desc: "Tactical defense and transport.", img: "/images/trucks/cards/black-edition.png" },
 ];
 
 const MISSIONS = [
@@ -46,10 +51,50 @@ const MISSIONS = [
   { name: "Emergency Services", icon: <Stethoscope /> }
 ];
 
-const CONFIG_CATEGORIES = [
-  "Vehicle Model", "Suspension Package", "Wheel Package", "Lighting Package",
-  "Roof System", "Recovery Equipment", "Exterior Styling", "Storage Systems"
-];
+const CONFIG_OPTIONS_DATA: Record<string, {name: string, desc: string}[]> = {
+  "Vehicle Model": [
+    { name: "Hilux Revo Standard", desc: "Base model with standard factory specifications." },
+    { name: "Hilux Revo Premium", desc: "Upgraded interior and enhanced factory comfort features." },
+    { name: "Hilux Revo GR Sport", desc: "Top-tier performance model with Gazoo Racing styling." }
+  ],
+  "Suspension Package": [
+    { name: "Heavy Duty 2-Inch Lift", desc: "Upgraded shocks and springs for moderate trail use." },
+    { name: "Overland Pro System", desc: "Adjustable bypass shocks with increased payload capacity." },
+    { name: "Extreme Long Travel", desc: "Competition-grade suspension for high-speed desert running." }
+  ],
+  "Wheel Package": [
+    { name: "All-Terrain 32\"", desc: "Standard 17-inch alloy wheels wrapped in rugged A/T tires." },
+    { name: "Mud-Terrain 33\"", desc: "Beadlock-capable wheels with aggressive 33-inch M/T tires." },
+    { name: "Extreme 35\" Setup", desc: "Forged beadlock wheels with massive 35-inch crawler tires." }
+  ],
+  "Lighting Package": [
+    { name: "Trail Basic", desc: "Upgraded LED headlight bulbs and fog light replacements." },
+    { name: "Overland Illumination", desc: "A-pillar ditch lights and a 20-inch bumper light bar." },
+    { name: "360° Night Vision", desc: "Full roof-rack lightbar, ditch lights, and surround area lighting." }
+  ],
+  "Roof System": [
+    { name: "Standard Crossbars", desc: "Basic load bars for mounting light cargo or sports gear." },
+    { name: "Platform Cargo Rack", desc: "Low-profile aluminum platform for versatile gear mounting." },
+    { name: "Heavy-Duty Expedition Tent Rack", desc: "Reinforced rack system to support rooftop tents and awnings." }
+  ],
+  "Recovery Equipment": [
+    { name: "Basic Recovery Kit", desc: "Snatch strap, shackles, and a heavy-duty shovel." },
+    { name: "Winch Prep & Boards", desc: "Hidden winch mount installed with traction boards." },
+    { name: "Ultimate Extraction", desc: "12,000lb Warn Winch, kinetic ropes, MAXTRAX, and Hi-Lift jack." }
+  ],
+  "Exterior Styling": [
+    { name: "Blackout Package", desc: "Chrome delete and matte black badging." },
+    { name: "Trail Armor", desc: "Steel rock sliders and underbody skid plates." },
+    { name: "Full Expedition Armor", desc: "Steel front/rear bumpers, rock sliders, and full underbody protection." }
+  ],
+  "Storage Systems": [
+    { name: "Bed Liner & Tie-Downs", desc: "Premium spray-in liner with adjustable cargo cleats." },
+    { name: "Drawer System", desc: "Twin sliding drawers with a flat load surface." },
+    { name: "Complete Canopy Setup", desc: "Aluminum canopy with integrated drawers, fridge slide, and gullwing doors." }
+  ]
+};
+
+const CONFIG_CATEGORIES = Object.keys(CONFIG_OPTIONS_DATA);
 
 export default function CustomBuildsPage() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
@@ -58,6 +103,57 @@ export default function CustomBuildsPage() {
   const [activeMission, setActiveMission] = useState(0);
   const [activeConfigTab, setActiveConfigTab] = useState(CONFIG_CATEGORIES[0]);
   const [selectedBuild, setSelectedBuild] = useState<{title: string, desc: string, img: string} | null>(null);
+
+  const initialOptions = CONFIG_CATEGORIES.reduce((acc, cat) => {
+    acc[cat] = 1;
+    return acc;
+  }, {} as Record<string, number>);
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, number>>(initialOptions);
+  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+
+  const configuratorRef = useRef<HTMLElement>(null);
+
+  const handleConfigureMission = () => {
+    let newOptions = { ...initialOptions };
+    
+    // Set smart defaults based on the mission chosen
+    switch(MISSIONS[activeMission].name) {
+      case "Adventure Travel":
+        newOptions = { ...initialOptions, "Vehicle Model": 2, "Suspension Package": 2, "Lighting Package": 2, "Roof System": 2, "Exterior Styling": 2, "Storage Systems": 2 };
+        break;
+      case "Camping":
+        newOptions = { ...initialOptions, "Roof System": 3, "Storage Systems": 3, "Lighting Package": 2 };
+        break;
+      case "Commercial Operations":
+      case "Fleet Management":
+        newOptions = { ...initialOptions, "Suspension Package": 2, "Storage Systems": 1 };
+        break;
+      case "Construction":
+      case "Agriculture":
+      case "Mining":
+        newOptions = { ...initialOptions, "Suspension Package": 3, "Wheel Package": 2, "Exterior Styling": 3, "Recovery Equipment": 3 };
+        break;
+      case "Security":
+      case "Emergency Services":
+        newOptions = { ...initialOptions, "Vehicle Model": 3, "Suspension Package": 3, "Lighting Package": 3, "Exterior Styling": 3, "Recovery Equipment": 2 };
+        break;
+      default:
+        newOptions = { ...initialOptions, "Suspension Package": 2 };
+    }
+    
+    setSelectedOptions(newOptions);
+    configuratorRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const category = params.get("category");
+      if (category) {
+        setActiveCategory(category);
+      }
+    }
+  }, []);
 
   // Compute displayed builds based on selection
   const displayedBuilds = BUILD_CATEGORIES.filter(cat => {
@@ -70,15 +166,14 @@ export default function CustomBuildsPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white selection:bg-red-600 selection:text-white pb-20">
+    <div className="min-h-[80vh] bg-[#050505] text-white selection:bg-red-600 selection:text-white pb-20">
       
       {/* 1. HERO SECTION (Compact Banner Style) */}
       <section className="relative pt-24 pb-8 w-full flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img 
-            src="/cinematic_hilux_hero.png" 
+          <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" priority src="/images/home/hero/cinematic-hilux-hero.png" 
             alt="Custom Toyota Hilux Build" 
-            className="w-full h-full object-cover opacity-60 scale-105 animate-[slowZoom_20s_ease-in-out_infinite_alternate]"
+            className="object-cover opacity-60 scale-105 animate-[slowZoom_20s_ease-in-out_infinite_alternate]"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-black/40 to-[#050505]"></div>
         </div>
@@ -181,7 +276,7 @@ export default function CustomBuildsPage() {
                       className="group bg-[#111] border border-white/5 rounded-xl overflow-hidden hover:border-red-500/30 transition-all flex flex-col h-full relative cursor-pointer"
                     >
                       <div className="h-56 overflow-hidden relative bg-[#0a0a0a]">
-                        <img src={cat.img} alt={cat.title} className="w-full h-full object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
+                        <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={cat.img} alt={cat.title} className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
                         <div className="absolute inset-0 bg-gradient-to-t from-[#111] to-transparent"></div>
                       </div>
                       <div className="p-6 flex flex-col flex-1 relative z-10 -mt-6">
@@ -224,7 +319,7 @@ export default function CustomBuildsPage() {
             {SIGNATURE_SERIES.map((series, idx) => (
               <div key={idx} className="w-[350px] md:w-[450px] shrink-0 snap-center bg-[#050505] rounded-2xl overflow-hidden border border-white/5 group hover:border-white/20 transition-colors">
                 <div className="h-[280px] overflow-hidden relative">
-                  <img src={series.img} alt={series.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100" />
+                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={series.img} alt={series.name} className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100" />
                 </div>
                 <div className="p-8">
                   <h3 className="text-2xl font-black uppercase tracking-wide mb-3">{series.name}</h3>
@@ -320,7 +415,11 @@ export default function CustomBuildsPage() {
                 </div>
               </div>
               
-              <Button size="lg" className="w-fit bg-red-600 hover:bg-red-700 text-white px-10 h-14 font-bold tracking-widest uppercase rounded-sm shadow-[0_0_20px_rgba(217,4,41,0.4)] transition-all relative z-10">
+              <Button 
+                onClick={handleConfigureMission}
+                size="lg" 
+                className="w-fit bg-red-600 hover:bg-red-700 text-white px-10 h-14 font-bold tracking-widest uppercase rounded-sm shadow-[0_0_20px_rgba(217,4,41,0.4)] transition-all relative z-10"
+              >
                 Configure This Mission
               </Button>
             </div>
@@ -329,7 +428,7 @@ export default function CustomBuildsPage() {
       </section>
 
       {/* 6. STUDIO CONFIGURATOR */}
-      <section className="py-24 bg-[#050505]">
+      <section ref={configuratorRef} className="py-24 bg-[#050505] scroll-mt-20">
         <div className="max-w-[1800px] mx-auto px-6 lg:px-16">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-6 text-white">
@@ -358,17 +457,29 @@ export default function CustomBuildsPage() {
             <div className="w-full lg:w-2/4 p-8 md:p-12 lg:p-16">
               <h3 className="text-3xl font-black uppercase text-white mb-10">{activeConfigTab} Options</h3>
               <div className="space-y-6">
-                {[1, 2, 3].map((opt) => (
-                  <div key={opt} className="flex items-center justify-between p-8 rounded-xl border border-white/5 bg-[#050505] hover:bg-white/5 hover:border-red-500/50 cursor-pointer transition-colors group">
+                {CONFIG_OPTIONS_DATA[activeConfigTab].map((optData, idx) => {
+                  const opt = idx + 1;
+                  return (
+                  <div 
+                    key={opt} 
+                    onClick={() => setSelectedOptions(prev => ({...prev, [activeConfigTab]: opt}))}
+                    className={`flex items-center justify-between p-8 rounded-xl border transition-colors group cursor-pointer ${
+                      selectedOptions[activeConfigTab] === opt 
+                        ? 'bg-red-600/10 border-red-500 shadow-[0_0_15px_rgba(217,4,41,0.2)]' 
+                        : 'bg-[#050505] border-white/5 hover:bg-white/5 hover:border-red-500/50'
+                    }`}
+                  >
                     <div>
-                      <h4 className="font-bold text-white text-lg mb-2 uppercase tracking-wider">Premium {activeConfigTab} Level {opt}</h4>
-                      <p className="text-sm text-gray-500">Highest tier engineering and premium grade materials.</p>
+                      <h4 className="font-bold text-white text-lg mb-2 uppercase tracking-wider">{optData.name}</h4>
+                      <p className="text-sm text-gray-500">{optData.desc}</p>
                     </div>
-                    <div className="w-8 h-8 rounded-full border-2 border-white/20 flex items-center justify-center group-hover:border-red-500">
-                      {opt === 1 && <div className="w-4 h-4 rounded-full bg-red-600 shadow-[0_0_10px_rgba(217,4,41,0.8)]"></div>}
+                    <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-colors ${
+                      selectedOptions[activeConfigTab] === opt ? 'border-red-500' : 'border-white/20 group-hover:border-red-500'
+                    }`}>
+                      {selectedOptions[activeConfigTab] === opt && <div className="w-4 h-4 rounded-full bg-red-600 shadow-[0_0_10px_rgba(217,4,41,0.8)]"></div>}
                     </div>
                   </div>
-                ))}
+                )})}
               </div>
             </div>
 
@@ -377,14 +488,25 @@ export default function CustomBuildsPage() {
               <div>
                 <h3 className="text-base font-bold uppercase tracking-widest text-white mb-8 border-b border-white/10 pb-6">Build Summary</h3>
                 <ul className="space-y-6 text-sm font-medium text-gray-400 mb-12">
-                  <li className="flex justify-between items-center"><span className="uppercase text-gray-500">Model</span> <span className="text-white font-bold bg-[#111] px-3 py-1 rounded">Hilux Revo</span></li>
-                  <li className="flex justify-between items-center"><span className="uppercase text-gray-500">Suspension</span> <span className="text-white font-bold bg-[#111] px-3 py-1 rounded">Level 1</span></li>
-                  <li className="flex justify-between items-center"><span className="uppercase text-gray-500">Wheels</span> <span className="text-white font-bold bg-[#111] px-3 py-1 rounded">Level 1</span></li>
+                  {CONFIG_CATEGORIES.map(cat => {
+                    const selectedLevel = selectedOptions[cat] || 1;
+                    const optionName = CONFIG_OPTIONS_DATA[cat]?.[selectedLevel - 1]?.name || `Level ${selectedLevel}`;
+                    return (
+                    <li key={cat} className="flex justify-between items-center gap-4">
+                      <span className="uppercase text-gray-500 text-xs shrink-0">{cat.replace(' Package', '').replace(' System', '').replace(' Equipment', '').replace(' Styling', '')}</span> 
+                      <span className="text-white font-bold bg-[#111] px-3 py-1 rounded text-xs text-right truncate">
+                        {optionName}
+                      </span>
+                    </li>
+                  )})}
                 </ul>
               </div>
               <div>
-                <Button className="w-full bg-white text-black hover:bg-gray-200 font-bold tracking-widest uppercase py-7 rounded-sm text-sm transition-all">
-                  Generate Custom Quote
+                <Button 
+                  onClick={() => setIsQuoteModalOpen(true)}
+                  className="w-full bg-red-600 text-white hover:bg-red-700 font-bold tracking-widest uppercase py-7 rounded-sm text-sm transition-all shadow-[0_0_20px_rgba(217,4,41,0.3)]"
+                >
+                  Request Build Quote
                 </Button>
               </div>
             </div>
@@ -403,43 +525,63 @@ export default function CustomBuildsPage() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[300px]">
             <div className="col-span-2 row-span-2 rounded-2xl overflow-hidden relative group border border-white/5 hover:border-white/20 transition-colors">
-              <img src="/cinematic_hilux_hero.png" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+              <Image alt="JP Distribution Trucks" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" priority src="/images/home/hero/cinematic-hilux-hero.png" className="object-cover group-hover:scale-110 transition-transform duration-1000" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-60"></div>
             </div>
             <div className="rounded-2xl overflow-hidden relative group border border-white/5 hover:border-white/20 transition-colors">
-              <img src="/desert-runner.png" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+              <Image alt="JP Distribution Trucks" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/custom-builds/cards/desert-runner.png" className="object-cover group-hover:scale-110 transition-transform duration-1000" />
             </div>
             <div className="rounded-2xl overflow-hidden relative group border border-white/5 hover:border-white/20 transition-colors">
-              <img src="/truck2.png" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+              <Image alt="JP Distribution Trucks" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/trucks/cards/truck-2.png" className="object-cover group-hover:scale-110 transition-transform duration-1000" />
             </div>
             <div className="rounded-2xl overflow-hidden relative group border border-white/5 hover:border-white/20 transition-colors">
-              <img src="/truck3.png" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+              <Image alt="JP Distribution Trucks" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/trucks/cards/truck-3.png" className="object-cover group-hover:scale-110 transition-transform duration-1000" />
             </div>
             <div className="rounded-2xl overflow-hidden relative group border border-white/5 hover:border-white/20 transition-colors">
-              <img src="/truck4.png" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+              <Image alt="JP Distribution Trucks" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/trucks/cards/truck-4.png" className="object-cover group-hover:scale-110 transition-transform duration-1000" />
             </div>
           </div>
         </div>
       </section>
 
       {/* 8. FINAL CTA */}
-      <section className="pt-16 pb-32 relative bg-[#050505] border-t border-red-900/30 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#111]/50 to-transparent z-0"></div>
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center mt-16">
-          <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight mb-6 text-white drop-shadow-xl">
-            Your Vision. <br/>
-            <span className="text-red-600">Our Build Expertise.</span>
-          </h2>
-          <p className="text-xl text-gray-300 mb-12 font-medium">
-            Whether you&apos;re preparing for remote exploration, commercial operations, fleet deployment, or specialized missions, JP Distribution creates vehicles engineered beyond boundaries.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white px-8 h-14 font-bold tracking-widest uppercase rounded-sm shadow-[0_0_30px_rgba(217,4,41,0.4)] transition-all">
-              Start Your Custom Build
-            </Button>
-            <Button size="lg" variant="outline" className="bg-transparent border-white/20 text-white hover:bg-white hover:text-black px-8 h-14 font-bold tracking-widest uppercase rounded-sm transition-all">
-              Speak With A Specialist
-            </Button>
+      <section className="relative bg-[#050505]">
+        <div className="w-[96%] max-w-[1800px] mx-auto rounded-3xl overflow-hidden border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] bg-[#0a0c10]">
+          <div className="relative w-full h-[250px] md:h-[300px] lg:h-[350px]">
+            <div className="absolute inset-0 z-0">
+               <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/shared/backgrounds/cta-background.png" 
+                alt="Toyota Hilux Ready to Source" 
+                className="object-cover object-[70%_center] opacity-60"
+              />
+              {/* Gradients to fade left text area and bottom for the info bar */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0c10] via-transparent to-transparent"></div>
+            </div>
+            
+            <div className="px-6 lg:px-16 h-full relative z-10 flex flex-col justify-center">
+              <div className="max-w-3xl mt-4">
+                <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-4 uppercase tracking-tight">
+                  Your Vision. <span className="text-red-600">Our Build Expertise.</span>
+                </h2>
+                <p className="text-gray-300 text-lg md:text-xl mb-10 max-w-2xl font-medium leading-relaxed">
+                  Whether you&apos;re preparing for remote exploration, commercial operations, fleet deployment, or specialized missions, JP Distribution creates vehicles engineered beyond boundaries.
+                </p>
+                
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <CtaQuoteButton text="START YOUR CUSTOM BUILD" initialInquiryType="build" />
+                  
+                  {/* Whatsapp button with the distinct color bar from the design */}
+                  <Link href="https://wa.me/5978520700" target="_blank" className="w-full sm:w-auto">
+                    <Button size="lg" variant="outline" className="w-full relative overflow-hidden bg-black/40 border-white/20 hover:bg-white/10 text-white font-bold h-14 px-8 text-sm uppercase rounded backdrop-blur-sm group transition-all">
+                      <span className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-green-400 to-green-600 shadow-[0_0_10px_rgba(34,197,94,0.5)]"></span>
+                      <span className="absolute left-[3px] top-0 bottom-0 w-[2px] bg-red-600"></span>
+                      <MessageCircle className="w-5 h-5 mr-3 text-white hidden group-hover:block transition-all" />
+                      WHATSAPP SUPPORT
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -459,10 +601,9 @@ export default function CustomBuildsPage() {
             <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl w-full overflow-hidden flex flex-col md:flex-row shadow-[0_0_50px_rgba(217,4,41,0.2)] min-h-[60vh] md:min-h-[70vh]">
               {/* Image Side (Cinematic slow pan) */}
               <div className="w-full md:w-1/2 h-64 md:h-auto relative overflow-hidden bg-black">
-                <img 
-                  src={selectedBuild.img} 
+                <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={selectedBuild.img} 
                   alt={selectedBuild.title} 
-                  className="w-full h-full object-cover opacity-80"
+                  className="object-cover opacity-80"
                   style={{ animation: 'slowPan 20s linear infinite alternate' }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent md:bg-gradient-to-r"></div>
@@ -515,6 +656,13 @@ export default function CustomBuildsPage() {
         </div>
       )}
 
+      <QuoteModal 
+        isOpen={isQuoteModalOpen} 
+        onClose={() => setIsQuoteModalOpen(false)} 
+        initialInquiryType="build"
+        initialRequirements={`Custom Build Configuration:\n${Object.entries(selectedOptions).map(([key, val]) => `- ${key}: ${CONFIG_OPTIONS_DATA[key]?.[val - 1]?.name || `Level ${val}`}`).join('\n')}\n\nPlease provide more details about your intended use and any additional requirements here:`}
+      />
     </div>
   );
 }
+

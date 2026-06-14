@@ -52,7 +52,7 @@ export default function CommitmentsPage() {
   return (
     <div className="flex flex-col min-h-screen bg-[#050505]">
       {/* HEADER */}
-      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 border-b border-white/10 bg-[#111111]">
+      <section className="py-14 md:py-20 px-4 sm:px-6 lg:px-8 border-b border-white/10 bg-[#111111]">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-6 uppercase">
             Our <span className="text-red-600">Commitments</span>

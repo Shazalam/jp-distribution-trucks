@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 
 export function WhatsAppCTA() {
   return (
@@ -9,6 +10,7 @@ export function WhatsAppCTA() {
       href="https://wa.me/5978520700"
       target="_blank"
       rel="noopener noreferrer"
+      onClick={() => trackEvent("whatsapp_clicked", { location: "floating_cta" })}
       className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-[0_0_20px_rgba(37,211,102,0.4)] flex items-center justify-center hover:bg-[#1EBE5D] transition-colors group"
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
