@@ -505,7 +505,7 @@ export default function CustomBuildsPage() {
               <div>
                 <Button 
                   onClick={() => {
-                    setQuoteRequirements(`Custom Build Configuration:\n${Object.entries(selectedOptions).map(([key, val]) => `- ${key}: ${CONFIG_OPTIONS_DATA[key]?.[val - 1]?.name || \`Level ${val}\`}`).join('\n')}\n\nPlease provide more details about your intended use and any additional requirements here:`);
+                    setQuoteRequirements(`Custom Build Configuration:\n${Object.entries(selectedOptions).map(([key, val]) => `- ${key}: ${CONFIG_OPTIONS_DATA[key]?.[val - 1]?.name || "Level " + val}`).join('\n')}\n\nPlease provide more details about your intended use and any additional requirements here:`);
                     setIsQuoteModalOpen(true);
                   }}
                   className="w-full bg-red-600 text-white hover:bg-red-700 font-bold tracking-widest uppercase py-7 rounded-sm text-sm transition-all shadow-[0_0_20px_rgba(217,4,41,0.3)]"
