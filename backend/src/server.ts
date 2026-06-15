@@ -37,7 +37,10 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Routes
 import quoteRoutes from './routes/quotes';
+import cmsRoutes from './routes/cmsRoutes';
+
 app.use('/api/quotes', quoteRoutes);
+app.use('/api/cms', cmsRoutes);
 
 // Global Error Handler
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
