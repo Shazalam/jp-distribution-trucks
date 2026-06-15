@@ -76,15 +76,15 @@ export function Footer() {
             <ul className="space-y-3">
               <li className="flex items-start gap-3 text-gray-400 text-lg">
                 <MapPin className="text-red-500 shrink-0 w-6 h-6 mt-0.5" />
-                <span className="leading-snug">Magentakanaalweg 120,<br />Paramaribo, Suriname</span>
+                <a href="https://maps.google.com/?q=Magentakanaalweg+120,+Paramaribo,+Suriname" target="_blank" rel="noopener noreferrer" className="leading-snug hover:text-white transition-colors">Magentakanaalweg 120,<br />Paramaribo, Suriname</a>
               </li>
               <li className="flex items-center gap-3 text-gray-400 text-lg">
                 <Phone className="text-red-500 shrink-0 w-6 h-6" />
-                <span>+597 8520700 / +597 8840750</span>
+                <span><a href="tel:+5978520700" className="hover:text-white transition-colors">+597 8520700</a> / <a href="tel:+5978840750" className="hover:text-white transition-colors">+597 8840750</a></span>
               </li>
               <li className="flex items-center gap-3 text-gray-400 text-lg">
                 <Mail className="text-red-500 shrink-0 w-6 h-6" />
-                <span>jpdistribution.sr@gmail.com</span>
+                <a href="mailto:jpdistribution.sr@gmail.com" className="hover:text-white transition-colors">jpdistribution.sr@gmail.com</a>
               </li>
             </ul>
           </div>
