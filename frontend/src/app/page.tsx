@@ -21,7 +21,7 @@ export default function Home() {
         {/* Background Image & Overlays */}
         <div className="absolute inset-0 z-0 bg-black">
           <video 
-            src="/images/custom-builds/hero/custom-hero-bg.mp4" 
+            src="https://res.cloudinary.com/dd8a5dpnh/video/upload/f_auto,q_auto/v1781498582/jp-distribution/custom-builds/hero/custom-hero-bg.mp4" 
             autoPlay 
             loop 
             muted 

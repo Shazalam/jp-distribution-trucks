@@ -89,7 +89,7 @@ export function QuoteModal({ isOpen, onClose, initialRequirements = "", initialI
           {/* LEFT SIDE: VIDEO */}
         <div className="hidden lg:block lg:w-5/12 relative h-full bg-black border-r border-white/10">
           <video 
-            src="/images/custom-builds/hero/custom-hero-bg.mp4" 
+            src="https://res.cloudinary.com/dd8a5dpnh/video/upload/f_auto,q_auto/v1781498582/jp-distribution/custom-builds/hero/custom-hero-bg.mp4" 
             autoPlay 
             loop 
             muted 
