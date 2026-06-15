@@ -126,6 +126,38 @@ router.put('/trucks/:id', async (req, res) => {
   }
 });
 
+// DELETE TRUCK
+router.delete('/trucks/:id', async (req, res) => {
+  try {
+    const truck = await Truck.findById(req.params.id);
+    if (!truck) return res.status(404).json({ success: false, message: 'Truck not found' });
+
+    await Truck.findByIdAndDelete(req.params.id);
+
+    await AuditLog.create({
+      action: 'DELETE',
+      entityType: 'Truck',
+      entityId: truck._id,
+      oldValue: truck,
+      adminId: '60d0fe4f5311236168a109ca',
+      details: `Deleted truck: ${truck.title}`
+    });
+
+    // Trigger Frontend Revalidation
+    try {
+      await fetch('http://localhost:3000/api/revalidate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tag: 'trucks', path: '/trucks' })
+      });
+    } catch(e) { console.error('Failed to trigger revalidation'); }
+
+    res.json({ success: true, message: 'Truck deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Delete failed', error: error instanceof Error ? error.message : String(error) });
+  }
+});
+
 /**
  * =====================================
  * VERSION RESTORATION
