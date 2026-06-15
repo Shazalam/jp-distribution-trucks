@@ -109,7 +109,14 @@ router.put('/trucks/:id', async (req, res) => {
       adminId: req.body.adminId || '60d0fe4f5311236168a109ca'
     });
 
-    // TODO: Trigger Frontend Revalidation Webhook here
+    // Trigger Frontend Revalidation Webhook
+    try {
+      await fetch('http://localhost:3000/api/revalidate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tag: 'trucks', path: '/trucks' })
+      });
+    } catch(e) { console.error('Failed to trigger revalidation'); }
 
     res.json({ success: true, data: updatedTruck });
   } catch (error) {
@@ -157,7 +164,14 @@ router.post('/revert/:versionId', async (req, res) => {
       details: `Reverted to version from ${version.createdAt}`
     });
 
-    // TODO: Trigger Frontend Revalidation Webhook here
+    // Trigger Frontend Revalidation Webhook
+    try {
+      await fetch('http://localhost:3000/api/revalidate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tag: 'trucks', path: '/trucks' })
+      });
+    } catch(e) { console.error('Failed to trigger revalidation'); }
 
     res.json({ success: true, message: 'Version restored successfully', data: restoredDoc });
   } catch (error) {
