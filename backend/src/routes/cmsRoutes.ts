@@ -26,7 +26,7 @@ router.post('/media/upload', uploadMiddleware.single('file'), (req, res) => {
       message: 'Media uploaded successfully to Cloudinary'
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Media upload failed', error });
+    res.status(500).json({ success: false, message: 'Media upload failed', error: error instanceof Error ? error.message : String(error) });
   }
 });
 
@@ -39,11 +39,12 @@ router.post('/media/upload', uploadMiddleware.single('file'), (req, res) => {
 // GET ALL TRUCKS (Admin View / Public View)
 router.get('/trucks', async (req, res) => {
   try {
-    const filter = req.query.status ? { status: req.query.status } : {};
+    const statusQuery = req.query.status as "Draft" | "Published" | "Archived" | undefined;
+    const filter = statusQuery ? { status: statusQuery } : {};
     const trucks = await Truck.find(filter).sort({ createdAt: -1 });
     res.json({ success: true, data: trucks });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Server error' });
+    res.status(500).json({ success: false, message: 'Server error', error: error instanceof Error ? error.message : String(error) });
   }
 });
 
@@ -69,7 +70,7 @@ router.post('/trucks', async (req, res) => {
 
     res.status(201).json({ success: true, data: truck });
   } catch (error) {
-    res.status(400).json({ success: false, message: 'Failed to create truck', error });
+    res.status(400).json({ success: false, message: 'Failed to create truck', error: error instanceof Error ? error.message : String(error) });
   }
 });
 
@@ -121,7 +122,7 @@ router.put('/trucks/:id', async (req, res) => {
 
     res.json({ success: true, data: updatedTruck });
   } catch (error) {
-    res.status(400).json({ success: false, message: 'Update failed', error });
+    res.status(400).json({ success: false, message: 'Update failed', error: error instanceof Error ? error.message : String(error) });
   }
 });
 
@@ -140,7 +141,7 @@ router.get('/versions/:model/:id', async (req, res) => {
     }).sort({ createdAt: -1 });
     res.json({ success: true, data: versions });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Failed to fetch versions' });
+    res.status(500).json({ success: false, message: 'Failed to fetch versions', error: error instanceof Error ? error.message : String(error) });
   }
 });
 
@@ -176,7 +177,7 @@ router.post('/revert/:versionId', async (req, res) => {
 
     res.json({ success: true, message: 'Version restored successfully', data: restoredDoc });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Failed to restore version' });
+    res.status(500).json({ success: false, message: 'Failed to restore version', error: error instanceof Error ? error.message : String(error) });
   }
 });
 

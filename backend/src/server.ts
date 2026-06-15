@@ -15,8 +15,6 @@ const PORT = process.env.PORT || 5000;
 
 // Security Middleware
 app.use(helmet({ crossOriginResourcePolicy: false })); // Allow serving images securely
-app.use(mongoSanitize());
-app.use(hpp());
 
 // Rate Limiting
 const limiter = rateLimit({
@@ -33,6 +31,11 @@ app.use(cors({
 }));
 app.use(express.json({ limit: '10kb' })); // Prevent large payloads
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+
+// Security Middleware (Must be after body parsers)
+app.use(mongoSanitize());
+app.use(hpp());
+
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Routes
