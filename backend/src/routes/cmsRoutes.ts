@@ -36,10 +36,11 @@ router.post('/media/upload', uploadMiddleware.single('file'), (req, res) => {
  * =====================================
  */
 
-// GET ALL TRUCKS (Admin View - Includes Drafts and Archived)
+// GET ALL TRUCKS (Admin View / Public View)
 router.get('/trucks', async (req, res) => {
   try {
-    const trucks = await Truck.find().sort({ createdAt: -1 });
+    const filter = req.query.status ? { status: req.query.status } : {};
+    const trucks = await Truck.find(filter).sort({ createdAt: -1 });
     res.json({ success: true, data: trucks });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Server error' });
