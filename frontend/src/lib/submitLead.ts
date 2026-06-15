@@ -22,7 +22,7 @@ export interface LeadPayload {
 
   // Request Details
   message?: string;
-  requestDetails?: any;
+  requestDetails?: Record<string, unknown>;
   quantity?: number;
   preferredModel?: string;
   vehicleYear?: string;
@@ -58,14 +58,14 @@ export async function submitLead(payload: LeadPayload) {
 
     if (!response.ok) {
       if (data.errors && Array.isArray(data.errors)) {
-        const errorMessages = data.errors.map((err: any) => `${err.path.join('.')}: ${err.message}`).join(", ");
+        const errorMessages = data.errors.map((err: { path: string[], message: string }) => `${err.path.join('.')}: ${err.message}`).join(", ");
         throw new Error(`Validation Error: ${errorMessages}`);
       }
       throw new Error(data.message || "Failed to submit request");
     }
 
     return data;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("submitLead Error:", error);
     throw error;
   }
