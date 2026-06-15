@@ -8,7 +8,7 @@ import Link from "next/link";
 const CARDS = [
   {
     id: 1,
-    image: "/images/trucks/cards/truck-1.png",
+    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498076/jp-distribution/trucks/cards/truck-1.png",
     badge: "ADVENTURE",
     badgeColor: "bg-emerald-600",
     title: "HILUX REVO ADVENTURE",
@@ -19,7 +19,7 @@ const CARDS = [
   },
   {
     id: 2,
-    image: "/images/trucks/cards/truck-2.png",
+    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498078/jp-distribution/trucks/cards/truck-2.png",
     badge: "EXPEDITION",
     badgeColor: "bg-teal-700",
     title: "HILUX TRAVO EXPEDITION",
@@ -30,7 +30,7 @@ const CARDS = [
   },
   {
     id: 3,
-    image: "/images/trucks/cards/truck-3.png",
+    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498080/jp-distribution/trucks/cards/truck-3.png",
     badge: "OVERLAND",
     badgeColor: "bg-red-700",
     title: "HILUX VIGO OVERLAND",
@@ -41,7 +41,7 @@ const CARDS = [
   },
   {
     id: 4,
-    image: "/images/trucks/cards/truck-4.png",
+    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498081/jp-distribution/trucks/cards/truck-4.png",
     badge: "CLASSIC",
     badgeColor: "bg-emerald-800",
     title: "HILUX TIGER CLASSIC",
@@ -52,7 +52,7 @@ const CARDS = [
   },
   {
     id: 5,
-    image: "/images/trucks/cards/black-edition.png",
+    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498071/jp-distribution/trucks/cards/black-edition.png",
     badge: "LUXURY",
     badgeColor: "bg-blue-600",
     title: "HILUX BLACK EDITION",
@@ -63,7 +63,7 @@ const CARDS = [
   },
   {
     id: 6,
-    image: "/images/custom-builds/cards/desert-runner.png",
+    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498047/jp-distribution/custom-builds/cards/desert-runner.png",
     badge: "EXTREME",
     badgeColor: "bg-amber-600",
     title: "HILUX DESERT RUNNER",
@@ -74,7 +74,7 @@ const CARDS = [
   },
   {
     id: 7,
-    image: "/images/trucks/cards/fleet-edition.png",
+    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498073/jp-distribution/trucks/cards/fleet-edition.png",
     badge: "COMMERCIAL",
     badgeColor: "bg-emerald-600",
     title: "HILUX FLEET EDITION",
@@ -85,7 +85,7 @@ const CARDS = [
   },
   {
     id: 8,
-    image: "/images/trucks/cards/nomad-edition.png",
+    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498075/jp-distribution/trucks/cards/nomad-edition.png",
     badge: "CAMPER",
     badgeColor: "bg-purple-600",
     title: "HILUX NOMAD EDITION",

@@ -51,7 +51,7 @@ export default function WholesaleRetailPage() {
       <section className="relative pt-24 pb-24 overflow-hidden">
         {/* Background Image Container - Only takes up the top part */}
         <div className="absolute top-0 left-0 right-0 h-[450px] md:h-[500px] z-0 overflow-hidden">
-          <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/wholesale-retail/cards/wholesale-parts.png" 
+          <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498084/jp-distribution/wholesale-retail/cards/wholesale-parts.jpg" 
             alt="Wholesale Warehouse" 
             className="object-cover opacity-30"
           />
@@ -233,7 +233,7 @@ export default function WholesaleRetailPage() {
         <div className="w-[96%] max-w-[1800px] mx-auto rounded-3xl overflow-hidden border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] bg-[#0a0c10]">
           <div className="relative w-full h-[250px] md:h-[300px] lg:h-[350px]">
             <div className="absolute inset-0 z-0">
-               <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/shared/backgrounds/cta-background.png" 
+               <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498067/jp-distribution/shared/backgrounds/cta-background.png" 
                 alt="Toyota Hilux Ready to Source" 
                 className="object-cover object-[70%_center] opacity-60"
               />

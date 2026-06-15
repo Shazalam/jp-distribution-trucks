@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     description: "Global exporter of Toyota commercial vehicles, specialized fleet custom builds, and genuine Toyota Hilux parts.",
     images: [
       {
-        url: "/images/home/hero/cinematic-hilux-hero.png",
+        url: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498050/jp-distribution/home/hero/cinematic-hilux-hero.jpg",
         width: 1200,
         height: 630,
         alt: "JP Distribution Trucks Hero Image",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "JP Distribution | Custom Toyota Hilux Trucks & Parts",
     description: "Global exporter of Toyota commercial vehicles and genuine Toyota parts.",
-    images: ["/images/home/hero/cinematic-hilux-hero.png"],
+    images: ["https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498050/jp-distribution/home/hero/cinematic-hilux-hero.jpg"],
   },
   robots: {
     index: true,

@@ -16,27 +16,27 @@ import { CtaQuoteButton } from "@/components/ui/cta-quote-button";
 // --- DUMMY DATA ---
 
 const BUILD_CATEGORIES = [
-  { title: "Expedition Builds", desc: "Long-range self-sustained travel setups.", img: "/images/home/hero/cinematic-hilux-hero.png" },
-  { title: "Overland Builds", desc: "Premium camping and exploration platforms.", img: "/images/custom-builds/cards/desert-runner.png" },
-  { title: "Adventure Builds", desc: "Weekend warrior and trail-ready modifications.", img: "/images/custom-builds/cards/build-1.png" },
-  { title: "Commercial Utility Builds", desc: "Heavy-duty chassis configurations for work.", img: "/images/trucks/cards/truck-2.png" },
-  { title: "Fleet Customization", desc: "Standardized enterprise deployments.", img: "/images/trucks/cards/truck-3.png" },
-  { title: "Mining & Industrial Builds", desc: "Safety-compliant subterranean specs.", img: "/images/custom-builds/cards/build-2.png" },
-  { title: "Agricultural Builds", desc: "Rugged platforms for farming and rural use.", img: "/images/custom-builds/cards/build-3.png" },
-  { title: "Emergency & Rescue Vehicles", desc: "Rapid response and medical transport.", img: "/images/custom-builds/cards/build-4.png" },
-  { title: "Security & Patrol Builds", desc: "Armored enforcement platforms.", img: "/images/trucks/cards/black-edition.png" },
-  { title: "Extreme Builds", desc: "Pushing limits with custom upgrades and performance.", img: "/images/custom-builds/cards/build-4.png" },
-  { title: "Classic Builds", desc: "Restored and highly durable legacy platforms.", img: "/images/custom-builds/cards/build-3.png" },
+  { title: "Expedition Builds", desc: "Long-range self-sustained travel setups.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498050/jp-distribution/home/hero/cinematic-hilux-hero.jpg" },
+  { title: "Overland Builds", desc: "Premium camping and exploration platforms.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498047/jp-distribution/custom-builds/cards/desert-runner.png" },
+  { title: "Adventure Builds", desc: "Weekend warrior and trail-ready modifications.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498040/jp-distribution/custom-builds/cards/build-1.png" },
+  { title: "Commercial Utility Builds", desc: "Heavy-duty chassis configurations for work.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498078/jp-distribution/trucks/cards/truck-2.png" },
+  { title: "Fleet Customization", desc: "Standardized enterprise deployments.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498080/jp-distribution/trucks/cards/truck-3.png" },
+  { title: "Mining & Industrial Builds", desc: "Safety-compliant subterranean specs.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498042/jp-distribution/custom-builds/cards/build-2.png" },
+  { title: "Agricultural Builds", desc: "Rugged platforms for farming and rural use.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498044/jp-distribution/custom-builds/cards/build-3.png" },
+  { title: "Emergency & Rescue Vehicles", desc: "Rapid response and medical transport.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498046/jp-distribution/custom-builds/cards/build-4.png" },
+  { title: "Security & Patrol Builds", desc: "Armored enforcement platforms.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498071/jp-distribution/trucks/cards/black-edition.png" },
+  { title: "Extreme Builds", desc: "Pushing limits with custom upgrades and performance.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498046/jp-distribution/custom-builds/cards/build-4.png" },
+  { title: "Classic Builds", desc: "Restored and highly durable legacy platforms.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498044/jp-distribution/custom-builds/cards/build-3.png" },
 ];
 
 const SIGNATURE_SERIES = [
-  { name: "JP Expedition Series", desc: "The ultimate global travel platform.", img: "/images/home/hero/cinematic-hilux-hero.png" },
-  { name: "JP Adventure Series", desc: "Engineered for extreme trails.", img: "/images/custom-builds/cards/desert-runner.png" },
-  { name: "JP Extreme Series", desc: "Uncompromised off-road dominance.", img: "/images/trucks/cards/truck-1.png" },
-  { name: "JP Commercial Series", desc: "Built for the heaviest payloads.", img: "/images/trucks/cards/truck-4.png" },
-  { name: "JP Fleet Series", desc: "Standardized, durable, and efficient.", img: "/images/trucks/cards/truck-3.png" },
-  { name: "JP Rescue Series", desc: "Rapid response medical and extraction.", img: "/images/custom-builds/cards/build-2.png" },
-  { name: "JP Security Series", desc: "Tactical defense and transport.", img: "/images/trucks/cards/black-edition.png" },
+  { name: "JP Expedition Series", desc: "The ultimate global travel platform.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498050/jp-distribution/home/hero/cinematic-hilux-hero.jpg" },
+  { name: "JP Adventure Series", desc: "Engineered for extreme trails.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498047/jp-distribution/custom-builds/cards/desert-runner.png" },
+  { name: "JP Extreme Series", desc: "Uncompromised off-road dominance.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498076/jp-distribution/trucks/cards/truck-1.png" },
+  { name: "JP Commercial Series", desc: "Built for the heaviest payloads.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498081/jp-distribution/trucks/cards/truck-4.png" },
+  { name: "JP Fleet Series", desc: "Standardized, durable, and efficient.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498080/jp-distribution/trucks/cards/truck-3.png" },
+  { name: "JP Rescue Series", desc: "Rapid response medical and extraction.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498042/jp-distribution/custom-builds/cards/build-2.png" },
+  { name: "JP Security Series", desc: "Tactical defense and transport.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498071/jp-distribution/trucks/cards/black-edition.png" },
 ];
 
 const MISSIONS = [
@@ -172,7 +172,7 @@ export default function CustomBuildsPage() {
       {/* 1. HERO SECTION (Compact Banner Style) */}
       <section className="relative pt-24 pb-8 w-full flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" priority src="/images/home/hero/cinematic-hilux-hero.png" 
+          <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" priority src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498050/jp-distribution/home/hero/cinematic-hilux-hero.jpg" 
             alt="Custom Toyota Hilux Build" 
             className="object-cover opacity-60 scale-105 animate-[slowZoom_20s_ease-in-out_infinite_alternate]"
           />
@@ -531,20 +531,20 @@ export default function CustomBuildsPage() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[300px]">
             <div className="col-span-2 row-span-2 rounded-2xl overflow-hidden relative group border border-white/5 hover:border-white/20 transition-colors">
-              <Image alt="JP Distribution Trucks" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" priority src="/images/home/hero/cinematic-hilux-hero.png" className="object-cover group-hover:scale-110 transition-transform duration-1000" />
+              <Image alt="JP Distribution Trucks" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" priority src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498050/jp-distribution/home/hero/cinematic-hilux-hero.jpg" className="object-cover group-hover:scale-110 transition-transform duration-1000" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-60"></div>
             </div>
             <div className="rounded-2xl overflow-hidden relative group border border-white/5 hover:border-white/20 transition-colors">
-              <Image alt="JP Distribution Trucks" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/custom-builds/cards/desert-runner.png" className="object-cover group-hover:scale-110 transition-transform duration-1000" />
+              <Image alt="JP Distribution Trucks" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498047/jp-distribution/custom-builds/cards/desert-runner.png" className="object-cover group-hover:scale-110 transition-transform duration-1000" />
             </div>
             <div className="rounded-2xl overflow-hidden relative group border border-white/5 hover:border-white/20 transition-colors">
-              <Image alt="JP Distribution Trucks" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/trucks/cards/truck-2.png" className="object-cover group-hover:scale-110 transition-transform duration-1000" />
+              <Image alt="JP Distribution Trucks" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498078/jp-distribution/trucks/cards/truck-2.png" className="object-cover group-hover:scale-110 transition-transform duration-1000" />
             </div>
             <div className="rounded-2xl overflow-hidden relative group border border-white/5 hover:border-white/20 transition-colors">
-              <Image alt="JP Distribution Trucks" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/trucks/cards/truck-3.png" className="object-cover group-hover:scale-110 transition-transform duration-1000" />
+              <Image alt="JP Distribution Trucks" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498080/jp-distribution/trucks/cards/truck-3.png" className="object-cover group-hover:scale-110 transition-transform duration-1000" />
             </div>
             <div className="rounded-2xl overflow-hidden relative group border border-white/5 hover:border-white/20 transition-colors">
-              <Image alt="JP Distribution Trucks" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/trucks/cards/truck-4.png" className="object-cover group-hover:scale-110 transition-transform duration-1000" />
+              <Image alt="JP Distribution Trucks" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498081/jp-distribution/trucks/cards/truck-4.png" className="object-cover group-hover:scale-110 transition-transform duration-1000" />
             </div>
           </div>
         </div>
@@ -555,7 +555,7 @@ export default function CustomBuildsPage() {
         <div className="w-[96%] max-w-[1800px] mx-auto rounded-3xl overflow-hidden border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] bg-[#0a0c10]">
           <div className="relative w-full h-[250px] md:h-[300px] lg:h-[350px]">
             <div className="absolute inset-0 z-0">
-               <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/shared/backgrounds/cta-background.png" 
+               <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498067/jp-distribution/shared/backgrounds/cta-background.png" 
                 alt="Toyota Hilux Ready to Source" 
                 className="object-cover object-[70%_center] opacity-60"
               />

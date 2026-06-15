@@ -24,56 +24,56 @@ const ECOSYSTEMS = [
   { 
     id: 1, title: "Adventure & Overland", 
     desc: "Engineered for remote exploration and self-sustained travel across extreme terrain.", 
-    icon: <Globe className="w-6 h-6" />, img: "/images/home/hero/cinematic-hilux-hero.png",
+    icon: <Globe className="w-6 h-6" />, img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498050/jp-distribution/home/hero/cinematic-hilux-hero.jpg",
     features: ["Turnkey custom overland builds", "Integrated canopy & tent systems", "Long-range fuel tank options"],
     specs: { Payload: "950 kg", Clearance: "11.5 inches", Drivetrain: "4x4 w/ Lockers" }
   },
   { 
     id: 2, title: "Commercial & Business", 
     desc: "Reliable, high-payload utility vehicles designed to maximize operational efficiency.", 
-    icon: <Package className="w-6 h-6" />, img: "/images/trucks/cards/truck-2.png",
+    icon: <Package className="w-6 h-6" />, img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498078/jp-distribution/trucks/cards/truck-2.png",
     features: ["Reinforced flatbed installations", "High-capacity load suspension", "Cost-effective fleet pricing"],
     specs: { Payload: "1,200 kg", CargoSpace: "Class-Leading", Reliability: "99.9% Uptime" }
   },
   { 
     id: 3, title: "Fleet Operations", 
     desc: "Standardized, durable trucks optimized for large-scale enterprise deployments.", 
-    icon: <Truck className="w-6 h-6" />, img: "/images/trucks/cards/truck-3.png",
+    icon: <Truck className="w-6 h-6" />, img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498080/jp-distribution/trucks/cards/truck-3.png",
     features: ["Standardized maintenance parts", "Telematics & GPS pre-wiring", "Dedicated fleet account manager"],
     specs: { Volume: "10-100+ Units", Delivery: "Global Logistics", Support: "24/7 B2B Portal" }
   },
   { 
     id: 4, title: "Construction & Utility", 
     desc: "Heavy-duty chassis builds ready for demanding work sites and heavy hauling.", 
-    icon: <Wrench className="w-6 h-6" />, img: "/images/trucks/cards/truck-4.png",
+    icon: <Wrench className="w-6 h-6" />, img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498081/jp-distribution/trucks/cards/truck-4.png",
     features: ["Heavy-duty leaf spring upgrades", "Custom toolboxes & storage", "Site-compliant lighting & safety"],
     specs: { Suspension: "Heavy Duty", Towing: "3,500 kg", Protection: "Steel Bullbars" }
   },
   { 
     id: 5, title: "Agriculture", 
     desc: "Rugged rural mobility solutions built to withstand harsh farming environments.", 
-    icon: <Target className="w-6 h-6" />, img: "/images/custom-builds/cards/build-1.png",
+    icon: <Target className="w-6 h-6" />, img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498040/jp-distribution/custom-builds/cards/build-1.png",
     features: ["Corrosion-resistant undercoating", "High-torque diesel powertrains", "All-terrain tire packages"],
     specs: { Engine: "High Torque", Durability: "Extreme", Tires: "All-Terrain" }
   },
   { 
     id: 6, title: "Mining & Industrial", 
     desc: "Specialized safety-compliant vehicles engineered for subterranean and surface mining.", 
-    icon: <Settings className="w-6 h-6" />, img: "/images/custom-builds/cards/build-2.png",
+    icon: <Settings className="w-6 h-6" />, img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498042/jp-distribution/custom-builds/cards/build-2.png",
     features: ["ROPS/FOPS certified roll cages", "Mine-spec electrical & lighting", "Battery isolators & fire suppression"],
     specs: { Safety: "Mine-Spec", RollCage: "Certified", Visibility: "360° LED" }
   },
   { 
     id: 7, title: "Government & Security", 
     desc: "Armored and patrol-ready platforms built for enforcement and secure transport.", 
-    icon: <ShieldCheck className="w-6 h-6" />, img: "/images/custom-builds/cards/build-3.png",
+    icon: <ShieldCheck className="w-6 h-6" />, img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498044/jp-distribution/custom-builds/cards/build-3.png",
     features: ["Discrete B6/B7 armor plating", "Run-flat tire systems", "Upgraded heavy-duty brakes"],
     specs: { Armor: "B6 / B7 Options", Brakes: "Heavy Duty", Security: "Maximized" }
   },
   { 
     id: 8, title: "Emergency & Rescue", 
     desc: "Rapid response vehicles equipped for medical, fire, and disaster recovery missions.", 
-    icon: <Activity className="w-6 h-6" />, img: "/images/custom-builds/cards/build-4.png",
+    icon: <Activity className="w-6 h-6" />, img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498046/jp-distribution/custom-builds/cards/build-4.png",
     features: ["Emergency light & siren systems", "Custom medical/rescue canopies", "Dual battery & high-output alternators"],
     specs: { Electrical: "Dual Battery", Response: "Rapid", Storage: "Custom Medical" }
   },
@@ -81,14 +81,14 @@ const ECOSYSTEMS = [
 
 // Dummy Data for Featured Collections
 const FEATURED_TRUCKS = [
-  { name: "Hilux Revo Adventure", price: "$42,800", engine: "2.8L Diesel", trans: "6-Speed Auto", drive: "4x4", badge: "ADVENTURE", img: "/images/trucks/cards/truck-1.png" },
-  { name: "Hilux Travo Expedition", price: "$48,500", engine: "2.8L Diesel", trans: "6-Speed Manual", drive: "4x4", badge: "OVERLAND", img: "/images/trucks/cards/truck-2.png" },
-  { name: "Hilux Vigo Overland", price: "$36,900", engine: "2.5L Diesel", trans: "5-Speed Manual", drive: "4x4", badge: "CLASSIC", img: "/images/trucks/cards/truck-3.png" },
-  { name: "Hilux Fleet Edition", price: "$29,900", engine: "2.4L Diesel", trans: "6-Speed Manual", drive: "4x2", badge: "COMMERCIAL", img: "/images/trucks/cards/truck-4.png" },
-  { name: "Hilux Utility Pro", price: "$32,500", engine: "2.4L Diesel", trans: "6-Speed Auto", drive: "4x2", badge: "UTILITY", img: "/images/custom-builds/cards/build-1.png" },
-  { name: "Hilux Black Edition", price: "$45,000", engine: "2.8L Diesel", trans: "6-Speed Auto", drive: "4x4", badge: "PREMIUM", img: "/images/trucks/cards/black-edition.png" },
-  { name: "Hilux Desert Runner", price: "$52,000", engine: "2.8L Diesel", trans: "6-Speed Auto", drive: "4x4", badge: "EXTREME", img: "/images/custom-builds/cards/desert-runner.png" },
-  { name: "Hilux Nomad Camper", price: "$58,500", engine: "2.8L Diesel", trans: "6-Speed Auto", drive: "4x4", badge: "CAMPER", img: "/images/trucks/cards/nomad-edition.png" },
+  { name: "Hilux Revo Adventure", price: "$42,800", engine: "2.8L Diesel", trans: "6-Speed Auto", drive: "4x4", badge: "ADVENTURE", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498076/jp-distribution/trucks/cards/truck-1.png" },
+  { name: "Hilux Travo Expedition", price: "$48,500", engine: "2.8L Diesel", trans: "6-Speed Manual", drive: "4x4", badge: "OVERLAND", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498078/jp-distribution/trucks/cards/truck-2.png" },
+  { name: "Hilux Vigo Overland", price: "$36,900", engine: "2.5L Diesel", trans: "5-Speed Manual", drive: "4x4", badge: "CLASSIC", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498080/jp-distribution/trucks/cards/truck-3.png" },
+  { name: "Hilux Fleet Edition", price: "$29,900", engine: "2.4L Diesel", trans: "6-Speed Manual", drive: "4x2", badge: "COMMERCIAL", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498081/jp-distribution/trucks/cards/truck-4.png" },
+  { name: "Hilux Utility Pro", price: "$32,500", engine: "2.4L Diesel", trans: "6-Speed Auto", drive: "4x2", badge: "UTILITY", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498040/jp-distribution/custom-builds/cards/build-1.png" },
+  { name: "Hilux Black Edition", price: "$45,000", engine: "2.8L Diesel", trans: "6-Speed Auto", drive: "4x4", badge: "PREMIUM", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498071/jp-distribution/trucks/cards/black-edition.png" },
+  { name: "Hilux Desert Runner", price: "$52,000", engine: "2.8L Diesel", trans: "6-Speed Auto", drive: "4x4", badge: "EXTREME", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498047/jp-distribution/custom-builds/cards/desert-runner.png" },
+  { name: "Hilux Nomad Camper", price: "$58,500", engine: "2.8L Diesel", trans: "6-Speed Auto", drive: "4x4", badge: "CAMPER", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498075/jp-distribution/trucks/cards/nomad-edition.png" },
 ];
 
 const COMPARISON_DATA = [
@@ -188,7 +188,7 @@ export default function TrucksPage() {
       <section className="relative pt-24 pb-12 w-full flex flex-col items-center justify-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
-          <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" priority src="/images/home/hero/cinematic-hilux-hero.png" 
+          <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" priority src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498050/jp-distribution/home/hero/cinematic-hilux-hero.jpg" 
             alt="Toyota Hilux Extreme" 
             className="object-cover opacity-50 scale-105 animate-[slowZoom_20s_ease-in-out_infinite_alternate]"
           />
@@ -309,7 +309,7 @@ export default function TrucksPage() {
                     className="absolute inset-0 border-r-2 border-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] overflow-hidden"
                     style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
                   >
-                    <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/trucks/cards/truck-4.png" alt="Base Model Before" className="object-cover" draggable="false" />
+                    <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498081/jp-distribution/trucks/cards/truck-4.png" alt="Base Model Before" className="object-cover" draggable="false" />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505]/50 pointer-events-none"></div>
                     <div className="absolute bottom-6 left-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded text-white text-xs font-bold uppercase tracking-widest border border-white/20 z-20">
                       BASE MODEL
@@ -749,7 +749,7 @@ export default function TrucksPage() {
           {/* Top Image Banner */}
           <div className="relative w-full h-[250px] md:h-[300px] lg:h-[350px]">
             <div className="absolute inset-0 z-0">
-               <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/shared/backgrounds/unique-hilux-cta.png" 
+               <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498069/jp-distribution/shared/backgrounds/unique-hilux-cta.jpg" 
                 alt="Unique Off-Road Toyota Hilux" 
                 className="object-cover object-[70%_center] opacity-60"
               />

@@ -16,18 +16,18 @@ import { submitLead } from "@/lib/submitLead";
 // --- DUMMY DATA ---
 
 const ECOSYSTEMS = [
-  { title: "OEM Genuine Parts", desc: "Factory original components.", img: "/images/parts-supply/categories/parts-engine.png", count: "1,200+" },
-  { title: "Performance Upgrades", desc: "Engine and powertrain tuning.", img: "/images/wholesale-retail/cards/wholesale-parts.png", count: "450+" },
-  { title: "Overland Equipment", desc: "Camping and survival gear.", img: "/images/parts-supply/categories/parts-overland.png", count: "320+" },
-  { title: "Fleet Maintenance", desc: "Bulk service components.", img: "/images/trucks/cards/truck-3.png", count: "890+" },
-  { title: "Commercial Components", desc: "Heavy-duty chassis parts.", img: "/images/trucks/cards/truck-4.png", count: "540+" },
-  { title: "Recovery Equipment", desc: "Winches, straps, and boards.", img: "/images/custom-builds/cards/build-2.png", count: "150+" },
-  { title: "Lighting Systems", desc: "LED bars and tactical lights.", img: "/images/parts-supply/categories/parts-electrical.png", count: "210+" },
-  { title: "Suspension & Lift Kits", desc: "Fox, King, and heavy-duty leafs.", img: "/images/parts-supply/categories/parts-suspension.png", count: "380+" },
-  { title: "Electrical Components", desc: "Wiring, ECUs, and dual-batteries.", img: "/images/parts-supply/categories/parts-electrical.png", count: "650+" },
-  { title: "Body & Exterior Parts", desc: "Bumpers, armor, and panels.", img: "/images/parts-supply/categories/parts-body.png", count: "720+" },
-  { title: "Interior Components", desc: "Seats, trim, and electronics.", img: "/images/trucks/cards/truck-2.png", count: "410+" },
-  { title: "Rare Thailand Imports", desc: "Exclusive JDM/THDM parts.", img: "/images/home/hero/cinematic-hilux-hero.png", count: "180+" },
+  { title: "OEM Genuine Parts", desc: "Factory original components.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498058/jp-distribution/parts-supply/categories/parts-engine.png", count: "1,200+" },
+  { title: "Performance Upgrades", desc: "Engine and powertrain tuning.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498084/jp-distribution/wholesale-retail/cards/wholesale-parts.jpg", count: "450+" },
+  { title: "Overland Equipment", desc: "Camping and survival gear.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498060/jp-distribution/parts-supply/categories/parts-overland.png", count: "320+" },
+  { title: "Fleet Maintenance", desc: "Bulk service components.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498080/jp-distribution/trucks/cards/truck-3.png", count: "890+" },
+  { title: "Commercial Components", desc: "Heavy-duty chassis parts.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498081/jp-distribution/trucks/cards/truck-4.png", count: "540+" },
+  { title: "Recovery Equipment", desc: "Winches, straps, and boards.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498042/jp-distribution/custom-builds/cards/build-2.png", count: "150+" },
+  { title: "Lighting Systems", desc: "LED bars and tactical lights.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498056/jp-distribution/parts-supply/categories/parts-electrical.png", count: "210+" },
+  { title: "Suspension & Lift Kits", desc: "Fox, King, and heavy-duty leafs.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498063/jp-distribution/parts-supply/categories/parts-suspension.png", count: "380+" },
+  { title: "Electrical Components", desc: "Wiring, ECUs, and dual-batteries.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498056/jp-distribution/parts-supply/categories/parts-electrical.png", count: "650+" },
+  { title: "Body & Exterior Parts", desc: "Bumpers, armor, and panels.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498054/jp-distribution/parts-supply/categories/parts-body.png", count: "720+" },
+  { title: "Interior Components", desc: "Seats, trim, and electronics.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498078/jp-distribution/trucks/cards/truck-2.png", count: "410+" },
+  { title: "Rare Thailand Imports", desc: "Exclusive JDM/THDM parts.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498050/jp-distribution/home/hero/cinematic-hilux-hero.jpg", count: "180+" },
 ];
 
 const SIDEBAR_CATEGORIES = [
@@ -66,29 +66,29 @@ const SIDEBAR_CATEGORIES = [
 ];
 
 const DUMMY_PARTS = [
-  { name: "Toyota Hilux LED Fog Lamps", category: "Lighting Systems", subcategory: "Fog Lamps", price: "$145.00", img: "/images/parts-supply/categories/parts-electrical.png", popular: true },
-  { name: "TRD Pro Style Grille DRL", category: "Lighting Systems", subcategory: "DRLs", price: "$120.00", img: "/images/parts-supply/categories/parts-electrical.png", popular: true },
-  { name: "Fox 2.0 Performance Series IFP", category: "Suspension & Lift Kits", subcategory: "Shocks & Struts", price: "$495.00", img: "/images/parts-supply/categories/parts-suspension.png", popular: true },
-  { name: "Old Man Emu 2-Inch Lift Kit", category: "Suspension & Lift Kits", subcategory: "Lift Kits", price: "$1,850.00", img: "/images/parts-supply/categories/parts-suspension.png", popular: false },
-  { name: "Genuine OEM Oil Filter 90915-YZZD1", category: "OEM Genuine Parts", subcategory: "Filters", price: "$12.00", img: "/images/parts-supply/categories/parts-engine.png", popular: true },
-  { name: "TRD Cat-Back Exhaust System", category: "Performance Upgrades", subcategory: "Exhaust Systems", price: "$850.00", img: "/images/wholesale-retail/cards/wholesale-parts.png", popular: true },
-  { name: "ARB Touring Awning", category: "Overland Equipment", subcategory: "Awnings", price: "$350.00", img: "/images/parts-supply/categories/parts-overland.png", popular: false },
-  { name: "Warn VR EVO 10-S Winch", category: "Recovery Equipment", subcategory: "Winches", price: "$980.00", img: "/images/custom-builds/cards/build-2.png", popular: true },
-  { name: "Projecta Dual Battery System", category: "Electrical Components", subcategory: "Wiring", price: "$299.00", img: "/images/parts-supply/categories/parts-electrical.png", popular: true },
-  { name: "Ironman 4x4 Commercial Bull Bar", category: "Body & Exterior Parts", subcategory: "Bumpers", price: "$1,200.00", img: "/images/parts-supply/categories/parts-body.png", popular: true },
-  { name: "Rigid Industries 40\" Light Bar", category: "Lighting Systems", subcategory: "Light Bars", price: "$850.00", img: "/images/parts-supply/categories/parts-electrical.png", popular: false },
-  { name: "Genuine Toyota Brake Pads", category: "Fleet Maintenance", subcategory: "Brake Pads", price: "$85.00", img: "/images/trucks/cards/truck-3.png", popular: true },
+  { name: "Toyota Hilux LED Fog Lamps", category: "Lighting Systems", subcategory: "Fog Lamps", price: "$145.00", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498056/jp-distribution/parts-supply/categories/parts-electrical.png", popular: true },
+  { name: "TRD Pro Style Grille DRL", category: "Lighting Systems", subcategory: "DRLs", price: "$120.00", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498056/jp-distribution/parts-supply/categories/parts-electrical.png", popular: true },
+  { name: "Fox 2.0 Performance Series IFP", category: "Suspension & Lift Kits", subcategory: "Shocks & Struts", price: "$495.00", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498063/jp-distribution/parts-supply/categories/parts-suspension.png", popular: true },
+  { name: "Old Man Emu 2-Inch Lift Kit", category: "Suspension & Lift Kits", subcategory: "Lift Kits", price: "$1,850.00", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498063/jp-distribution/parts-supply/categories/parts-suspension.png", popular: false },
+  { name: "Genuine OEM Oil Filter 90915-YZZD1", category: "OEM Genuine Parts", subcategory: "Filters", price: "$12.00", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498058/jp-distribution/parts-supply/categories/parts-engine.png", popular: true },
+  { name: "TRD Cat-Back Exhaust System", category: "Performance Upgrades", subcategory: "Exhaust Systems", price: "$850.00", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498084/jp-distribution/wholesale-retail/cards/wholesale-parts.jpg", popular: true },
+  { name: "ARB Touring Awning", category: "Overland Equipment", subcategory: "Awnings", price: "$350.00", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498060/jp-distribution/parts-supply/categories/parts-overland.png", popular: false },
+  { name: "Warn VR EVO 10-S Winch", category: "Recovery Equipment", subcategory: "Winches", price: "$980.00", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498042/jp-distribution/custom-builds/cards/build-2.png", popular: true },
+  { name: "Projecta Dual Battery System", category: "Electrical Components", subcategory: "Wiring", price: "$299.00", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498056/jp-distribution/parts-supply/categories/parts-electrical.png", popular: true },
+  { name: "Ironman 4x4 Commercial Bull Bar", category: "Body & Exterior Parts", subcategory: "Bumpers", price: "$1,200.00", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498054/jp-distribution/parts-supply/categories/parts-body.png", popular: true },
+  { name: "Rigid Industries 40\" Light Bar", category: "Lighting Systems", subcategory: "Light Bars", price: "$850.00", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498056/jp-distribution/parts-supply/categories/parts-electrical.png", popular: false },
+  { name: "Genuine Toyota Brake Pads", category: "Fleet Maintenance", subcategory: "Brake Pads", price: "$85.00", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498080/jp-distribution/trucks/cards/truck-3.png", popular: true },
 ];
 
 const COLLECTIONS = [
-  { name: "Engine & Powertrain", desc: "Complete engines, turbos, and cooling.", img: "/images/parts-supply/categories/parts-engine.png" },
-  { name: "Transmission Systems", desc: "Manual, auto, and heavy-duty clutches.", img: "/images/parts-supply/categories/parts-performance.png" },
-  { name: "Suspension Packages", desc: "Lift kits and load-bearing upgrades.", img: "/images/parts-supply/categories/parts-suspension.png" },
-  { name: "Off-Road Accessories", desc: "Bull bars, snorkels, and armor.", img: "/images/parts-supply/categories/parts-body.png" },
-  { name: "Roof Rack Systems", desc: "Cargo and tent mounting solutions.", img: "/images/parts-supply/categories/parts-overland.png" },
-  { name: "Camping Equipment", desc: "Awnings, tents, and storage.", img: "/images/custom-builds/cards/desert-runner.png" },
-  { name: "Commercial Accessories", desc: "Canopies and toolboxes.", img: "/images/trucks/cards/truck-4.png" },
-  { name: "Performance Packages", desc: "ECU remaps and exhaust systems.", img: "/images/wholesale-retail/cards/wholesale-parts.png" },
+  { name: "Engine & Powertrain", desc: "Complete engines, turbos, and cooling.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498058/jp-distribution/parts-supply/categories/parts-engine.png" },
+  { name: "Transmission Systems", desc: "Manual, auto, and heavy-duty clutches.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498061/jp-distribution/parts-supply/categories/parts-performance.png" },
+  { name: "Suspension Packages", desc: "Lift kits and load-bearing upgrades.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498063/jp-distribution/parts-supply/categories/parts-suspension.png" },
+  { name: "Off-Road Accessories", desc: "Bull bars, snorkels, and armor.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498054/jp-distribution/parts-supply/categories/parts-body.png" },
+  { name: "Roof Rack Systems", desc: "Cargo and tent mounting solutions.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498060/jp-distribution/parts-supply/categories/parts-overland.png" },
+  { name: "Camping Equipment", desc: "Awnings, tents, and storage.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498047/jp-distribution/custom-builds/cards/desert-runner.png" },
+  { name: "Commercial Accessories", desc: "Canopies and toolboxes.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498081/jp-distribution/trucks/cards/truck-4.png" },
+  { name: "Performance Packages", desc: "ECU remaps and exhaust systems.", img: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498084/jp-distribution/wholesale-retail/cards/wholesale-parts.jpg" },
 ];
 
 const QA_CARDS = [
@@ -218,7 +218,7 @@ export default function PartsSupplyPage() {
       {/* 1. HERO SECTION */}
       <section className="relative pt-24 pb-8 w-full flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/wholesale-retail/cards/wholesale-parts.png" 
+          <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498084/jp-distribution/wholesale-retail/cards/wholesale-parts.jpg" 
             alt="Premium Toyota Parts Warehouse" 
             className="object-cover opacity-50 scale-105 animate-[slowZoom_20s_ease-in-out_infinite_alternate]"
           />
@@ -592,7 +592,7 @@ export default function PartsSupplyPage() {
           {/* Top Image Banner */}
           <div className="relative w-full h-[250px] md:h-[300px] lg:h-[350px]">
             <div className="absolute inset-0 z-0">
-               <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/shared/backgrounds/cta-background.png" 
+               <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498067/jp-distribution/shared/backgrounds/cta-background.png" 
                 alt="Toyota Hilux Ready to Source" 
                 className="object-cover object-[70%_center] opacity-60"
               />

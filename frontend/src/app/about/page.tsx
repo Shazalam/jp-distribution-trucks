@@ -43,7 +43,7 @@ export default function AboutPage() {
       {/* HERO SECTION */}
       <section className="relative pt-24 pb-16 lg:pt-40 lg:pb-24 overflow-hidden border-b border-white/5">
         <div className="absolute inset-0 z-0">
-          <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" priority src="/images/home/hero/cinematic-hilux-hero.png" 
+          <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" priority src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498050/jp-distribution/home/hero/cinematic-hilux-hero.jpg" 
             alt="Toyota Hilux Fleet" 
             className="object-cover opacity-30 scale-105 animate-[slowZoom_20s_ease-in-out_infinite_alternate]"
           />
@@ -110,7 +110,7 @@ export default function AboutPage() {
                 transition={{ duration: 0.8 }}
                 className="relative rounded-3xl overflow-hidden border border-white/10 aspect-[4/3] shadow-[0_0_50px_rgba(0,0,0,0.5)]"
               >
-                <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/trucks/cards/black-edition.png" alt="Our Operations" className="object-cover" />
+                <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498071/jp-distribution/trucks/cards/black-edition.png" alt="Our Operations" className="object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                 <div className="absolute bottom-8 left-8 right-8">
                   <div className="bg-red-600/90 backdrop-blur-md inline-flex items-center gap-2 px-4 py-2 rounded-lg mb-4">
@@ -209,7 +209,7 @@ export default function AboutPage() {
         <div className="w-[96%] max-w-[1800px] mx-auto rounded-3xl overflow-hidden border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] bg-[#0a0c10]">
           <div className="relative w-full h-[250px] md:h-[300px] lg:h-[350px]">
             <div className="absolute inset-0 z-0">
-               <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/shared/backgrounds/cta-background.png" 
+               <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498067/jp-distribution/shared/backgrounds/cta-background.png" 
                 alt="Toyota Hilux Ready to Source" 
                 className="object-cover object-[70%_center] opacity-60"
               />

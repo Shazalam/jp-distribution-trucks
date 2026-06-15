@@ -14,6 +14,7 @@
     "axios": "^1.17.0",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
+    "cloudinary": "^2.10.0",
     "clsx": "^2.1.1",
     "csv-stringify": "^6.7.0",
     "framer-motion": "^12.40.0",

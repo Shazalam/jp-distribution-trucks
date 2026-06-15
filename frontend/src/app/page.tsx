@@ -223,7 +223,7 @@ export default function Home() {
                 </div>
                 <div className="h-48 overflow-hidden relative shrink-0 z-10">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/custom-builds/cards/desert-runner.png" alt="Custom Builds" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498047/jp-distribution/custom-builds/cards/desert-runner.png" alt="Custom Builds" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
                 </div>
                 <div className="p-6 flex flex-col flex-1 bg-white/5 backdrop-blur-md z-20">
                   <p className="text-gray-300 font-serif text-sm leading-relaxed mb-6">
@@ -247,7 +247,7 @@ export default function Home() {
                 </div>
                 <div className="h-48 overflow-hidden relative shrink-0 z-10">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/wholesale-retail/hero/premium-wholesale-parts.png" alt="Parts Supply" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498085/jp-distribution/wholesale-retail/hero/premium-wholesale-parts.jpg" alt="Parts Supply" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
                 </div>
                 <div className="p-6 flex flex-col flex-1 bg-white/5 backdrop-blur-md z-20">
                   <p className="text-gray-300 font-serif text-sm leading-relaxed mb-6">
@@ -274,7 +274,7 @@ export default function Home() {
                 </div>
                 <div className="h-48 overflow-hidden relative shrink-0 z-10">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/home/sections/parts-locator.png" alt="Parts Locator" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498052/jp-distribution/home/sections/parts-locator.png" alt="Parts Locator" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
                 </div>
                 <div className="p-6 flex flex-col flex-1 bg-white/5 backdrop-blur-md z-20">
                   <p className="text-gray-300 font-serif text-sm leading-relaxed mb-6">
@@ -298,7 +298,7 @@ export default function Home() {
                 </div>
                 <div className="h-48 overflow-hidden relative shrink-0 z-10">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/wholesale-retail/cards/wholesale-parts.png" alt="Wholesale Orders" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498084/jp-distribution/wholesale-retail/cards/wholesale-parts.jpg" alt="Wholesale Orders" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
                 </div>
                 <div className="p-6 flex flex-col flex-1 bg-white/5 backdrop-blur-md z-20">
                   <p className="text-gray-300 font-serif text-sm leading-relaxed mb-6">
@@ -322,7 +322,7 @@ export default function Home() {
                 </div>
                 <div className="h-48 overflow-hidden relative shrink-0 z-10">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/shared/icons/safe-shipping.png" alt="Export & Logistics" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498070/jp-distribution/shared/icons/safe-shipping.jpg" alt="Export & Logistics" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
                 </div>
                 <div className="p-6 flex flex-col flex-1 bg-white/5 backdrop-blur-md z-20">
                   <p className="text-gray-300 font-serif text-sm leading-relaxed mb-6">
@@ -378,7 +378,7 @@ export default function Home() {
             
             {/* Build 1 */}
             <div className="relative h-72 md:h-80 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors bg-[#111]">
-              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/custom-builds/cards/build-1.png" alt="Expedition Builds" className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498040/jp-distribution/custom-builds/cards/build-1.png" alt="Expedition Builds" className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-transparent to-black/80"></div>
               <div className="absolute inset-0 p-6 flex flex-col">
                 <h3 className="text-white font-bold text-lg uppercase mb-2">EXPEDITION BUILDS</h3>
@@ -391,7 +391,7 @@ export default function Home() {
 
             {/* Build 2 */}
             <div className="relative h-72 md:h-80 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors bg-[#111]">
-              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/custom-builds/cards/build-2.png" alt="Adventure Builds" className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498042/jp-distribution/custom-builds/cards/build-2.png" alt="Adventure Builds" className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-transparent to-black/80"></div>
               <div className="absolute inset-0 p-6 flex flex-col">
                 <h3 className="text-white font-bold text-lg uppercase mb-2">ADVENTURE BUILDS</h3>
@@ -404,7 +404,7 @@ export default function Home() {
 
             {/* Build 3 */}
             <div className="relative h-72 md:h-80 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors bg-[#111]">
-              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/custom-builds/cards/build-3.png" alt="Commercial Builds" className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498044/jp-distribution/custom-builds/cards/build-3.png" alt="Commercial Builds" className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-transparent to-black/80"></div>
               <div className="absolute inset-0 p-6 flex flex-col">
                 <h3 className="text-white font-bold text-lg uppercase mb-2">COMMERCIAL BUILDS</h3>
@@ -417,7 +417,7 @@ export default function Home() {
 
             {/* Build 4 */}
             <div className="relative h-72 md:h-80 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors bg-[#111]">
-              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/custom-builds/cards/build-4.png" alt="Extreme Builds" className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498046/jp-distribution/custom-builds/cards/build-4.png" alt="Extreme Builds" className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-transparent to-black/80"></div>
               <div className="absolute inset-0 p-6 flex flex-col">
                 <h3 className="text-white font-bold text-lg uppercase mb-2">EXTREME BUILDS</h3>
@@ -448,7 +448,7 @@ export default function Home() {
             
             {/* Part 1 */}
             <Link href="/parts-supply?category=OEM Genuine Parts" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
-              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/parts-supply/categories/parts-engine.png" alt="Engine Components" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498058/jp-distribution/parts-supply/categories/parts-engine.png" alt="Engine Components" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-[#0d1117]/20 to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4 flex items-center gap-3">
                 <div className="w-8 h-8 rounded bg-[#111] border border-red-600 flex items-center justify-center text-red-500 shrink-0 shadow-[0_0_10px_rgba(217,4,41,0.3)]">
@@ -460,7 +460,7 @@ export default function Home() {
 
             {/* Part 2 */}
             <Link href="/parts-supply?category=Suspension %26 Lift Kits" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
-              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/parts-supply/categories/parts-suspension.png" alt="Suspension Systems" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498063/jp-distribution/parts-supply/categories/parts-suspension.png" alt="Suspension Systems" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-[#0d1117]/20 to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4 flex items-center gap-3">
                 <div className="w-8 h-8 rounded bg-[#111] border border-red-600 flex items-center justify-center text-red-500 shrink-0 shadow-[0_0_10px_rgba(217,4,41,0.3)]">
@@ -472,7 +472,7 @@ export default function Home() {
 
             {/* Part 3 */}
             <Link href="/parts-supply?category=Lighting Systems" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
-              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/parts-supply/categories/parts-electrical.png" alt="Electrical & Lighting" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498056/jp-distribution/parts-supply/categories/parts-electrical.png" alt="Electrical & Lighting" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-[#0d1117]/20 to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4 flex items-center gap-3">
                 <div className="w-8 h-8 rounded bg-[#111] border border-red-600 flex items-center justify-center text-red-500 shrink-0 shadow-[0_0_10px_rgba(217,4,41,0.3)]">
@@ -484,7 +484,7 @@ export default function Home() {
 
             {/* Part 4 */}
             <Link href="/parts-supply?category=Overland Equipment" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
-              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/parts-supply/categories/parts-overland.png" alt="Overland Equipment" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498060/jp-distribution/parts-supply/categories/parts-overland.png" alt="Overland Equipment" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-[#0d1117]/20 to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4 flex items-center gap-3">
                 <div className="w-8 h-8 rounded bg-[#111] border border-red-600 flex items-center justify-center text-red-500 shrink-0 shadow-[0_0_10px_rgba(217,4,41,0.3)]">
@@ -496,7 +496,7 @@ export default function Home() {
 
             {/* Part 5 */}
             <Link href="/parts-supply?category=Body %26 Exterior Parts" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
-              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/parts-supply/categories/parts-body.png" alt="Body & Exterior" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498054/jp-distribution/parts-supply/categories/parts-body.png" alt="Body & Exterior" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-[#0d1117]/20 to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4 flex items-center gap-3">
                 <div className="w-8 h-8 rounded bg-[#111] border border-red-600 flex items-center justify-center text-red-500 shrink-0 shadow-[0_0_10px_rgba(217,4,41,0.3)]">
@@ -508,7 +508,7 @@ export default function Home() {
 
             {/* Part 6 */}
             <Link href="/parts-supply?category=Performance Upgrades" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
-              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/parts-supply/categories/parts-performance.png" alt="Performance Parts" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498061/jp-distribution/parts-supply/categories/parts-performance.png" alt="Performance Parts" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-[#0d1117]/20 to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4 flex items-center gap-3">
                 <div className="w-8 h-8 rounded bg-[#111] border border-red-600 flex items-center justify-center text-red-500 shrink-0 shadow-[0_0_10px_rgba(217,4,41,0.3)]">
@@ -595,7 +595,7 @@ export default function Home() {
             {/* Card 4 */}
             <div className="bg-[#111] border border-white/5 rounded-2xl overflow-hidden flex flex-col h-full group hover:border-red-500/30 transition-colors">
               <div className="h-40 relative">
-                <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/shared/icons/safe-shipping.png" alt="Safe Shipping" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
+                <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498070/jp-distribution/shared/icons/safe-shipping.jpg" alt="Safe Shipping" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#111] to-transparent opacity-80"></div>
                 <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-black border-[3px] border-red-600 flex items-center justify-center z-10 shadow-[0_0_15px_rgba(220,38,38,0.4)] group-hover:bg-red-600 transition-colors">
                   <span className="text-white font-bold text-lg group-hover:text-black transition-colors">04</span>
@@ -631,7 +631,7 @@ export default function Home() {
             {/* Card 6 */}
             <div className="bg-[#111] border border-white/5 rounded-2xl overflow-hidden flex flex-col h-full group hover:border-red-500/30 transition-colors">
               <div className="h-40 relative">
-                <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/wholesale-retail/cards/wholesale-parts.png" alt="Wholesale Partner" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
+                <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498084/jp-distribution/wholesale-retail/cards/wholesale-parts.jpg" alt="Wholesale Partner" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#111] to-transparent opacity-80"></div>
                 <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-black border-[3px] border-red-600 flex items-center justify-center z-10 shadow-[0_0_15px_rgba(220,38,38,0.4)] group-hover:bg-red-600 transition-colors">
                   <span className="text-white font-bold text-lg group-hover:text-black transition-colors">06</span>
@@ -760,7 +760,7 @@ export default function Home() {
           {/* Top Image Banner */}
           <div className="relative w-full h-[250px] md:h-[300px] lg:h-[350px]">
             <div className="absolute inset-0 z-0">
-               <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="/images/shared/backgrounds/cta-background.png" 
+               <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498067/jp-distribution/shared/backgrounds/cta-background.png" 
                 alt="Toyota Hilux Ready to Source" 
                 className="object-cover object-[70%_center] opacity-60"
               />
