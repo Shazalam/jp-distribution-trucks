@@ -12,11 +12,13 @@ export async function POST(request: NextRequest) {
     const { tag, path } = body;
 
     if (tag) {
+      // @ts-ignore
       revalidateTag(tag);
       console.log(`Revalidated cache tag: ${tag}`);
     }
     
     if (path) {
+      // @ts-ignore
       revalidatePath(path);
       console.log(`Revalidated cache path: ${path}`);
     }

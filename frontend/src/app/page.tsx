@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ShieldCheck, Settings, Globe, Truck, CheckCircle2, ChevronRight, Package, Wrench, Search, Star, HeartHandshake, ClipboardCheck, FileText, Ship, Phone, Mail, MessageCircle, HeadphonesIcon, Award, User, Shield, Mountain, Map, Briefcase, Network, Tent, Compass, Navigation } from "lucide-react";
+import { ArrowRight, ShieldCheck, Settings, Globe, Truck, CheckCircle2, ChevronRight, Package, Wrench, Search, Star, HeartHandshake, ClipboardCheck, FileText, Ship, Phone, Mail, MessageCircle, HeadphonesIcon, Award, User, Shield, Mountain, Map, Briefcase, Network, Tent, Compass, Navigation, Pickaxe, Target } from "lucide-react";
 import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { HeroQuoteButton } from "@/components/ui/hero-quote-button";
@@ -13,21 +13,53 @@ const WhatWeOfferCarousel = dynamic(() => import("@/components/ui/what-we-offer-
   ssr: true,
 });
 
-export default function Home() {
+export default async function Home() {
+  let pageConfig = null;
+  try {
+    const res = await fetch('http://localhost:5000/api/cms/pages/home', { cache: 'no-store' });
+    const data = await res.json();
+    if (data.success && data.data) {
+      pageConfig = data.data;
+    }
+  } catch (error) {
+    console.error('Failed to fetch home page config:', error);
+  }
+  const sections = pageConfig?.sections || [];
+  const getSection = (id: string) => sections.find((s: any) => s.id === id) || { enabled: true };
+
+  const heroSection = getSection('hero');
+  const ecosystemsSection = getSection('ecosystems');
+  const featuredSection = getSection('featured');
+  const testimonialsSection = getSection('testimonials');
+  const ctaSection = getSection('cta');
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* HERO & PROMISE FULL-SCREEN SECTION */}
+      {heroSection.enabled && (
       <section className="relative h-screen min-h-[700px] flex flex-col justify-between overflow-x-clip bg-black pt-[30px]">
         {/* Background Image & Overlays */}
         <div className="absolute inset-0 z-0 bg-black">
-          <video 
-            src="https://res.cloudinary.com/dd8a5dpnh/video/upload/f_auto,q_auto/v1781498582/jp-distribution/custom-builds/hero/custom-hero-bg.mp4" 
-            autoPlay 
-            loop 
-            muted 
-            playsInline
-            className="w-full h-full object-cover object-[70%_center] opacity-100"
-          />
+          {(() => {
+            const mediaUrl = heroSection.config?.backgroundImage || "https://res.cloudinary.com/dd8a5dpnh/video/upload/f_auto,q_auto/v1781498582/jp-distribution/custom-builds/hero/custom-hero-bg.mp4";
+            const isVideo = mediaUrl.match(/\.(mp4|webm|ogg)$/i) || mediaUrl.includes('/video/upload/');
+            if (isVideo) {
+              return (
+                <video 
+                  src={mediaUrl} 
+                  autoPlay loop muted playsInline
+                  className="w-full h-full object-cover object-[70%_center] opacity-100"
+                />
+              );
+            }
+            return (
+              <img 
+                src={mediaUrl} 
+                alt="Hero Background"
+                className="w-full h-full object-cover object-[70%_center] opacity-100"
+              />
+            );
+          })()}
           {/* Top 20% fade to black to merge with Navbar */}
           <div className="absolute top-0 left-0 w-full h-[30%] bg-gradient-to-b from-black via-black/80 to-transparent"></div>
           
@@ -53,13 +85,33 @@ export default function Home() {
               </h3>
               
               <h1 className="text-[2.2rem] sm:text-5xl md:text-6xl lg:text-5xl xl:text-[4.5rem] font-black leading-[0.95] mb-8 uppercase tracking-tighter drop-shadow-2xl overflow-visible">
-                <span className="animate-shine-white text-white block mb-2 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)] whitespace-nowrap">YOUR JOURNEY.</span>
-                <span className="animate-shine-red text-red-600 block drop-shadow-[0_0_40px_rgba(217,4,41,0.4)] whitespace-nowrap">OUR COMMITMENT.</span>
+                {(() => {
+                  const headingText = heroSection.config?.heading || 'YOUR JOURNEY.\nOUR COMMITMENT.';
+                  const parts = headingText.split('\n');
+                  const part1 = parts[0] ? parts[0].trim() : '';
+                  const part2 = parts[1] ? parts[1].trim() : '';
+                  return (
+                    <>
+                      <span className="animate-shine-white text-white block mb-2 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)] whitespace-nowrap">{part1 || headingText}</span>
+                      {part2 && <span className="animate-shine-red text-red-600 block drop-shadow-[0_0_40px_rgba(217,4,41,0.4)] whitespace-nowrap">{part2}</span>}
+                    </>
+                  );
+                })()}
               </h1>
               
               <div className="text-base sm:text-xl md:text-2xl text-gray-300 mb-12 max-w-[700px] leading-relaxed font-medium drop-shadow-md">
-                <p>We import, customize, and supply Toyota Hilux trucks and genuine parts from Thailand to Suriname and international markets.</p>
-                <p className="text-white font-bold tracking-wide mt-1">Built for adventure. Backed by trust. Delivered with care.</p>
+                {(() => {
+                  const subheadingText = heroSection.config?.subheading || 'We import, customize, and supply Toyota Hilux trucks and genuine parts from Thailand to Suriname and international markets.\nBuilt for adventure. Backed by trust. Delivered with care.';
+                  const lines = subheadingText.split('\n');
+                  return (
+                    <>
+                      <p>{lines[0]}</p>
+                      {lines.slice(1).map((line: string, i: number) => (
+                        <p key={i} className="text-white font-bold tracking-wide mt-1">{line}</p>
+                      ))}
+                    </>
+                  );
+                })()}
               </div>
               
               <div className="flex flex-col sm:flex-row gap-5 mb-6">
@@ -168,6 +220,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      )}
 
       {/* CORE BUSINESS SECTIONS */}
       <section className="pt-16 pb-10 bg-[#050505] relative z-20">
@@ -340,6 +393,7 @@ export default function Home() {
       </section>
 
       {/* ENTERPRISE MOBILITY VEHICLE ECOSYSTEM */}
+      {ecosystemsSection.enabled && (
       <section className="pt-10 pb-24 bg-gradient-to-b from-[#050505] to-black relative overflow-hidden">
         {/* Smooth transition fade if needed, though from-[#050505] handles it */}
         
@@ -359,8 +413,11 @@ export default function Home() {
         {/* Infinite Carousel Component */}
         <EnterpriseCarousel />
       </section>
+      )}
 
       {/* CUSTOM BUILDS */}
+      {featuredSection.enabled && (
+      <>
       <section className="pt-16 pb-20 bg-[#050505] relative z-20">
         {/* Seamless fade from black previous section to #050505 background */}
         <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-black to-transparent pointer-events-none"></div>
@@ -431,6 +488,79 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* MOBILITY ECOSYSTEMS */}
+      {ecosystemsSection.enabled && (
+      <section className="pt-24 pb-16 bg-[#0a0a0a] relative border-t border-white/5">
+        <div className="max-w-[1800px] mx-auto px-6 lg:px-16 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-4 uppercase tracking-tight">
+              {ecosystemsSection.config?.heading || 'Built For Every Ecosystem'}
+            </h2>
+            <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto font-medium">
+              {ecosystemsSection.config?.subheading || 'Discover how we tailor the Hilux for specific industries.'}
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {ecosystemsSection.config?.items?.map((item: any, idx: number) => {
+              const IconComp = item.icon === 'Globe' ? Globe : 
+                               item.icon === 'Package' ? Package : 
+                               item.icon === 'Truck' ? Truck : 
+                               item.icon === 'Wrench' ? Wrench : 
+                               item.icon === 'Target' ? Target : 
+                               item.icon === 'Settings' ? Settings : 
+                               item.icon === 'ShieldCheck' ? ShieldCheck : 
+                               item.icon === 'Pickaxe' ? Pickaxe : 
+                               Globe;
+              return (
+                <div key={idx} className="bg-[#111] border border-white/10 rounded-2xl overflow-hidden flex flex-col group hover:border-red-500/50 transition-colors">
+                  {item.img && (
+                    <div className="h-48 relative overflow-hidden shrink-0">
+                      <Image fill sizes="(max-width: 768px) 100vw, 33vw" loading="lazy" src={item.img} alt={item.title} className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-[#111]/40 to-transparent"></div>
+                    </div>
+                  )}
+                  <div className={`p-6 flex flex-col flex-1 relative ${item.img ? '-mt-12 z-10' : ''}`}>
+                    <div className="w-12 h-12 bg-black rounded-xl border border-white/10 flex items-center justify-center mb-4 group-hover:border-red-500/30 transition-colors shadow-lg">
+                      <IconComp className="w-6 h-6 text-red-500" />
+                    </div>
+                    <h3 className="text-xl font-bold text-white uppercase tracking-wide mb-3">{item.title}</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed mb-6">{item.desc}</p>
+                    
+                    {item.features && Array.isArray(item.features) && item.features.length > 0 && item.features[0] !== "" && (
+                      <div className="mb-6">
+                        <h4 className="text-[10px] uppercase text-zinc-500 font-bold tracking-widest mb-3">Key Features</h4>
+                        <ul className="space-y-2">
+                          {item.features.map((feat: string, i: number) => (
+                            <li key={i} className="flex items-start gap-2 text-xs text-gray-300">
+                              <span className="text-red-500 font-bold mt-0.5">•</span> {feat}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {item.specs && Object.keys(item.specs).length > 0 && (
+                      <div className="mt-auto pt-5 border-t border-white/5">
+                        <div className="grid grid-cols-2 gap-3">
+                          {Object.entries(item.specs).map(([key, val]: any, i: number) => (
+                            <div key={i}>
+                              <div className="text-[9px] text-gray-500 uppercase font-bold tracking-widest mb-0.5">{key}</div>
+                              <div className="text-xs font-semibold text-white truncate" title={val}>{val}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+      )}
 
       {/* GENUINE PARTS */}
       <section className="pt-8 pb-10 bg-[#050505] relative z-20">
@@ -521,9 +651,12 @@ export default function Home() {
           </div>
         </div>
       </section>
-
+      </>
+      )}
 
       {/* COMMITMENTS SECTION */}
+      {testimonialsSection.enabled && (
+      <>
       <section className="pt-10 pb-24 bg-[#0a0a0a] relative">
         {/* Seamless fade from #050505 background to #0a0a0a */}
         <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-[#050505] to-transparent pointer-events-none"></div>
@@ -752,8 +885,11 @@ export default function Home() {
           </div>
         </div>
       </section>
+      </>
+      )}
 
       {/* REDESIGNED CTA SECTION */}
+      {ctaSection.enabled && (
       <section className="relative bg-[#050505]">
         <div className="w-[96%] max-w-[1800px] mx-auto rounded-3xl overflow-hidden border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] bg-[#0a0c10]">
           
@@ -841,7 +977,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      )}
     </div>
   );
 }
-

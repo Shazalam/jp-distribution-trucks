@@ -7,8 +7,12 @@ import {
   ArrowRight, ShieldCheck, Truck, Wrench, Settings, Package, 
   Globe, CheckCircle2, ChevronRight, ChevronLeft, Phone, 
   Mail, MapPin, Target, Award, Zap, Activity, Navigation, Maximize, X, MessageCircle, HeadphonesIcon,
-  Search, ClipboardCheck, FileText, Ship
+  Search, ClipboardCheck, FileText, Ship, Pickaxe
 } from 'lucide-react';
+
+const IconMap: Record<string, React.ElementType> = {
+  Globe, Package, Truck, Wrench, Target, Settings, ShieldCheck, Pickaxe
+};
 import { Button } from "@/components/ui/button";
 import { CtaQuoteButton } from "@/components/ui/cta-quote-button";
 import dynamic from "next/dynamic";
@@ -87,7 +91,24 @@ const COMPARISON_DATA = [
   { id: "fleet", name: "Fleet Edition", engine: "2.4L Diesel", drive: "4x2 Standard", payload: "1,200 kg", suspension: "Heavy Duty Leaf", price: "$28,000" }
 ];
 
-export default function TrucksClient({ featuredTrucks }: { featuredTrucks: any[] }) {
+export default function TrucksClient({ featuredTrucks, pageConfig }: { featuredTrucks: any[], pageConfig?: any }) {
+  // Extract sections from pageConfig if available
+  const sections = pageConfig?.sections || [];
+  
+  const getSection = (id: string) => sections.find((s: any) => s.id === id) || { enabled: true, config: {} };
+  
+  const heroSection = getSection('hero');
+  const ecosystemsSection = getSection('ecosystems');
+  const featuredSection = getSection('featured');
+  const comparisonSection = getSection('comparison');
+  const processSection = getSection('process');
+  const ctaSection = getSection('cta');
+
+  // Filter trucks based on section selection if configured
+  const displayTrucks = featuredSection.selectedTruckIds?.length > 0 
+    ? featuredTrucks.filter(t => featuredSection.selectedTruckIds.includes(t._id))
+    : featuredTrucks;
+
   const [sliderPosition, setSliderPosition] = useState(50);
   const [activeEcosystem, setActiveEcosystem] = useState<any>(ECOSYSTEMS[0]);
   const [isRequesting, setIsRequesting] = useState(false);
@@ -173,40 +194,47 @@ export default function TrucksClient({ featuredTrucks }: { featuredTrucks: any[]
     <div className="min-h-[80vh] bg-[#050505] text-white selection:bg-red-600 selection:text-white">
       
       {/* 1. HERO SECTION */}
-      <section className="relative pt-24 pb-12 w-full flex flex-col items-center justify-center overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" priority src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498050/jp-distribution/home/hero/cinematic-hilux-hero.jpg" 
-            alt="Toyota Hilux Extreme" 
-            className="object-cover opacity-50 scale-105 animate-[slowZoom_20s_ease-in-out_infinite_alternate]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-black/40 to-[#050505]"></div>
-        </div>
+      {heroSection.enabled && (
+        <section className="relative pt-24 pb-12 w-full flex flex-col items-center justify-center overflow-hidden">
+          {/* Background Image */}
+          <div className="absolute inset-0 z-0">
+            <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" priority 
+              src={heroSection.config.backgroundImage || "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498050/jp-distribution/home/hero/cinematic-hilux-hero.jpg"}
+              alt="Toyota Hilux Extreme" 
+              className="object-cover opacity-50 scale-105 animate-[slowZoom_20s_ease-in-out_infinite_alternate]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-black/40 to-[#050505]"></div>
+          </div>
 
-        {/* Content */}
-        <div className="relative z-10 text-center px-6 max-w-7xl mx-auto mt-4">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tighter mb-6 leading-none drop-shadow-2xl">
-            Built For <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Every</span> Journey. <br className="hidden md:block"/>
-            <span className="text-red-600">Engineered</span> For Every Ecosystem.
-          </h1>
-          <p className="text-base md:text-lg text-gray-300 max-w-3xl mx-auto font-medium leading-relaxed drop-shadow-md">
-            From adventure-ready overland builds to commercial fleet solutions, discover Toyota Hilux trucks designed to perform in every environment and every industry.
-          </p>
-        </div>
-      </section>
+          {/* Content */}
+          <div className="relative z-10 text-center px-6 max-w-7xl mx-auto mt-4">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tighter mb-6 leading-none drop-shadow-2xl"
+                dangerouslySetInnerHTML={{ 
+                  __html: (!heroSection.config.heading || heroSection.config.heading === 'Built For Every Journey.\nEngineered For Every Ecosystem.') 
+                    ? 'Built For <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Every</span> Journey. <br class="hidden md:block"/><span class="text-red-600">Engineered</span> For Every Ecosystem.' 
+                    : heroSection.config.heading.replace(/\n/g, '<br/>')
+                }}
+            />
+            <p className="text-base md:text-lg text-gray-300 max-w-3xl mx-auto font-medium leading-relaxed drop-shadow-md">
+              {heroSection.config.subheading || 'From adventure-ready overland builds to commercial fleet solutions, discover Toyota Hilux trucks designed to perform in every environment and every industry.'}
+            </p>
+          </div>
+        </section>
+      )}
 
       {/* 2. MOBILITY ECOSYSTEMS SECTION */}
-      <section className="py-14 md:py-20 relative bg-[#050505]">
-        <div className="max-w-[1800px] mx-auto px-6 lg:px-16">
-          <div className="mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8">
-            <div className="max-w-3xl">
-              <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4 text-white">
-                Mobility <span className="text-red-600">Ecosystems</span>
-              </h2>
-              <p className="text-gray-400 text-lg md:text-xl font-medium">
-                We engineer purpose-built Hilux platforms tailored for specific industries, rigorous demands, and extreme environments.
-              </p>
-            </div>
+      {ecosystemsSection.enabled && (
+        <section className="py-14 md:py-20 relative bg-[#050505]">
+          <div className="max-w-[1800px] mx-auto px-6 lg:px-16">
+            <div className="mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8">
+              <div className="max-w-3xl">
+                <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4 text-white">
+                  {ecosystemsSection.config.heading || 'Mobility Ecosystems'}
+                </h2>
+                <p className="text-gray-400 text-lg md:text-xl font-medium">
+                  {ecosystemsSection.config.subheading || 'We engineer purpose-built Hilux platforms tailored for specific industries, rigorous demands, and extreme environments.'}
+                </p>
+              </div>
             <div className="shrink-0">
               <Button variant="outline" className="border-white/20 hover:bg-white/10 text-white rounded-sm h-12 px-6">
                 View All Ecosystems <ArrowRight className="ml-2 w-4 h-4" />
@@ -215,7 +243,10 @@ export default function TrucksClient({ featuredTrucks }: { featuredTrucks: any[]
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {ECOSYSTEMS.map((eco) => (
+            {(ecosystemsSection.config.items && ecosystemsSection.config.items.length > 0 ? ecosystemsSection.config.items : ECOSYSTEMS).map((eco: any) => {
+              const IconComponent = typeof eco.icon === 'string' ? (IconMap[eco.icon] || Globe) : null;
+              
+              return (
               <div 
                 key={eco.id} 
                 className="group relative h-[400px] rounded-xl overflow-hidden border border-white/10 bg-[#0a0a0a] cursor-pointer"
@@ -232,7 +263,7 @@ export default function TrucksClient({ featuredTrucks }: { featuredTrucks: any[]
                 {/* Content */}
                 <div className="absolute inset-0 p-8 flex flex-col justify-end z-10">
                   <div className="bg-red-600/20 w-12 h-12 rounded-lg flex items-center justify-center text-red-500 mb-6 border border-red-500/30 backdrop-blur-md group-hover:bg-red-600 group-hover:text-white transition-colors">
-                    {eco.icon}
+                    {IconComponent ? <IconComponent className="w-6 h-6" /> : eco.icon}
                   </div>
                   <h3 className="text-2xl font-bold uppercase tracking-wider mb-3 text-white group-hover:text-red-500 transition-colors">
                     {eco.title}
@@ -246,10 +277,13 @@ export default function TrucksClient({ featuredTrucks }: { featuredTrucks: any[]
                   </div>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
+    )}
+
 
       {/* 2.5 TRANSFORM YOUR PLATFORM - CONFIGURATOR */}
       <section id="configurator" className="py-24 bg-[#0a0c10] border-t border-white/5 relative overflow-hidden">
@@ -472,56 +506,57 @@ export default function TrucksClient({ featuredTrucks }: { featuredTrucks: any[]
       </section>
 
       {/* 3. FEATURED TRUCK COLLECTIONS */}
-      <section className="py-14 md:py-20 bg-[#0a0c10] border-y border-white/5 relative overflow-hidden">
-        {/* Subtle background glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-red-900/10 blur-[120px] rounded-full pointer-events-none"></div>
+      {featuredSection.enabled && (
+        <section className="py-14 md:py-20 bg-[#0a0c10] border-y border-white/5 relative overflow-hidden">
+          {/* Subtle background glow */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-red-900/10 blur-[120px] rounded-full pointer-events-none"></div>
 
-        <div className="max-w-[1800px] mx-auto px-6 lg:px-16 relative z-10">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4 text-white">
-              Featured <span className="text-red-600">Collections</span>
-            </h2>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              Browse our curated selection of premium Toyota Hilux builds ready for immediate deployment or global export.
-            </p>
-          </div>
+          <div className="max-w-[1800px] mx-auto px-6 lg:px-16 relative z-10">
+            <div className="text-center mb-20">
+              <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4 text-white"
+                  dangerouslySetInnerHTML={{ __html: featuredSection.config.heading || 'Featured <span class="text-red-600">Collections</span>' }}
+              />
+              <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+                {featuredSection.config.subheading || 'Browse our curated selection of premium Toyota Hilux builds ready for immediate deployment or global export.'}
+              </p>
+            </div>
 
-          <WhatWeOfferCarousel>
-            {featuredTrucks.map((truck: any, idx: number) => (
-              <div 
-                key={truck._id || idx} 
-                className="w-[350px] md:w-[400px] shrink-0 snap-center group cursor-pointer"
-                onClick={() => setActiveTruck(truck)}
-              >
-                <div className="relative h-[250px] md:h-[300px] rounded-2xl overflow-hidden mb-6 border border-white/10 bg-[#111]">
-                  {truck.images?.[0] && (
-                    <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={truck.images[0]} alt={truck.title} className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100" />
-                  )}
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-black/60 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold px-3 py-1.5 rounded-sm uppercase tracking-widest">
-                      {truck.condition || 'NEW'}
-                    </span>
-                  </div>
-                  <div className="absolute bottom-4 right-4">
-                    <span className="bg-red-600 text-white text-[12px] font-bold px-4 py-2 rounded-sm shadow-lg">
-                      ${truck.price?.toLocaleString() || 'POA'}
-                    </span>
-                  </div>
-                </div>
-                
-                <div>
-                  <h3 className="text-2xl font-black uppercase tracking-wide mb-4 group-hover:text-red-500 transition-colors">
-                    {truck.title}
-                  </h3>
-                  <div className="grid grid-cols-2 gap-y-3 gap-x-6 text-sm text-gray-400 mb-6 font-medium">
-                    <div className="flex flex-col border-b border-white/5 pb-2">
-                       <span className="text-[10px] text-gray-600 uppercase tracking-widest mb-1">Brand</span>
-                      <span className="text-white">{truck.brand}</span>
+            <WhatWeOfferCarousel>
+              {displayTrucks.map((truck: any, idx: number) => (
+                <div 
+                  key={truck._id || idx} 
+                  className="w-[350px] md:w-[400px] shrink-0 snap-center group cursor-pointer"
+                  onClick={() => setActiveTruck(truck)}
+                >
+                  <div className="relative h-[250px] md:h-[300px] rounded-2xl overflow-hidden mb-6 border border-white/10 bg-[#111]">
+                    {truck.images?.[0] && (
+                      <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={truck.images[0]} alt={truck.title} className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100" />
+                    )}
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-black/60 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold px-3 py-1.5 rounded-sm uppercase tracking-widest">
+                        {truck.condition || 'NEW'}
+                      </span>
                     </div>
-                    <div className="flex flex-col border-b border-white/5 pb-2">
-                      <span className="text-[10px] text-gray-600 uppercase tracking-widest mb-1">Model</span>
-                      <span className="text-white">{truck.model}</span>
+                    <div className="absolute bottom-4 right-4">
+                      <span className="bg-red-600 text-white text-[12px] font-bold px-4 py-2 rounded-sm shadow-lg">
+                        ${truck.price?.toLocaleString() || 'POA'}
+                      </span>
                     </div>
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-2xl font-black uppercase tracking-wide mb-4 group-hover:text-red-500 transition-colors">
+                      {truck.title}
+                    </h3>
+                    <div className="grid grid-cols-2 gap-y-3 gap-x-6 text-sm text-gray-400 mb-6 font-medium">
+                      <div className="flex flex-col border-b border-white/5 pb-2">
+                         <span className="text-[10px] text-gray-600 uppercase tracking-widest mb-1">Brand</span>
+                        <span className="text-white">{truck.brand}</span>
+                      </div>
+                      <div className="flex flex-col border-b border-white/5 pb-2">
+                        <span className="text-[10px] text-gray-600 uppercase tracking-widest mb-1">Model</span>
+                        <span className="text-white">{truck.model}</span>
+                      </div>
                     <div className="flex flex-col border-b border-white/5 pb-2">
                       <span className="text-[10px] text-gray-600 uppercase tracking-widest mb-1">Year</span>
                       <span className="text-white">{truck.year}</span>
@@ -540,241 +575,250 @@ export default function TrucksClient({ featuredTrucks }: { featuredTrucks: any[]
           </WhatWeOfferCarousel>
         </div>
       </section>
+      )}
 
 
 
       {/* 5. TRUCK COMPARISON TOOL */}
-      <section className="py-14 md:py-20 bg-[#0a0c10] border-y border-white/5">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-16">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-black uppercase tracking-tight mb-4 text-white">
-              Platform <span className="text-red-600">Comparison</span>
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">Compare technical specifications across our most popular Hilux build platforms.</p>
-          </div>
+      {comparisonSection.enabled && (
+        <section className="py-14 md:py-20 bg-[#0a0c10] border-y border-white/5">
+          <div className="max-w-[1400px] mx-auto px-6 lg:px-16">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-black uppercase tracking-tight mb-4 text-white"
+                  dangerouslySetInnerHTML={{ __html: comparisonSection.config.heading || 'Platform <span class="text-red-600">Comparison</span>' }}
+              />
+              <p className="text-gray-400 max-w-2xl mx-auto">
+                {comparisonSection.config.subheading || 'Compare technical specifications across our most popular Hilux build platforms.'}
+              </p>
+            </div>
 
-          <div className="overflow-x-auto rounded-xl border border-white/10 bg-[#050505]">
-            <table className="w-full min-w-[800px] text-left border-collapse">
-              <thead>
-                <tr className="border-b border-white/10 bg-white/5">
-                  <th className="p-6 text-gray-400 font-bold uppercase tracking-widest text-xs w-1/4">Specification</th>
-                  <th className="p-6 text-white font-bold uppercase tracking-widest text-sm w-1/4">
-                    <select 
-                      value={col1Id} 
-                      onChange={(e) => setCol1Id(e.target.value)}
-                      className="bg-[#111] border border-white/20 text-white rounded px-2 py-1 focus:outline-none focus:border-red-500 w-full"
-                    >
-                      {COMPARISON_DATA.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
-                    </select>
-                  </th>
-                  <th className="p-6 text-white font-bold uppercase tracking-widest text-sm w-1/4">
-                    <select 
-                      value={col2Id} 
-                      onChange={(e) => setCol2Id(e.target.value)}
-                      className="bg-[#111] border border-white/20 text-white rounded px-2 py-1 focus:outline-none focus:border-red-500 w-full"
-                    >
-                      {COMPARISON_DATA.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
-                    </select>
-                  </th>
-                  <th className="p-6 text-white font-bold uppercase tracking-widest text-sm w-1/4 border-l border-red-500/30 bg-red-900/10">
-                    <select 
-                      value={col3Id} 
-                      onChange={(e) => setCol3Id(e.target.value)}
-                      className="bg-[#111] border border-red-500/50 text-white rounded px-2 py-1 focus:outline-none focus:border-red-500 w-full"
-                    >
-                      {COMPARISON_DATA.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
-                    </select>
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="text-sm font-medium text-gray-300">
-                <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                  <td className="p-6 text-gray-500 uppercase tracking-widest text-xs">Engine</td>
-                  <td className="p-6">{col1.engine}</td>
-                  <td className="p-6">{col2.engine}</td>
-                  <td className="p-6 border-l border-white/5 text-white">{col3.engine}</td>
-                </tr>
-                <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                  <td className="p-6 text-gray-500 uppercase tracking-widest text-xs">Drivetrain</td>
-                  <td className="p-6">{col1.drive}</td>
-                  <td className="p-6">{col2.drive}</td>
-                  <td className="p-6 border-l border-white/5 text-white">{col3.drive}</td>
-                </tr>
-                <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                  <td className="p-6 text-gray-500 uppercase tracking-widest text-xs">Payload Capacity</td>
-                  <td className="p-6">{col1.payload}</td>
-                  <td className="p-6">{col2.payload}</td>
-                  <td className="p-6 border-l border-white/5 text-white">{col3.payload}</td>
-                </tr>
-                <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                  <td className="p-6 text-gray-500 uppercase tracking-widest text-xs">Suspension</td>
-                  <td className="p-6">{col1.suspension}</td>
-                  <td className="p-6">{col2.suspension}</td>
-                  <td className="p-6 border-l border-white/5 text-white">{col3.suspension}</td>
-                </tr>
-                <tr className="hover:bg-white/5 transition-colors">
-                  <td className="p-6 text-gray-500 uppercase tracking-widest text-xs">Starting Price</td>
-                  <td className="p-6 font-bold">{col1.price}</td>
-                  <td className="p-6 font-bold">{col2.price}</td>
-                  <td className="p-6 border-l border-white/5 font-bold text-red-500">{col3.price}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div className="overflow-x-auto rounded-xl border border-white/10 bg-[#050505]">
+              <table className="w-full min-w-[800px] text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-white/10 bg-white/5">
+                    <th className="p-6 text-gray-400 font-bold uppercase tracking-widest text-xs w-1/4">Specification</th>
+                    <th className="p-6 text-white font-bold uppercase tracking-widest text-sm w-1/4">
+                      <select 
+                        value={col1Id} 
+                        onChange={(e) => setCol1Id(e.target.value)}
+                        className="bg-[#111] border border-white/20 text-white rounded px-2 py-1 focus:outline-none focus:border-red-500 w-full"
+                      >
+                        {COMPARISON_DATA.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+                      </select>
+                    </th>
+                    <th className="p-6 text-white font-bold uppercase tracking-widest text-sm w-1/4">
+                      <select 
+                        value={col2Id} 
+                        onChange={(e) => setCol2Id(e.target.value)}
+                        className="bg-[#111] border border-white/20 text-white rounded px-2 py-1 focus:outline-none focus:border-red-500 w-full"
+                      >
+                        {COMPARISON_DATA.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+                      </select>
+                    </th>
+                    <th className="p-6 text-white font-bold uppercase tracking-widest text-sm w-1/4 border-l border-red-500/30 bg-red-900/10">
+                      <select 
+                        value={col3Id} 
+                        onChange={(e) => setCol3Id(e.target.value)}
+                        className="bg-[#111] border border-red-500/50 text-white rounded px-2 py-1 focus:outline-none focus:border-red-500 w-full"
+                      >
+                        {COMPARISON_DATA.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+                      </select>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="text-sm font-medium text-gray-300">
+                  <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                    <td className="p-6 text-gray-500 uppercase tracking-widest text-xs">Engine</td>
+                    <td className="p-6">{col1.engine}</td>
+                    <td className="p-6">{col2.engine}</td>
+                    <td className="p-6 border-l border-white/5 text-white">{col3.engine}</td>
+                  </tr>
+                  <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                    <td className="p-6 text-gray-500 uppercase tracking-widest text-xs">Drivetrain</td>
+                    <td className="p-6">{col1.drive}</td>
+                    <td className="p-6">{col2.drive}</td>
+                    <td className="p-6 border-l border-white/5 text-white">{col3.drive}</td>
+                  </tr>
+                  <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                    <td className="p-6 text-gray-500 uppercase tracking-widest text-xs">Payload Capacity</td>
+                    <td className="p-6">{col1.payload}</td>
+                    <td className="p-6">{col2.payload}</td>
+                    <td className="p-6 border-l border-white/5 text-white">{col3.payload}</td>
+                  </tr>
+                  <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                    <td className="p-6 text-gray-500 uppercase tracking-widest text-xs">Suspension</td>
+                    <td className="p-6">{col1.suspension}</td>
+                    <td className="p-6">{col2.suspension}</td>
+                    <td className="p-6 border-l border-white/5 text-white">{col3.suspension}</td>
+                  </tr>
+                  <tr className="hover:bg-white/5 transition-colors">
+                    <td className="p-6 text-gray-500 uppercase tracking-widest text-xs">Starting Price</td>
+                    <td className="p-6 font-bold">{col1.price}</td>
+                    <td className="p-6 font-bold">{col2.price}</td>
+                    <td className="p-6 border-l border-white/5 font-bold text-red-500">{col3.price}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 6. IMPORT PROCESS TIMELINE & TRUST */}
-      <section className="py-14 md:py-20 bg-[#050505] relative overflow-hidden">
-        <div className="max-w-[1800px] mx-auto px-6 lg:px-16">
-          <div className="text-center mb-16">
-            <h4 className="text-red-600 font-bold text-xs md:text-sm mb-3 uppercase tracking-widest">THAILAND TO SURINAME</h4>
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white mb-8 uppercase tracking-tight">
-              OUR JOURNEY. YOUR PEACE OF MIND.
-            </h2>
-          </div>
-
-          {/* Horizontal Timeline */}
-          <div className="relative w-full overflow-x-auto mb-16 pb-8 pt-4 hide-scrollbar [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-            {/* The Connecting Line */}
-            <div className="absolute top-[56px] left-[7%] w-[86%] h-[2px] bg-red-600/10 z-0 hidden lg:block overflow-hidden rounded-full">
-              <div 
-                className="absolute top-0 bottom-0 w-40 bg-gradient-to-r from-transparent via-red-500 to-transparent"
-                style={{
-                  boxShadow: "0 0 20px 4px rgba(220, 38, 38, 0.9)",
-                  animation: "movingLight 8s linear infinite"
-                }}
-              ></div>
-              <style>{`
-                @keyframes movingLight {
-                  0% { left: -20%; }
-                  100% { left: 120%; }
-                }
-              `}</style>
+      {processSection.enabled && (
+        <section className="py-14 md:py-20 bg-[#050505] relative overflow-hidden">
+          <div className="max-w-[1800px] mx-auto px-6 lg:px-16">
+            <div className="text-center mb-16">
+              <h4 className="text-red-600 font-bold text-xs md:text-sm mb-3 uppercase tracking-widest">THAILAND TO SURINAME</h4>
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white mb-8 uppercase tracking-tight"
+                  dangerouslySetInnerHTML={{ __html: processSection.config.heading || 'OUR JOURNEY. YOUR PEACE OF MIND.' }}
+              />
             </div>
-            
-            <div className="flex flex-nowrap lg:grid lg:grid-cols-7 gap-6 min-w-max lg:min-w-0 relative z-10">
+
+            {/* Horizontal Timeline */}
+            <div className="relative w-full overflow-x-auto mb-16 pb-8 pt-4 hide-scrollbar [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              {/* The Connecting Line */}
+              <div className="absolute top-[56px] left-[7%] w-[86%] h-[2px] bg-red-600/10 z-0 hidden lg:block overflow-hidden rounded-full">
+                <div 
+                  className="absolute top-0 bottom-0 w-40 bg-gradient-to-r from-transparent via-red-500 to-transparent"
+                  style={{
+                    boxShadow: "0 0 20px 4px rgba(220, 38, 38, 0.9)",
+                    animation: "movingLight 8s linear infinite"
+                  }}
+                ></div>
+                <style>{`
+                  @keyframes movingLight {
+                    0% { left: -20%; }
+                    100% { left: 120%; }
+                  }
+                `}</style>
+              </div>
               
-              {/* Step 1 */}
-              <div className="flex flex-col items-center w-[160px] lg:w-auto shrink-0 relative group">
-                <div className="w-20 h-20 rounded-full border-2 border-red-600 bg-[#080b12] flex items-center justify-center mb-6 relative z-10 group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] transition-all duration-300">
-                  <Search className="w-8 h-8 text-white" />
+              <div className="flex flex-nowrap lg:grid lg:grid-cols-7 gap-6 min-w-max lg:min-w-0 relative z-10">
+                
+                {/* Step 1 */}
+                <div className="flex flex-col items-center w-[160px] lg:w-auto shrink-0 relative group">
+                  <div className="w-20 h-20 rounded-full border-2 border-red-600 bg-[#080b12] flex items-center justify-center mb-6 relative z-10 group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] transition-all duration-300">
+                    <Search className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-red-500 font-bold text-sm mb-1 tracking-wider">01</div>
+                  <h4 className="text-white font-bold text-[13px] md:text-sm uppercase mb-3">SOURCING</h4>
+                  <p className="text-gray-400 text-xs text-center leading-relaxed px-2">Carefully selected from trusted dealers in Thailand.</p>
                 </div>
-                <div className="text-red-500 font-bold text-sm mb-1 tracking-wider">01</div>
-                <h4 className="text-white font-bold text-[13px] md:text-sm uppercase mb-3">SOURCING</h4>
-                <p className="text-gray-400 text-xs text-center leading-relaxed px-2">Carefully selected from trusted dealers in Thailand.</p>
-              </div>
 
-              {/* Step 2 */}
-              <div className="flex flex-col items-center w-[160px] lg:w-auto shrink-0 relative group">
-                <div className="w-20 h-20 rounded-full border-2 border-red-600 bg-[#080b12] flex items-center justify-center mb-6 relative z-10 group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] transition-all duration-300">
-                  <ClipboardCheck className="w-8 h-8 text-white" />
+                {/* Step 2 */}
+                <div className="flex flex-col items-center w-[160px] lg:w-auto shrink-0 relative group">
+                  <div className="w-20 h-20 rounded-full border-2 border-red-600 bg-[#080b12] flex items-center justify-center mb-6 relative z-10 group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] transition-all duration-300">
+                    <ClipboardCheck className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-red-500 font-bold text-sm mb-1 tracking-wider">02</div>
+                  <h4 className="text-white font-bold text-[13px] md:text-sm uppercase mb-3">INSPECTION</h4>
+                  <p className="text-gray-400 text-xs text-center leading-relaxed px-2">120+ point inspection for quality, performance & reliability.</p>
                 </div>
-                <div className="text-red-500 font-bold text-sm mb-1 tracking-wider">02</div>
-                <h4 className="text-white font-bold text-[13px] md:text-sm uppercase mb-3">INSPECTION</h4>
-                <p className="text-gray-400 text-xs text-center leading-relaxed px-2">120+ point inspection for quality, performance & reliability.</p>
-              </div>
 
-              {/* Step 3 */}
-              <div className="flex flex-col items-center w-[160px] lg:w-auto shrink-0 relative group">
-                <div className="w-20 h-20 rounded-full border-2 border-red-600 bg-[#080b12] flex items-center justify-center mb-6 relative z-10 group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] transition-all duration-300">
-                  <Wrench className="w-8 h-8 text-white" />
+                {/* Step 3 */}
+                <div className="flex flex-col items-center w-[160px] lg:w-auto shrink-0 relative group">
+                  <div className="w-20 h-20 rounded-full border-2 border-red-600 bg-[#080b12] flex items-center justify-center mb-6 relative z-10 group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] transition-all duration-300">
+                    <Wrench className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-red-500 font-bold text-sm mb-1 tracking-wider">03</div>
+                  <h4 className="text-white font-bold text-[13px] md:text-sm uppercase mb-3">CUSTOMIZATION</h4>
+                  <p className="text-gray-400 text-xs text-center leading-relaxed px-2">Built to your needs with expert craftsmanship & premium parts.</p>
                 </div>
-                <div className="text-red-500 font-bold text-sm mb-1 tracking-wider">03</div>
-                <h4 className="text-white font-bold text-[13px] md:text-sm uppercase mb-3">CUSTOMIZATION</h4>
-                <p className="text-gray-400 text-xs text-center leading-relaxed px-2">Built to your needs with expert craftsmanship & premium parts.</p>
-              </div>
 
-              {/* Step 4 */}
-              <div className="flex flex-col items-center w-[160px] lg:w-auto shrink-0 relative group">
-                <div className="w-20 h-20 rounded-full border-2 border-red-600 bg-[#080b12] flex items-center justify-center mb-6 relative z-10 group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] transition-all duration-300">
-                  <FileText className="w-8 h-8 text-white" />
+                {/* Step 4 */}
+                <div className="flex flex-col items-center w-[160px] lg:w-auto shrink-0 relative group">
+                  <div className="w-20 h-20 rounded-full border-2 border-red-600 bg-[#080b12] flex items-center justify-center mb-6 relative z-10 group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] transition-all duration-300">
+                    <FileText className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-red-500 font-bold text-sm mb-1 tracking-wider">04</div>
+                  <h4 className="text-white font-bold text-[13px] md:text-sm uppercase mb-3">EXPORT</h4>
+                  <p className="text-gray-400 text-xs text-center leading-relaxed px-2">Documentation, customs clearance & secure loading.</p>
                 </div>
-                <div className="text-red-500 font-bold text-sm mb-1 tracking-wider">04</div>
-                <h4 className="text-white font-bold text-[13px] md:text-sm uppercase mb-3">EXPORT</h4>
-                <p className="text-gray-400 text-xs text-center leading-relaxed px-2">Documentation, customs clearance & secure loading.</p>
-              </div>
 
-              {/* Step 5 */}
-              <div className="flex flex-col items-center w-[160px] lg:w-auto shrink-0 relative group">
-                <div className="w-20 h-20 rounded-full border-2 border-red-600 bg-[#080b12] flex items-center justify-center mb-6 relative z-10 group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] transition-all duration-300">
-                  <Ship className="w-8 h-8 text-white" />
+                {/* Step 5 */}
+                <div className="flex flex-col items-center w-[160px] lg:w-auto shrink-0 relative group">
+                  <div className="w-20 h-20 rounded-full border-2 border-red-600 bg-[#080b12] flex items-center justify-center mb-6 relative z-10 group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] transition-all duration-300">
+                    <Ship className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-red-500 font-bold text-sm mb-1 tracking-wider">05</div>
+                  <h4 className="text-white font-bold text-[13px] md:text-sm uppercase mb-3">OCEAN FREIGHT</h4>
+                  <p className="text-gray-400 text-xs text-center leading-relaxed px-2">Safe & insured shipping across the ocean to Suriname.</p>
                 </div>
-                <div className="text-red-500 font-bold text-sm mb-1 tracking-wider">05</div>
-                <h4 className="text-white font-bold text-[13px] md:text-sm uppercase mb-3">OCEAN FREIGHT</h4>
-                <p className="text-gray-400 text-xs text-center leading-relaxed px-2">Safe & insured shipping across the ocean to Suriname.</p>
-              </div>
 
-              {/* Step 6 */}
-              <div className="flex flex-col items-center w-[160px] lg:w-auto shrink-0 relative group">
-                <div className="w-20 h-20 rounded-full border-2 border-red-600 bg-[#080b12] flex items-center justify-center mb-6 relative z-10 group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] transition-all duration-300">
-                  <ShieldCheck className="w-8 h-8 text-white" />
+                {/* Step 6 */}
+                <div className="flex flex-col items-center w-[160px] lg:w-auto shrink-0 relative group">
+                  <div className="w-20 h-20 rounded-full border-2 border-red-600 bg-[#080b12] flex items-center justify-center mb-6 relative z-10 group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] transition-all duration-300">
+                    <ShieldCheck className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-red-500 font-bold text-sm mb-1 tracking-wider">06</div>
+                  <h4 className="text-white font-bold text-[13px] md:text-sm uppercase mb-3">ARRIVAL</h4>
+                  <p className="text-gray-400 text-xs text-center leading-relaxed px-2">Cleared through customs & prepared for delivery.</p>
                 </div>
-                <div className="text-red-500 font-bold text-sm mb-1 tracking-wider">06</div>
-                <h4 className="text-white font-bold text-[13px] md:text-sm uppercase mb-3">ARRIVAL</h4>
-                <p className="text-gray-400 text-xs text-center leading-relaxed px-2">Cleared through customs & prepared for delivery.</p>
-              </div>
 
-              {/* Step 7 */}
-              <div className="flex flex-col items-center w-[160px] lg:w-auto shrink-0 relative group">
-                <div className="w-20 h-20 rounded-full border-2 border-red-600 bg-[#080b12] flex items-center justify-center mb-6 relative z-10 group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] transition-all duration-300">
-                  <Package className="w-8 h-8 text-white" />
+                {/* Step 7 */}
+                <div className="flex flex-col items-center w-[160px] lg:w-auto shrink-0 relative group">
+                  <div className="w-20 h-20 rounded-full border-2 border-red-600 bg-[#080b12] flex items-center justify-center mb-6 relative z-10 group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] transition-all duration-300">
+                    <Package className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-red-500 font-bold text-sm mb-1 tracking-wider">07</div>
+                  <h4 className="text-white font-bold text-[13px] md:text-sm uppercase mb-3">DELIVERY</h4>
+                  <p className="text-gray-400 text-xs text-center leading-relaxed px-2">Delivered to your door ready for the road.</p>
                 </div>
-                <div className="text-red-500 font-bold text-sm mb-1 tracking-wider">07</div>
-                <h4 className="text-white font-bold text-[13px] md:text-sm uppercase mb-3">DELIVERY</h4>
-                <p className="text-gray-400 text-xs text-center leading-relaxed px-2">Delivered to your door ready for the road.</p>
-              </div>
 
+              </div>
             </div>
+
+
           </div>
-
-
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 7. REDESIGNED CTA SECTION */}
-      <section className="relative bg-[#050505]">
-        <div className="w-[96%] max-w-[1800px] mx-auto rounded-3xl overflow-hidden border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] bg-[#0a0c10]">
-          
-          {/* Top Image Banner */}
-          <div className="relative w-full h-[250px] md:h-[300px] lg:h-[350px]">
-            <div className="absolute inset-0 z-0">
-               <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498069/jp-distribution/shared/backgrounds/unique-hilux-cta.jpg" 
-                alt="Unique Off-Road Toyota Hilux" 
-                className="object-cover object-[70%_center] opacity-60"
-              />
-              {/* Gradients to fade left text area and bottom for the info bar */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent"></div>
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0c10] via-transparent to-transparent"></div>
-            </div>
+      {ctaSection.enabled && (
+        <section className="relative bg-[#050505]">
+          <div className="w-[96%] max-w-[1800px] mx-auto rounded-3xl overflow-hidden border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] bg-[#0a0c10]">
             
-            <div className="px-6 lg:px-16 h-full relative z-10 flex flex-col justify-center">
-              <div className="max-w-3xl mt-4">
-                <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-4 uppercase tracking-tight">
-                  READY TO IMPORT, BUILD, OR SOURCE?
-                </h2>
-                <p className="text-gray-300 text-lg md:text-xl mb-10 max-w-2xl font-medium leading-relaxed">
-                  Partner with a trusted Toyota Hilux import and parts specialist committed to quality, transparency, and your success.
-                </p>
-                
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <CtaQuoteButton text="REQUEST A QUOTE" initialInquiryType="truck" />
+            {/* Top Image Banner */}
+            <div className="relative w-full h-[250px] md:h-[300px] lg:h-[350px]">
+              <div className="absolute inset-0 z-0">
+                 <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498069/jp-distribution/shared/backgrounds/unique-hilux-cta.jpg" 
+                  alt="Unique Off-Road Toyota Hilux" 
+                  className="object-cover object-[70%_center] opacity-60"
+                />
+                {/* Gradients to fade left text area and bottom for the info bar */}
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0c10] via-transparent to-transparent"></div>
+              </div>
+              
+              <div className="px-6 lg:px-16 h-full relative z-10 flex flex-col justify-center">
+                <div className="max-w-3xl mt-4">
+                  <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-4 uppercase tracking-tight"
+                      dangerouslySetInnerHTML={{ __html: ctaSection.config.heading || 'READY TO IMPORT, BUILD, OR SOURCE?' }}
+                  />
+                  <p className="text-gray-300 text-lg md:text-xl mb-10 max-w-2xl font-medium leading-relaxed">
+                    {ctaSection.config.subheading || 'Partner with a trusted Toyota Hilux import and parts specialist committed to quality, transparency, and your success.'}
+                  </p>
                   
-                  {/* Whatsapp button with the distinct color bar from the design */}
-                  <Link href="https://wa.me/5978520700" target="_blank" className="w-full sm:w-auto">
-                    <Button size="lg" variant="outline" className="w-full relative overflow-hidden bg-black/40 border-white/20 hover:bg-white/10 text-white font-bold h-14 px-8 text-sm uppercase rounded backdrop-blur-sm group transition-all">
-                      <span className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-green-400 to-green-600 shadow-[0_0_10px_rgba(34,197,94,0.5)]"></span>
-                      <span className="absolute left-[3px] top-0 bottom-0 w-[2px] bg-red-600"></span>
-                      <MessageCircle className="w-5 h-5 mr-3 text-white hidden group-hover:block transition-all" />
-                      WHATSAPP SUPPORT
-                    </Button>
-                  </Link>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <CtaQuoteButton text="REQUEST A QUOTE" initialInquiryType="truck" />
+                    
+                    {/* Whatsapp button with the distinct color bar from the design */}
+                    <Link href="https://wa.me/5978520700" target="_blank" className="w-full sm:w-auto">
+                      <Button size="lg" variant="outline" className="w-full relative overflow-hidden bg-black/40 border-white/20 hover:bg-white/10 text-white font-bold h-14 px-8 text-sm uppercase rounded backdrop-blur-sm group transition-all">
+                        <span className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-green-400 to-green-600 shadow-[0_0_10px_rgba(34,197,94,0.5)]"></span>
+                        <span className="absolute left-[3px] top-0 bottom-0 w-[2px] bg-red-600"></span>
+                        <MessageCircle className="w-5 h-5 mr-3 text-white hidden group-hover:block transition-all" />
+                        WHATSAPP SUPPORT
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
 
 

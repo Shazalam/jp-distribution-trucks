@@ -1,0 +1,52 @@
+{
+  "sections": [
+    {
+      "id": "categories",
+      "name": "Categories",
+      "type": "categories",
+      "enabled": true,
+      "config": {
+        "heading": "Parts Inventory",
+        "subheading": "Filter through our comprehensive catalog or explore the most queried components across all categories.",
+        "items": [
+          { "id": 1, "title": "Suspension", "desc": "Heavy duty leaf springs and shocks." }
+        ]
+      },
+      "selectedTruckIds": []
+    },
+    {
+      "id": "hero",
+      "name": "Hero Banner",
+      "type": "hero",
+      "enabled": true,
+      "config": {
+        "heading": "Parts & Supply",
+        "subheading": "Discover a comprehensive catalog of genuine Toyota components and accessories.",
+        "backgroundImage": "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498084/jp-distribution/wholesale-retail/cards/wholesale-parts.jpg"
+      },
+      "selectedTruckIds": []
+    },
+    {
+      "id": "featured",
+      "name": "Featured Parts",
+      "type": "featured",
+      "enabled": true,
+      "config": {
+        "heading": "Featured Parts",
+        "subheading": "Top rated components for immediate shipping."
+      },
+      "selectedTruckIds": []
+    },
+    {
+      "id": "cta",
+      "name": "Call To Action",
+      "type": "cta",
+      "enabled": true,
+      "config": {
+        "heading": "Need Something Specific?",
+        "subheading": "Our parts locator service can find anything."
+      },
+      "selectedTruckIds": []
+    }
+  ]
+}

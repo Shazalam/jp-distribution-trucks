@@ -195,30 +195,66 @@ export default function PartsSupplyPage() {
     }
   };
 
+  const [apiParts, setApiParts] = useState<any[]>([]);
+  const [pageConfig, setPageConfig] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [partsRes, configRes] = await Promise.all([
+          fetch('http://localhost:5000/api/cms/parts'),
+          fetch('http://localhost:5000/api/cms/pages/parts')
+        ]);
+        const partsData = await partsRes.json();
+        const configData = await configRes.json();
+
+        if (partsData.success) {
+          // Filter to only show published parts
+          setApiParts(partsData.data.filter((p: any) => p.status === 'Published'));
+        }
+        if (configData.success && configData.data) {
+          setPageConfig(configData.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch parts or config:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
   // Compute displayed parts based on selection
-  const displayedParts = DUMMY_PARTS.filter(part => {
+  const displayedParts = apiParts.filter(part => {
     // 1. Search Query filter (overrides all)
     if (searchQuery.trim() !== "") {
       const q = searchQuery.toLowerCase();
       return part.name.toLowerCase().includes(q) || 
-             part.category.toLowerCase().includes(q) || 
-             part.subcategory.toLowerCase().includes(q);
+             part.category?.toLowerCase().includes(q) || 
+             part.description?.toLowerCase().includes(q);
     }
-    // 2. Category/Subcategory filters
-    if (activeSubcategory) return part.subcategory === activeSubcategory;
+    // 2. Category filters
     if (activeCategory) return part.category === activeCategory;
     
-    // 3. Default View (Most Queried)
-    return part.popular; 
+    return true; 
   });
+
+  const sections = pageConfig?.sections || [];
+  const getSection = (id: string) => sections.find((s: any) => s.id === id) || { enabled: true };
+  const heroSection = getSection('hero');
+  const categoriesSection = getSection('categories');
+  const featuredSection = getSection('featured');
+  const ctaSection = getSection('cta');
 
   return (
     <div className="min-h-[80vh] bg-[#050505] text-white selection:bg-red-600 selection:text-white pb-20">
       
       {/* 1. HERO SECTION */}
+      {heroSection.enabled && (
       <section className="relative pt-24 pb-8 w-full flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498084/jp-distribution/wholesale-retail/cards/wholesale-parts.jpg" 
+          <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={heroSection.config?.backgroundImage || "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498084/jp-distribution/wholesale-retail/cards/wholesale-parts.jpg"} 
             alt="Premium Toyota Parts Warehouse" 
             className="object-cover opacity-50 scale-105 animate-[slowZoom_20s_ease-in-out_infinite_alternate]"
           />
@@ -227,15 +263,27 @@ export default function PartsSupplyPage() {
 
         <div className="relative z-10 text-center px-6 max-w-7xl mx-auto mt-4">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tighter mb-6 leading-none drop-shadow-2xl">
-            Quality Parts. <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-900">Unmatched Reliability.</span>
+            {(() => {
+              const headingText = heroSection.config?.heading || 'Built Beyond Boundaries.';
+              const parts = headingText.split('.');
+              const part1 = parts[0] ? parts[0].trim() + (headingText.includes('.') ? '.' : '') : '';
+              const part2 = parts[1] ? parts[1].trim() + (parts.length > 2 || headingText.endsWith('.') ? '.' : '') : '';
+              return (
+                <>
+                  {part1} {part2 && <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-900">{part2}</span>}
+                </>
+              );
+            })()}
           </h1>
           <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto font-medium leading-relaxed drop-shadow-md">
-            Access genuine Toyota components, performance upgrades, overland equipment, and hard-to-find parts sourced directly from trusted suppliers in Thailand.
+            {heroSection.config?.subheading || "Transforming Toyota Hilux trucks into purpose-built machines engineered for adventure, business, utility, and extreme environments."}
           </p>
         </div>
       </section>
+      )}
 
       {/* 2. PARTS INVENTORY (SPLIT LAYOUT) */}
+      {categoriesSection.enabled && (
       <section id="parts-inventory" className="py-24 relative bg-[#050505] border-t border-white/5">
         <div className="max-w-[1800px] mx-auto px-6 lg:px-16">
           <div className="text-center mb-16">
@@ -337,11 +385,16 @@ export default function PartsSupplyPage() {
                 </span>
               </div>
 
-              {displayedParts.length > 0 ? (
+              {isLoading ? (
+                <div className="w-full h-64 flex flex-col items-center justify-center text-gray-500">
+                  <Activity className="w-8 h-8 mb-4 opacity-50 animate-pulse" />
+                  <p className="text-sm font-bold uppercase tracking-widest">Loading Parts...</p>
+                </div>
+              ) : displayedParts.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                   {displayedParts.map((part, idx) => (
                     <div 
-                      key={idx} 
+                      key={part._id || idx} 
                       className="bg-[#111] border border-white/5 rounded-2xl overflow-hidden group hover:border-red-600/30 transition-all flex flex-col h-[400px] cursor-pointer"
                       onClick={() => {
                         setSelectedPart(part);
@@ -350,7 +403,9 @@ export default function PartsSupplyPage() {
                       }}
                     >
                       <div className="h-1/2 relative overflow-hidden bg-black shrink-0">
-                        <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={part.img} alt={part.name} className="object-cover group-hover:scale-110 group-hover:opacity-100 opacity-80 transition-all duration-700" />
+                        {part.images?.[0] && (
+                          <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={part.images[0]} alt={part.name} className="object-cover group-hover:scale-110 group-hover:opacity-100 opacity-80 transition-all duration-700" />
+                        )}
                         <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent opacity-100"></div>
                         {part.popular && !activeCategory && !activeSubcategory && (
                            <div className="absolute top-4 left-4">
@@ -362,10 +417,10 @@ export default function PartsSupplyPage() {
                       </div>
                       
                       <div className="h-1/2 p-5 flex flex-col flex-grow relative bg-[#111] z-10 -mt-2">
-                        <div className="text-red-500 font-bold tracking-widest uppercase text-[10px] mb-2">{part.subcategory}</div>
+                        <div className="text-red-500 font-bold tracking-widest uppercase text-[10px] mb-2">{part.subcategory || part.category}</div>
                         <h3 className="text-lg font-black text-white uppercase tracking-wide leading-tight mb-2 line-clamp-1">{part.name}</h3>
                         <p className="text-gray-400 text-xs leading-relaxed mb-4 flex-grow line-clamp-2">
-                          {part.price}
+                          ${part.price?.toLocaleString()}
                         </p>
                         <div className="mt-auto">
                            <Button className="w-full bg-white/5 hover:bg-red-600 text-white font-bold tracking-widest uppercase text-xs transition-all border border-white/10 hover:border-red-600 group-hover:shadow-[0_0_15px_rgba(220,38,38,0.3)]">
@@ -386,8 +441,10 @@ export default function PartsSupplyPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* 3. FEATURED COLLECTIONS */}
+      {featuredSection.enabled && (
       <section className="py-14 md:py-20 bg-[#0a0a0a] border-y border-white/5">
         <div className="max-w-[1800px] mx-auto px-6 lg:px-16">
           <div className="text-center mb-16">
@@ -421,6 +478,7 @@ export default function PartsSupplyPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* 4. SPECIAL PARTS LOCATOR */}
       <section className="py-14 md:py-20 bg-[#050505] relative overflow-hidden">
@@ -584,8 +642,8 @@ export default function PartsSupplyPage() {
         </div>
       </section>
 
-
-      {/* REDESIGNED CTA SECTION */}
+      {/* 9. FINAL CTA */}
+      {ctaSection.enabled && (
       <section className="relative bg-[#050505] overflow-hidden">
         <div className="w-[96%] max-w-[1800px] mx-auto rounded-3xl overflow-hidden border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] bg-[#0a0c10]">
           
@@ -628,6 +686,7 @@ export default function PartsSupplyPage() {
 
         </div>
       </section>
+      )}
 
       {/* PART DETAILS MODAL */}
       {selectedPart && (
@@ -650,11 +709,13 @@ export default function PartsSupplyPage() {
 
               {/* Image Side (Cinematic slow pan) */}
               <div className="w-full md:w-1/2 h-64 md:h-auto relative overflow-hidden bg-black">
-                <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={selectedPart.img} 
-                  alt={selectedPart.name} 
-                  className="object-cover opacity-80"
-                  style={{ animation: 'slowPan 20s linear infinite alternate' }}
-                />
+                {selectedPart.images?.[0] && (
+                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={selectedPart.images[0]} 
+                    alt={selectedPart.name} 
+                    className="object-cover opacity-80"
+                    style={{ animation: 'slowPan 20s linear infinite alternate' }}
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent md:bg-gradient-to-r"></div>
                 <style>{`
                   @keyframes slowPan {
@@ -671,13 +732,13 @@ export default function PartsSupplyPage() {
                   <>
                     <div>
                       <div className="text-red-500 font-bold uppercase tracking-widest text-xs mb-2">
-                        {selectedPart.category} / {selectedPart.subcategory}
+                        {selectedPart.category} {selectedPart.subcategory && `/ ${selectedPart.subcategory}`}
                       </div>
                       <h2 className="text-2xl md:text-3xl font-black uppercase tracking-wide text-white mb-4">
                         {selectedPart.name}
                       </h2>
                       <div className="text-xl text-gray-300 font-bold tracking-widest mb-6">
-                        {selectedPart.price}
+                        ${selectedPart.price?.toLocaleString()}
                       </div>
                       <p className="text-gray-400 text-lg md:text-xl leading-relaxed mb-8">
                         Experience ultimate performance and reliability with the {selectedPart.name}. Sourced directly from our premium networks in Thailand, guaranteeing authenticity and peak functionality for your vehicle.

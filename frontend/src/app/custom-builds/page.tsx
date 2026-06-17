@@ -102,7 +102,11 @@ export default function CustomBuildsPage() {
   
   const [activeMission, setActiveMission] = useState(0);
   const [activeConfigTab, setActiveConfigTab] = useState(CONFIG_CATEGORIES[0]);
-  const [selectedBuild, setSelectedBuild] = useState<{title: string, desc: string, img: string} | null>(null);
+  const [selectedBuild, setSelectedBuild] = useState<any | null>(null);
+  
+  const [customBuilds, setCustomBuilds] = useState<any[]>([]);
+  const [pageConfig, setPageConfig] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const initialOptions = CONFIG_CATEGORIES.reduce((acc, cat) => {
     acc[cat] = 1;
@@ -113,6 +117,32 @@ export default function CustomBuildsPage() {
   const [quoteRequirements, setQuoteRequirements] = useState("");
 
   const configuratorRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [buildsRes, configRes] = await Promise.all([
+          fetch('http://localhost:5000/api/cms/trucks?type=Custom%20Build'),
+          fetch('http://localhost:5000/api/cms/pages/custom-builds')
+        ]);
+        const buildsData = await buildsRes.json();
+        const configData = await configRes.json();
+
+        if (buildsData.success) {
+          // Filter to only show published builds
+          setCustomBuilds(buildsData.data.filter((b: any) => b.status === 'Published'));
+        }
+        if (configData.success && configData.data) {
+          setPageConfig(configData.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
 
   const handleConfigureMission = () => {
     let newOptions = { ...initialOptions };
@@ -157,22 +187,30 @@ export default function CustomBuildsPage() {
   }, []);
 
   // Compute displayed builds based on selection
-  const displayedBuilds = BUILD_CATEGORIES.filter(cat => {
+  const displayedBuilds = customBuilds.filter(cat => {
     if (searchQuery.trim() !== "") {
       const q = searchQuery.toLowerCase();
-      return cat.title.toLowerCase().includes(q) || cat.desc.toLowerCase().includes(q);
+      return cat.title.toLowerCase().includes(q) || cat.description.toLowerCase().includes(q);
     }
-    if (activeCategory) return cat.title === activeCategory;
-    return true; // default show all
+    return true;
   });
+
+  const sections = pageConfig?.sections || [];
+  const getSection = (id: string) => sections.find((s: any) => s.id === id) || { enabled: true };
+  const heroSection = getSection('hero');
+  const featuredSection = getSection('featured');
+  const processSection = getSection('process');
+  const ctaSection = getSection('cta');
+  const gallerySection = getSection('gallery'); // Assuming gallery falls back to enabled:true
 
   return (
     <div className="min-h-[80vh] bg-[#050505] text-white selection:bg-red-600 selection:text-white pb-20">
       
       {/* 1. HERO SECTION (Compact Banner Style) */}
+      {heroSection.enabled && (
       <section className="relative pt-24 pb-8 w-full flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" priority src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498050/jp-distribution/home/hero/cinematic-hilux-hero.jpg" 
+          <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" priority src={heroSection.config?.backgroundImage || "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498050/jp-distribution/home/hero/cinematic-hilux-hero.jpg"} 
             alt="Custom Toyota Hilux Build" 
             className="object-cover opacity-60 scale-105 animate-[slowZoom_20s_ease-in-out_infinite_alternate]"
           />
@@ -181,15 +219,28 @@ export default function CustomBuildsPage() {
 
         <div className="relative z-10 text-center px-6 max-w-7xl mx-auto mt-4">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tighter mb-6 leading-none drop-shadow-2xl">
-            Built Beyond <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-900">Boundaries.</span>
+            {(() => {
+              const headingText = heroSection.config?.heading || 'Built Beyond Boundaries.';
+              const words = headingText.split(' ');
+              const lastWord = words.length > 1 ? words.pop() : '';
+              const rest = words.join(' ');
+              return (
+                <>
+                  {rest} {lastWord && <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-900">{lastWord}</span>}
+                </>
+              );
+            })()}
           </h1>
           <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto font-medium leading-relaxed drop-shadow-md">
-            Transforming Toyota Hilux trucks into purpose-built machines engineered for adventure, business, utility, and extreme environments.
+            {heroSection.config?.subheading || "Transforming Toyota Hilux trucks into purpose-built machines engineered for adventure, business, utility, and extreme environments."}
           </p>
         </div>
       </section>
+      )}
 
       {/* 2. PLATFORM CATEGORIES (Sidebar / Grid Layout) */}
+      {featuredSection.enabled && (
+      <>
       <section className="py-24 relative bg-[#050505] border-t border-white/5">
         <div className="max-w-[1800px] mx-auto px-6 lg:px-16">
           <div className="text-center mb-16">
@@ -268,22 +319,29 @@ export default function CustomBuildsPage() {
                 </span>
               </div>
 
-              {displayedBuilds.length > 0 ? (
+              {isLoading ? (
+                <div className="w-full h-64 flex flex-col items-center justify-center text-gray-500">
+                  <Activity className="w-8 h-8 mb-4 opacity-50 animate-pulse" />
+                  <p className="text-sm font-bold uppercase tracking-widest">Loading Platforms...</p>
+                </div>
+              ) : displayedBuilds.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {displayedBuilds.map((cat, idx) => (
                     <div 
-                      key={idx} 
-                      onClick={() => setSelectedBuild(cat)}
+                      key={cat._id || idx} 
+                      onClick={() => setSelectedBuild({ title: cat.title, desc: cat.description, img: cat.images?.[0] || '' })}
                       className="group bg-[#111] border border-white/5 rounded-xl overflow-hidden hover:border-red-500/30 transition-all flex flex-col h-full relative cursor-pointer"
                     >
                       <div className="h-56 overflow-hidden relative bg-[#0a0a0a]">
-                        <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={cat.img} alt={cat.title} className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
+                        {cat.images?.[0] && (
+                          <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={cat.images[0]} alt={cat.title} className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
+                        )}
                         <div className="absolute inset-0 bg-gradient-to-t from-[#111] to-transparent"></div>
                       </div>
                       <div className="p-6 flex flex-col flex-1 relative z-10 -mt-6">
                         <div className="text-[10px] text-red-500 font-bold uppercase tracking-widest mb-1">Custom Platform</div>
                         <h4 className="text-white font-bold uppercase tracking-wide text-sm mb-2 leading-relaxed">{cat.title}</h4>
-                        <p className="text-gray-400 text-xs mb-6 leading-relaxed line-clamp-2">{cat.desc}</p>
+                        <p className="text-gray-400 text-xs mb-6 leading-relaxed line-clamp-2">{cat.description}</p>
                         <div className="mt-auto flex items-center justify-between">
                            <span className="text-gray-500 font-bold tracking-widest text-[10px] uppercase">Base Vehicle</span>
                            <Button size="sm" variant="outline" className="h-8 text-[10px] font-bold tracking-widest uppercase bg-transparent border-white/20 text-white hover:bg-white hover:text-black">
@@ -344,6 +402,8 @@ export default function CustomBuildsPage() {
           </div>
         </div>
       </section>
+      </>
+      )}
 
       {/* 4. WHY BUILD WITH JP DISTRIBUTION */}
       <section className="py-24 bg-[#050505]">
@@ -521,6 +581,7 @@ export default function CustomBuildsPage() {
       </section>
 
       {/* 7. GALLERY SECTION */}
+      {gallerySection.enabled && (
       <section className="py-24 bg-[#111] border-y border-white/5">
         <div className="max-w-[1800px] mx-auto px-6 lg:px-16">
           <div className="text-center mb-16">
@@ -549,8 +610,10 @@ export default function CustomBuildsPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* 8. FINAL CTA */}
+      {ctaSection.enabled && (
       <section className="relative bg-[#050505]">
         <div className="w-[96%] max-w-[1800px] mx-auto rounded-3xl overflow-hidden border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] bg-[#0a0c10]">
           <div className="relative w-full h-[250px] md:h-[300px] lg:h-[350px]">
@@ -591,6 +654,7 @@ export default function CustomBuildsPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* BUILD DETAILS MODAL */}
       {selectedBuild && (

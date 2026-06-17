@@ -14,7 +14,7 @@ import { TruckEditorModal, Truck, EMPTY_TRUCK } from '@/components/admin/TruckEd
 
 const API_BASE = 'http://localhost:5000/api/cms';
 
-export default function TrucksCMSDashboard() {
+export default function CustomBuildsDashboard() {
   const [trucks, setTrucks] = useState<Truck[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -29,7 +29,7 @@ export default function TrucksCMSDashboard() {
 
   const fetchTrucks = useCallback(async () => {
     try {
-      const res = await fetch(`${API_BASE}/trucks`);
+      const res = await fetch(`${API_BASE}/trucks?type=Custom%20Build`);
       const data = await res.json();
       if (data.success) setTrucks(data.data);
     } catch (error) {
@@ -137,6 +137,7 @@ export default function TrucksCMSDashboard() {
         onClose={() => setShowForm(false)} 
         onSave={() => fetchTrucks()} 
         truckToEdit={editingTruck} 
+        fixedType="Custom Build"
       />
 
       {/* ═══════════════════════════════════════ */}
@@ -147,11 +148,11 @@ export default function TrucksCMSDashboard() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">Trucks CMS</h1>
-            <p className="text-zinc-400 text-sm mt-1">Manage all your vehicle listings. {trucks.length} truck{trucks.length !== 1 ? 's' : ''} total.</p>
+            <h1 className="text-2xl font-bold">Custom Builds Inventory</h1>
+            <p className="text-zinc-400 text-sm mt-1">Manage your custom builds inventory.</p>
           </div>
           <Button onClick={handleCreate} className="bg-red-600 hover:bg-red-700 text-white gap-2">
-            <Plus size={18} /> New Truck
+            <Plus size={16} /> New Custom Build
           </Button>
         </div>
 
@@ -164,8 +165,8 @@ export default function TrucksCMSDashboard() {
         {trucks.length === 0 && (
           <div className="text-center py-20 text-zinc-500">
             <Loader2 size={40} className="mx-auto mb-4 opacity-30" />
-            <p className="text-lg font-semibold">No trucks found</p>
-            <p className="text-sm">Click &quot;New Truck&quot; to add your first listing.</p>
+            <p className="text-lg font-semibold">No custom builds found</p>
+            <p className="text-sm">Click &quot;New Custom Build&quot; to add your first listing.</p>
           </div>
         )}
 
