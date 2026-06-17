@@ -147,7 +147,7 @@ export default function WholesaleRetailPage() {
             {/* The Connecting Line */}
             <div className="absolute top-[56px] left-[8%] w-[84%] h-[2px] bg-red-600/10 z-0 hidden lg:block overflow-hidden rounded-full">
               <div 
-                className="absolute top-0 bottom-0 w-40 bg-gradient-to-r from-transparent via-red-500 to-transparent"
+                className="absolute top-0 bottom-0 w-40 bg-gradient-to-r from-transparent via-red-500 to-transparent left-0"
                 style={{
                   boxShadow: "0 0 20px 4px rgba(220, 38, 38, 0.9)",
                   animation: "movingLight 8s linear infinite"
@@ -155,8 +155,8 @@ export default function WholesaleRetailPage() {
               ></div>
               <style>{`
                 @keyframes movingLight {
-                  0% { left: -20%; }
-                  100% { left: 120%; }
+                  0% { transform: translateX(-160px); }
+                  100% { transform: translateX(85vw); }
                 }
               `}</style>
             </div>

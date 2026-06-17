@@ -2,13 +2,13 @@
 
 import { useRef, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
+import Image from "next/image";
 import Link from "next/link";
 
 const CARDS = [
   {
     id: 1,
-    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498076/jp-distribution/trucks/cards/truck-1.png",
+    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto,w_600,h_800,c_fill/v1781498076/jp-distribution/trucks/cards/truck-1.png",
     badge: "ADVENTURE",
     badgeColor: "bg-emerald-600",
     title: "HILUX REVO ADVENTURE",
@@ -19,7 +19,7 @@ const CARDS = [
   },
   {
     id: 2,
-    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498078/jp-distribution/trucks/cards/truck-2.png",
+    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto,w_600,h_800,c_fill/v1781498078/jp-distribution/trucks/cards/truck-2.png",
     badge: "EXPEDITION",
     badgeColor: "bg-teal-700",
     title: "HILUX TRAVO EXPEDITION",
@@ -30,7 +30,7 @@ const CARDS = [
   },
   {
     id: 3,
-    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498080/jp-distribution/trucks/cards/truck-3.png",
+    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto,w_600,h_800,c_fill/v1781498080/jp-distribution/trucks/cards/truck-3.png",
     badge: "OVERLAND",
     badgeColor: "bg-red-700",
     title: "HILUX VIGO OVERLAND",
@@ -41,7 +41,7 @@ const CARDS = [
   },
   {
     id: 4,
-    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498081/jp-distribution/trucks/cards/truck-4.png",
+    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto,w_600,h_800,c_fill/v1781498081/jp-distribution/trucks/cards/truck-4.png",
     badge: "CLASSIC",
     badgeColor: "bg-emerald-800",
     title: "HILUX TIGER CLASSIC",
@@ -52,7 +52,7 @@ const CARDS = [
   },
   {
     id: 5,
-    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498071/jp-distribution/trucks/cards/black-edition.png",
+    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto,w_600,h_800,c_fill/v1781498071/jp-distribution/trucks/cards/black-edition.png",
     badge: "LUXURY",
     badgeColor: "bg-blue-600",
     title: "HILUX BLACK EDITION",
@@ -63,7 +63,7 @@ const CARDS = [
   },
   {
     id: 6,
-    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498047/jp-distribution/custom-builds/cards/desert-runner.png",
+    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto,w_600,h_800,c_fill/v1781498047/jp-distribution/custom-builds/cards/desert-runner.png",
     badge: "EXTREME",
     badgeColor: "bg-amber-600",
     title: "HILUX DESERT RUNNER",
@@ -74,7 +74,7 @@ const CARDS = [
   },
   {
     id: 7,
-    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498073/jp-distribution/trucks/cards/fleet-edition.png",
+    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto,w_600,h_800,c_fill/v1781498073/jp-distribution/trucks/cards/fleet-edition.png",
     badge: "COMMERCIAL",
     badgeColor: "bg-emerald-600",
     title: "HILUX FLEET EDITION",
@@ -85,7 +85,7 @@ const CARDS = [
   },
   {
     id: 8,
-    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498075/jp-distribution/trucks/cards/nomad-edition.png",
+    image: "https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto,w_600,h_800,c_fill/v1781498075/jp-distribution/trucks/cards/nomad-edition.png",
     badge: "CAMPER",
     badgeColor: "bg-purple-600",
     title: "HILUX NOMAD EDITION",
@@ -142,12 +142,14 @@ export function EnterpriseCarousel() {
       <button 
         onClick={handleScrollLeft}
         className="absolute left-0 md:left-4 top-1/2 -translate-y-1/2 z-20 bg-black/60 hover:bg-red-600 border border-white/20 text-white p-3 rounded-full backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-[0_0_20px_rgba(0,0,0,0.5)]"
+        aria-label="Previous slide"
       >
         <ChevronLeft className="w-6 h-6" />
       </button>
       <button 
         onClick={handleScrollRight}
         className="absolute right-0 md:right-4 top-1/2 -translate-y-1/2 z-20 bg-black/60 hover:bg-red-600 border border-white/20 text-white p-3 rounded-full backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-[0_0_20px_rgba(0,0,0,0.5)]"
+        aria-label="Next slide"
       >
         <ChevronRight className="w-6 h-6" />
       </button>
@@ -175,10 +177,12 @@ export function EnterpriseCarousel() {
                 className="w-[300px] h-[400px] md:w-[360px] md:h-[480px] rounded-xl overflow-hidden group/card border border-white/10 hover:border-red-500/50 transition-all duration-500 relative flex flex-col cursor-pointer shrink-0"
               >
                 {/* Background Image */}
-                <img 
+                <Image 
                   src={card.image} 
                   alt={card.title} 
-                  className="absolute inset-0 w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-700 opacity-90 group-hover/card:opacity-100" 
+                  fill
+                  sizes="(max-width: 768px) 300px, 360px"
+                  className="object-cover group-hover/card:scale-105 transition-transform duration-700 opacity-90 group-hover/card:opacity-100" 
                 />
                 
                 {/* Dark Gradient Overlay for text readability */}

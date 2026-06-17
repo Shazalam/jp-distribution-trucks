@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { HeroQuoteButton } from "@/components/ui/hero-quote-button";
 import { CtaQuoteButton } from "@/components/ui/cta-quote-button";
+import { optimizeImageUrl } from "@/lib/utils";
 
 const EnterpriseCarousel = dynamic(() => import("@/components/ui/enterprise-carousel").then(mod => mod.EnterpriseCarousel), {
   ssr: true,
@@ -53,10 +54,14 @@ export default async function Home() {
               );
             }
             return (
-              <img 
+              <Image 
                 src={mediaUrl} 
                 alt="Hero Background"
-                className="w-full h-full object-cover object-[70%_center] opacity-100"
+                fill
+                priority
+                fetchPriority="high"
+                sizes="100vw"
+                className="object-cover object-[70%_center] opacity-100"
               />
             );
           })()}
@@ -71,7 +76,7 @@ export default async function Home() {
           <div className="absolute inset-0 shadow-[inset_0_0_150px_rgba(0,0,0,0.8)]"></div>
           
           {/* Subtle particles/fog simulation (CSS) */}
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 mix-blend-screen animate-pulse pointer-events-none"></div>
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.15%22/%3E%3C/svg%3E')] opacity-20 mix-blend-screen animate-pulse pointer-events-none"></div>
         </div>
 
         {/* MAIN HERO CONTENT */}
@@ -92,8 +97,8 @@ export default async function Home() {
                   const part2 = parts[1] ? parts[1].trim() : '';
                   return (
                     <>
-                      <span className="animate-shine-white text-white block mb-2 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)] whitespace-nowrap">{part1 || headingText}</span>
-                      {part2 && <span className="animate-shine-red text-red-600 block drop-shadow-[0_0_40px_rgba(217,4,41,0.4)] whitespace-nowrap">{part2}</span>}
+                      <span className="bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent block mb-2 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)] whitespace-nowrap">{part1 || headingText}</span>
+                      {part2 && <span className="bg-gradient-to-r from-red-500 via-red-600 to-red-800 bg-clip-text text-transparent block drop-shadow-[0_0_40px_rgba(217,4,41,0.4)] whitespace-nowrap">{part2}</span>}
                     </>
                   );
                 })()}
@@ -236,7 +241,8 @@ export default async function Home() {
             </p>
           </div>
 
-          <WhatWeOfferCarousel>
+          <div className="min-h-[460px] md:min-h-[520px]">
+            <WhatWeOfferCarousel>
             
             {/* Truck Imports */}
             <Link href="/trucks" className="group block h-full w-[320px] md:w-[350px] shrink-0 snap-center">
@@ -251,7 +257,7 @@ export default async function Home() {
                 {/* Image */}
                 <div className="h-48 overflow-hidden relative shrink-0 z-10">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://images.unsplash.com/photo-1559416523-140ddc3d238c?q=80&w=2069&auto=format&fit=crop" alt="Truck Imports" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={optimizeImageUrl("https://images.unsplash.com/photo-1559416523-140ddc3d238c?q=80&w=2069&auto=format&fit=crop", 500, 300)} alt="Truck Imports" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
                 </div>
                 {/* Glassmorphism Text Below */}
                 <div className="p-6 flex flex-col flex-1 bg-white/5 backdrop-blur-md z-20">
@@ -276,7 +282,7 @@ export default async function Home() {
                 </div>
                 <div className="h-48 overflow-hidden relative shrink-0 z-10">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498047/jp-distribution/custom-builds/cards/desert-runner.png" alt="Custom Builds" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={optimizeImageUrl("https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498047/jp-distribution/custom-builds/cards/desert-runner.png", 500, 300)} alt="Custom Builds" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
                 </div>
                 <div className="p-6 flex flex-col flex-1 bg-white/5 backdrop-blur-md z-20">
                   <p className="text-gray-300 font-serif text-sm leading-relaxed mb-6">
@@ -300,7 +306,7 @@ export default async function Home() {
                 </div>
                 <div className="h-48 overflow-hidden relative shrink-0 z-10">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498085/jp-distribution/wholesale-retail/hero/premium-wholesale-parts.jpg" alt="Parts Supply" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={optimizeImageUrl("https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498085/jp-distribution/wholesale-retail/hero/premium-wholesale-parts.jpg", 500, 300)} alt="Parts Supply" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
                 </div>
                 <div className="p-6 flex flex-col flex-1 bg-white/5 backdrop-blur-md z-20">
                   <p className="text-gray-300 font-serif text-sm leading-relaxed mb-6">
@@ -327,14 +333,14 @@ export default async function Home() {
                 </div>
                 <div className="h-48 overflow-hidden relative shrink-0 z-10">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498052/jp-distribution/home/sections/parts-locator.png" alt="Parts Locator" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={optimizeImageUrl("https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498052/jp-distribution/home/sections/parts-locator.png", 500, 300)} alt="Parts Locator" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
                 </div>
                 <div className="p-6 flex flex-col flex-1 bg-white/5 backdrop-blur-md z-20">
                   <p className="text-gray-300 font-serif text-sm leading-relaxed mb-6">
                     Can&apos;t find a rare part? Use our smart form to request rare parts. Just enter your vehicle model, VIN, and upload a reference image.
                   </p>
                   <span className="text-red-500 font-serif font-bold text-sm flex items-center group-hover:translate-x-2 transition-transform mt-auto">
-                    Find My Part <ArrowRight className="ml-2 h-4 w-4" />
+                    Request Part <ArrowRight className="ml-2 h-4 w-4" />
                   </span>
                 </div>
               </div>
@@ -351,7 +357,7 @@ export default async function Home() {
                 </div>
                 <div className="h-48 overflow-hidden relative shrink-0 z-10">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498084/jp-distribution/wholesale-retail/cards/wholesale-parts.jpg" alt="Wholesale Orders" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={optimizeImageUrl("https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498084/jp-distribution/wholesale-retail/cards/wholesale-parts.jpg", 500, 300)} alt="Wholesale Orders" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
                 </div>
                 <div className="p-6 flex flex-col flex-1 bg-white/5 backdrop-blur-md z-20">
                   <p className="text-gray-300 font-serif text-sm leading-relaxed mb-6">
@@ -375,7 +381,7 @@ export default async function Home() {
                 </div>
                 <div className="h-48 overflow-hidden relative shrink-0 z-10">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498070/jp-distribution/shared/icons/safe-shipping.jpg" alt="Export & Logistics" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                  <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={optimizeImageUrl("https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498070/jp-distribution/shared/icons/safe-shipping.jpg", 500, 300)} alt="Export & Logistics" className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
                 </div>
                 <div className="p-6 flex flex-col flex-1 bg-white/5 backdrop-blur-md z-20">
                   <p className="text-gray-300 font-serif text-sm leading-relaxed mb-6">
@@ -388,7 +394,8 @@ export default async function Home() {
               </div>
             </Link>
 
-          </WhatWeOfferCarousel>
+            </WhatWeOfferCarousel>
+          </div>
         </div>
       </section>
 
@@ -411,7 +418,9 @@ export default async function Home() {
         </div>
 
         {/* Infinite Carousel Component */}
-        <EnterpriseCarousel />
+        <div className="min-h-[420px] md:min-h-[500px]">
+          <EnterpriseCarousel />
+        </div>
       </section>
       )}
 
@@ -435,7 +444,7 @@ export default async function Home() {
             
             {/* Build 1 */}
             <div className="relative h-72 md:h-80 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors bg-[#111]">
-              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498040/jp-distribution/custom-builds/cards/build-1.png" alt="Expedition Builds" className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={optimizeImageUrl("https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498040/jp-distribution/custom-builds/cards/build-1.png", 600, 600)} alt="Expedition Builds" className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-transparent to-black/80"></div>
               <div className="absolute inset-0 p-6 flex flex-col">
                 <h3 className="text-white font-bold text-lg uppercase mb-2">EXPEDITION BUILDS</h3>
@@ -448,7 +457,7 @@ export default async function Home() {
 
             {/* Build 2 */}
             <div className="relative h-72 md:h-80 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors bg-[#111]">
-              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498042/jp-distribution/custom-builds/cards/build-2.png" alt="Adventure Builds" className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={optimizeImageUrl("https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498042/jp-distribution/custom-builds/cards/build-2.png", 600, 600)} alt="Adventure Builds" className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-transparent to-black/80"></div>
               <div className="absolute inset-0 p-6 flex flex-col">
                 <h3 className="text-white font-bold text-lg uppercase mb-2">ADVENTURE BUILDS</h3>
@@ -461,7 +470,7 @@ export default async function Home() {
 
             {/* Build 3 */}
             <div className="relative h-72 md:h-80 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors bg-[#111]">
-              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498044/jp-distribution/custom-builds/cards/build-3.png" alt="Commercial Builds" className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={optimizeImageUrl("https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498044/jp-distribution/custom-builds/cards/build-3.png", 600, 600)} alt="Commercial Builds" className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-transparent to-black/80"></div>
               <div className="absolute inset-0 p-6 flex flex-col">
                 <h3 className="text-white font-bold text-lg uppercase mb-2">COMMERCIAL BUILDS</h3>
@@ -474,7 +483,7 @@ export default async function Home() {
 
             {/* Build 4 */}
             <div className="relative h-72 md:h-80 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors bg-[#111]">
-              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498046/jp-distribution/custom-builds/cards/build-4.png" alt="Extreme Builds" className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src={optimizeImageUrl("https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498046/jp-distribution/custom-builds/cards/build-4.png", 600, 600)} alt="Extreme Builds" className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-transparent to-black/80"></div>
               <div className="absolute inset-0 p-6 flex flex-col">
                 <h3 className="text-white font-bold text-lg uppercase mb-2">EXTREME BUILDS</h3>
@@ -578,7 +587,7 @@ export default async function Home() {
             
             {/* Part 1 */}
             <Link href="/parts-supply?category=OEM Genuine Parts" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
-              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498058/jp-distribution/parts-supply/categories/parts-engine.png" alt="Engine Components" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498058/jp-distribution/parts-supply/categories/parts-engine.png" alt="" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-[#0d1117]/20 to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4 flex items-center gap-3">
                 <div className="w-8 h-8 rounded bg-[#111] border border-red-600 flex items-center justify-center text-red-500 shrink-0 shadow-[0_0_10px_rgba(217,4,41,0.3)]">
@@ -590,7 +599,7 @@ export default async function Home() {
 
             {/* Part 2 */}
             <Link href="/parts-supply?category=Suspension %26 Lift Kits" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
-              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498063/jp-distribution/parts-supply/categories/parts-suspension.png" alt="Suspension Systems" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498063/jp-distribution/parts-supply/categories/parts-suspension.png" alt="" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-[#0d1117]/20 to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4 flex items-center gap-3">
                 <div className="w-8 h-8 rounded bg-[#111] border border-red-600 flex items-center justify-center text-red-500 shrink-0 shadow-[0_0_10px_rgba(217,4,41,0.3)]">
@@ -602,7 +611,7 @@ export default async function Home() {
 
             {/* Part 3 */}
             <Link href="/parts-supply?category=Lighting Systems" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
-              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498056/jp-distribution/parts-supply/categories/parts-electrical.png" alt="Electrical & Lighting" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498056/jp-distribution/parts-supply/categories/parts-electrical.png" alt="" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-[#0d1117]/20 to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4 flex items-center gap-3">
                 <div className="w-8 h-8 rounded bg-[#111] border border-red-600 flex items-center justify-center text-red-500 shrink-0 shadow-[0_0_10px_rgba(217,4,41,0.3)]">
@@ -614,7 +623,7 @@ export default async function Home() {
 
             {/* Part 4 */}
             <Link href="/parts-supply?category=Overland Equipment" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
-              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498060/jp-distribution/parts-supply/categories/parts-overland.png" alt="Overland Equipment" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498060/jp-distribution/parts-supply/categories/parts-overland.png" alt="" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-[#0d1117]/20 to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4 flex items-center gap-3">
                 <div className="w-8 h-8 rounded bg-[#111] border border-red-600 flex items-center justify-center text-red-500 shrink-0 shadow-[0_0_10px_rgba(217,4,41,0.3)]">
@@ -626,7 +635,7 @@ export default async function Home() {
 
             {/* Part 5 */}
             <Link href="/parts-supply?category=Body %26 Exterior Parts" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
-              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498054/jp-distribution/parts-supply/categories/parts-body.png" alt="Body & Exterior" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498054/jp-distribution/parts-supply/categories/parts-body.png" alt="" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-[#0d1117]/20 to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4 flex items-center gap-3">
                 <div className="w-8 h-8 rounded bg-[#111] border border-red-600 flex items-center justify-center text-red-500 shrink-0 shadow-[0_0_10px_rgba(217,4,41,0.3)]">
@@ -638,7 +647,7 @@ export default async function Home() {
 
             {/* Part 6 */}
             <Link href="/parts-supply?category=Performance Upgrades" className="relative h-40 md:h-48 rounded-xl overflow-hidden group border border-white/10 hover:border-red-500/50 transition-colors block bg-[#111]">
-              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498061/jp-distribution/parts-supply/categories/parts-performance.png" alt="Performance Parts" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
+              <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" loading="lazy" src="https://res.cloudinary.com/dd8a5dpnh/image/upload/f_auto,q_auto/v1781498061/jp-distribution/parts-supply/categories/parts-performance.png" alt="" className="object-cover opacity-60 group-hover:scale-110 group-hover:opacity-90 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-[#0d1117]/20 to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4 flex items-center gap-3">
                 <div className="w-8 h-8 rounded bg-[#111] border border-red-600 flex items-center justify-center text-red-500 shrink-0 shadow-[0_0_10px_rgba(217,4,41,0.3)]">
@@ -795,7 +804,7 @@ export default async function Home() {
             {/* The Connecting Line */}
             <div className="absolute top-[56px] left-[7%] w-[86%] h-[2px] bg-red-600/10 z-0 hidden lg:block overflow-hidden rounded-full">
               <div 
-                className="absolute top-0 bottom-0 w-40 bg-gradient-to-r from-transparent via-red-500 to-transparent"
+                className="absolute top-0 bottom-0 w-40 bg-gradient-to-r from-transparent via-red-500 to-transparent left-0"
                 style={{
                   boxShadow: "0 0 20px 4px rgba(220, 38, 38, 0.9)",
                   animation: "movingLight 8s linear infinite"
@@ -803,8 +812,8 @@ export default async function Home() {
               ></div>
               <style>{`
                 @keyframes movingLight {
-                  0% { left: -20%; }
-                  100% { left: 120%; }
+                  0% { transform: translateX(-160px); }
+                  100% { transform: translateX(85vw); }
                 }
               `}</style>
             </div>

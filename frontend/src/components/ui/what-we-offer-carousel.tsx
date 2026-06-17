@@ -47,12 +47,14 @@ export function WhatWeOfferCarousel({ children }: { children: React.ReactNode })
       <button 
         onClick={handleScrollLeft}
         className="absolute left-2 md:left-6 top-1/2 -translate-y-[80%] z-30 bg-black/80 hover:bg-red-600 border border-white/20 text-white p-3 md:p-4 rounded-full backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-[0_0_20px_rgba(0,0,0,0.8)]"
+        aria-label="Previous slide"
       >
         <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
       </button>
       <button 
         onClick={handleScrollRight}
         className="absolute right-2 md:right-6 top-1/2 -translate-y-[80%] z-30 bg-black/80 hover:bg-red-600 border border-white/20 text-white p-3 md:p-4 rounded-full backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-[0_0_20px_rgba(0,0,0,0.8)]"
+        aria-label="Next slide"
       >
         <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
       </button>

@@ -16,6 +16,7 @@ const geistMono = Geist_Mono({
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppCTA } from "@/components/layout/WhatsAppCTA";
+import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://jpdistributiontrucks.com'),
@@ -99,7 +100,8 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
-      <head>
+      <head />
+      <body className="min-h-full flex flex-col pt-20 md:pt-24 pb-20 md:pb-0 bg-background">
         <Script
           id="json-ld-schema"
           type="application/ld+json"
@@ -108,9 +110,9 @@ export default function RootLayout({
         {/* Google Analytics Placeholder */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script id="google-analytics" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -119,7 +121,7 @@ export default function RootLayout({
           `}
         </Script>
         {/* Meta Pixel Placeholder */}
-        <Script id="meta-pixel" strategy="afterInteractive">
+        <Script id="meta-pixel" strategy="lazyOnload">
           {`
             !function(f,b,e,v,n,t,s)
             {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -133,12 +135,11 @@ export default function RootLayout({
             fbq('track', 'PageView');
           `}
         </Script>
-      </head>
-      <body className="min-h-full flex flex-col pt-20 md:pt-24 bg-background">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
         <WhatsAppCTA />
+        <MobileBottomNav />
       </body>
     </html>
   );
